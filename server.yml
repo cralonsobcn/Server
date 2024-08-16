@@ -1,0 +1,268 @@
+version: "3.8"
+services:
+##Homepage
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    networks:
+      - server-network
+    ports:
+      - ${HOMEPAGE_HOST_PORT}:${HOMEPAGE_CONTAINER_PORT}
+    volumes:
+      - ${HOMEPAGE_CONFIG_HOST}:${HOMEPAGE_CONFIG_CONTAINER} # Make sure your local config directory exists
+      - ${HOMEPAGE_DOCKER_HOST}:${HOMEPAGE_DOCKER_CONTAINER} # (optional) For docker integrations
+      - ${HOMEPAGE_IMAGES_HOST}:${HOMEPAGE_IMAGES_CONTAINER} #to store local images and use them later as background
+    restart: unless-stopped
+
+##Monitoring
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    networks:
+      - server-network
+    ports:
+      - ${UPTIMEKUMA_HOST_PORT}:${UPTIMEKUMA_CONTAINER_PORT}
+    volumes:
+      - ${UPTIMEKUMA_DATA_HOST}:${UPTIMEKUMA_DATA_CONTAINER}
+      - ${UPTIMEKUMA_DOCKER_HOST}:${UPTIMEKUMA_DOCKER_CONTAINER}
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    networks:
+      - server-network
+    ports:
+      - ${PROMETHEUS_HOST_PORT}:${PROMETHEUS_CONTAINER_PORT}
+    volumes:
+      - ${PROMETHEUS_CONFIG_HOST}:${PROMETHEUS_CONFIG_CONTAINER}
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana-enterprise:10.4.1
+    container_name: grafana
+    networks:
+      - server-network
+    ports:
+      - ${GRAFANA_HOST_PORT}:${GRAFANA_CONTAINER_PORT}
+    volumes:
+      - ${GRAFANA_DATA_HOST}:${GRAFANA_DATA_CONTAINER}
+    restart: unless-stopped
+
+  glances:
+    image: nicolargo/glances:ubuntu-latest-full
+    container_name: Glances
+    networks:
+      - server-network
+    ports:
+      - ${GLANCES_HOST_PORT}:${GLANCES_CONTAINER_PORT}
+    volumes:
+      - ${GLANCES_DOCKER_HOST}:${GLANCES_DOCKER_CONTAINER}
+    environment:
+      - "GLANCES_OPT=-w"
+    restart: unless-stopped
+
+##ARR stack
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    env_file:
+      - .arr.env
+    networks:
+      - server-network
+    ports:
+      - ${RADARR_HOST_PORT}:${RADARR_CONTAINER_PORT}
+    volumes:
+      - ./radarr/config:/config
+      # - /path/to/movies:/movies #optional
+      # - /path/to/download-client-downloads:/downloads #optional
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    env_file:
+      - .arr.env
+    networks:
+      - server-network
+    ports:
+      - ${SONARR_HOST_PORT}:${SONARR_CONTAINER_PORT}
+    volumes:
+      - ${RADARR_CONFIG_HOST}:${RADARR_CONFIG_CONTAINER}
+     # - /path/to/tvseries:/tv #optional
+     # - /path/to/downloadclient-downloads:/downloads #optional
+    restart: unless-stopped
+
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    env_file:
+      - .arr.env
+    networks:
+      - server-network
+    ports:
+      - ${JACKETT_HOST_PORT}:${JACKETT_CONTAINER_PORT}
+    volumes:
+      - ${JACKETT_CONFIG_HOST}:${JACKETT_CONFIG_CONTAINER}
+      - ${JACKETT_BLACKHOLE_HOST}:${JACKETT_BLACKHOLE_CONTAINER}
+    restart: unless-stopped
+
+  tdarr:
+    container_name: tdarr-server #Server All modules connect with it. Does not do any encoding.
+    image: ghcr.io/haveagitgat/tdarr:latest
+    env_file:
+      - .arr.env
+    networks:
+      - server-network
+    ports:
+      - ${TDARR_HOST_PORT}:${TDARR_CONTAINER_PORT}
+    volumes:
+      - ${TDARR_SERVER_HOST}:${TDARR_SERVER_CONTAINER}
+      - ${TDARR_CONFIG_HOST}:${TDARR_CONFIG_CONTAINER}
+      - ${TDARR_LOGS_HOST}:${TDARR_LOGS_CONTAINER}
+      # - /media:/media  #both Server and Node need to have access to the same media and transcode cache paths
+      # - /transcode_cache:/temp
+    devices:
+      - /dev/dri:/dev/dri
+    restart: unless-stopped
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    env_file:
+      - .arr.env
+    networks:
+      - server-network
+    ports:
+      - ${JELLYSEERR_HOST_PORT}:${JELLYSEERR_CONTAINER_PORT}
+    volumes:
+      - ${JELLYSEERR_CONFIG_HOST}:${JELLYSEERR_CONFIG_CONTAINER}
+    restart: unless-stopped
+
+##Jellyfin
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    env_file:
+      - .jellyfin.env
+    networks:
+      - server-network
+    ports:
+      - ${JELLYFIN_HOST_PORT}:${JELLYFIN_CONTAINER_PORT}
+      - ${JELLYFIN_HOST_PORT_HTTPS}:${JELLYFIN_CONTAINER_PORT_HTTPS}
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    volumes:
+      - ${JELLYFIN_CONFIG_HOST}:${JELLYFIN_CONFIG_CONTAINER}
+      #- ./qbitorrent/downloads:/data/tvshows #this will be eventually mapped to a different folder
+      #- ./qbitorrent/downloads:/data/movies  #same here
+    devices:
+      - /dev/dri:/dev/dri #let the application access the render and iGPU devices
+    restart: unless-stopped
+
+##IT Tools
+  it-tools: #https://github.com/CorentinTh/it-tools
+    image: corentinth/it-tools:latest
+    container_name: "IT_Tools"
+    networks:
+      - server-network
+    ports:
+      - ${ITTOOLS_HOST_PORT}:${ITTOOLS_CONTAINER_PORT}
+    restart: unless-stopped
+
+##Web Check
+  web-check: #https://github.com/Lissy93/web-check?ref=selfh.st
+    image: lissy93/web-check
+    container_name: Web-Check
+    networks:
+      - server-network
+    ports:
+      - ${WEBCHECK_HOST_PORT}:${WEBCHECK_CONTAINER_PORT}
+    restart: unless-stopped
+
+##Code Server
+  codeServer: #https://hub.docker.com/r/linuxserver/code-server
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    #environment:
+      #- PASSWORD=password #optional
+      #- HASHED_PASSWORD= #optional
+      #- SUDO_PASSWORD=password #optional
+      #- SUDO_PASSWORD_HASH= #optional
+      #- PROXY_DOMAIN=code-server.my.domain #optional
+      #- DEFAULT_WORKSPACE=/config/workspace #optional
+    networks:
+      - server-network
+    ports:
+      - ${CODE_HOST_PORT}:${CODE_CONTAINER_PORT}
+    volumes:
+      - ${CODE_CONFIG_HOST}:${CODE_CONFIG_CONTAINER}
+    restart: unless-stopped
+
+##YoutubeDL
+  ytdl_material: #https://github.com/Tzahi12345/YoutubeDL-Material?ref=selfh.st
+    image: tzahi12345/youtubedl-material:latest
+    container_name: youtubeDL
+    depends_on:
+      - ytdl-mongo-db
+    networks:
+      - youtubeDL-network
+    ports:
+      - ${YOUTUBEDL_HOST_PORT}:${YOUTUBEDL_CONTAINER_PORT}
+    volumes:
+      - ${YOUTUBEDL_APPDATA_HOST}:${YOUTUBEDL_APPDATA_CONTAINER}
+      - ${YOUTUBEDL_AUDIO_HOST}:${YOUTUBEDL_AUDIO_CONTAINER}
+      - ${YOUTUBEDL_VIDEO_HOST}:${YOUTUBEDL_VIDEO_CONTAINER}
+      - ${YOUTUBEDL_SUBSCRIPTIONS_HOST}:${YOUTUBEDL_SUBSCRIPTIONS_CONTAINER}
+      - ${YOUTUBEDL_USERS_HOST}:${YOUTUBEDL_USERS_CONTAINER}
+    environment:
+      ytdl_mongodb_connection_string: 'mongodb://ytdl-mongo-db:27017'
+      ytdl_use_local_db: 'false'
+      write_ytdl_config: 'true'
+    restart: unless-stopped
+
+  ytdl-mongo-db: # If you are using a Raspberry Pi, use mongo:4.4.18
+    image: mongo:4 #Don't change the version
+    logging:
+      driver: "none"
+    container_name: mongo-db
+    restart: unless-stopped
+    volumes:
+      - ./youtubeDL/db/:/data/db
+    networks:
+      - youtubeDL-network
+
+##freshRSS
+  freshrss: #https://github.com/FreshRSS/FreshRSS/tree/edge/Docker#quick-run
+    image: freshrss/freshrss:edge
+    container_name: freshRSS
+    # Optional build section if you want to build the image locally:
+    build:
+      # Pick #latest (stable release) or #edge (rolling release) or a specific release like #1.21.0
+      context: https://github.com/FreshRSS/FreshRSS.git#latest
+      dockerfile: Docker/Dockerfile-Alpine
+    logging:
+      options:
+        max-size: 10m
+    networks:
+      - server-network
+    ports:
+      # If you want to open a port 8080 on the local machine:
+      - :${FRESHRSS_HOST_PORT}:${FRESHRSS_CONTAINER_PORT}
+    volumes:
+      # Recommended volume for FreshRSS persistent data such as configuration and SQLite databases
+      - ${FRESHRSS_DATA_HOST}:${FRESHRSS_DATA_CONTAINER}
+      # Optional volume for storing third-party extensions
+      - ${FRESHRSS_EXTENSIONS_HOST}:${FRESHRSS_EXTENSIONS_CONTAINER}
+      # Optional file providing custom global settings (used before a FreshRSS install)
+      - ${FRESHRSS_CONFIGCUSTOMPHP_HOST}:${FRESHRSS_CONFIGCUSTOMPHP_CONTAINER}
+      # Optional file providing custom user settings (used before a new user is created)
+      - ${FRESHRSS_CONFIGUSERCUSTOMPHP_HOST}:${FRESHRSS_CONFIGUSERCUSTOMPHP_CONTAINER}
+    restart: unless-stopped
+
+
+networks:
+  server-network:
+    driver: bridge
+  youtubeDL-network:
+    driver: bridge
