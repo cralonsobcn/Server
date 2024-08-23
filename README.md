@@ -1,9 +1,9 @@
 # Home Server
 This public repo contains the script that I use for my linux home server. 
 
-Although most of them are used in a test environment I'm actively modifying it to increase the security and automate the deployment in my production environment.
+Although I'm deploying the services in a test environment I'm actively modifying it to increase the security and automate the deployment in my production environment.
 
-For security reasons, I'm not commiting my env files in this repo.
+For security reasons, I'm not commiting my .env files in this repo.
 
 # Virtualization
 The test environment is a virtualized Ubuntu Desktop running in Virtual Box bridged to the host machine while my production environment is a Beelink Mini S12 with an Intel N95, 8GB DDR4 and a 256GB SSD running Ubuntu Server.
