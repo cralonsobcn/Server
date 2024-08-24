@@ -241,6 +241,20 @@ services:
       - ${FRESHRSS_CONFIGUSERCUSTOMPHP_HOST}:${FRESHRSS_CONFIGUSERCUSTOMPHP_CONTAINER}
     restart: unless-stopped
 
+## Portainer
+  portainer-ce:
+    image: 'portainer/portainer-ce:latest'
+    volumes:
+      - '/var/snap/docker/common/var-lib-docker/volumes/portainer_data/_data:/data' # docker volume create portainer_data | docker volumes inspect portainer_data -> Mount point
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    restart: always
+    networks:
+      - devops-network
+    container_name: portainer
+    ports:
+      - '9443:9443' #HTTPS Login
+      - '8000:8000' #TCP
+      - '9000:9000' #HTTP Login
 
 networks:
   server-network:
