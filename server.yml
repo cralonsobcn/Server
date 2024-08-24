@@ -107,25 +107,6 @@ services:
       - ${JACKETT_BLACKHOLE_HOST}:${JACKETT_BLACKHOLE_CONTAINER}
     restart: unless-stopped
 
-  tdarr:
-    container_name: tdarr-server #Server All modules connect with it. Does not do any encoding.
-    image: ghcr.io/haveagitgat/tdarr:latest
-    env_file:
-      - .arr.env
-    networks:
-      - server-network
-    ports:
-      - ${TDARR_HOST_PORT}:${TDARR_CONTAINER_PORT}
-    volumes:
-      - ${TDARR_SERVER_HOST}:${TDARR_SERVER_CONTAINER}
-      - ${TDARR_CONFIG_HOST}:${TDARR_CONFIG_CONTAINER}
-      - ${TDARR_LOGS_HOST}:${TDARR_LOGS_CONTAINER}
-      # - /media:/media  #both Server and Node need to have access to the same media and transcode cache paths
-      # - /transcode_cache:/temp
-    devices:
-      - /dev/dri:/dev/dri
-    restart: unless-stopped
-
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
