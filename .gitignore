@@ -1,2 +1,5 @@
 # ignore ALL .env files
 *.env
+
+# Ignore pfSense config file
+config-pfSense.home.arpa-20240722205932.xml
