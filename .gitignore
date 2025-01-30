@@ -3,3 +3,9 @@
 
 # Ignore pfSense config file
 config-pfSense.home.arpa-20240722205932.xml
+
+# Ignore homepage logs
+homepage/config/logs/*
+
+# Ignore homepage services yaml
+homepage/config/services.yaml
