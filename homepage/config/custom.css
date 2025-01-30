@@ -1,0 +1,13 @@
+#steam{
+display:flex;
+flex-direction:row;
+flex-wrap:wrap;
+justify-content:center;
+align-items: center;
+}
+
+.undefined{
+
+color:#B2BEB5;
+
+}

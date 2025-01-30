@@ -1,0 +1,1 @@
+document.getElementById('steam').innerHTML = '<iframe src="https://gamer2810.github.io/steam-miniprofile/?accountId=76561197990210945" style="align-self: center;" name="myiFrame" scrolling="no" frameborder="1" height="250px" width="700px"></iframe><img src="/images/achievement_showcase.jpg">';

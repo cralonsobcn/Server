@@ -1,0 +1,45 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/settings
+title: Cristian's Server
+
+background:
+  image: /images/witcher_wallpaper.jpg
+  blur: sm # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
+  saturate: 50 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
+  brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
+  opacity: 50 # 0-100
+
+theme: dark
+color: slate
+language: en
+target: _blank # Possible options include _blank, _self, and _top
+hideVersion: true
+showStats: true
+statusStyle: "dot" #basic OR dot
+disableCollapse: true
+useEqualHeights: true
+
+layout:
+  Graphs:
+    style: row
+    columns: 5
+  Apps:
+    tab: Apps
+    style: row
+    columns: 5
+  Monitoring & Logging:
+    tab: Monitoring & Logging
+    style: row
+    columns: 5
+  ARR:
+    tab: ARR
+    style: row
+    columns: 5
+  Steam:
+    style: row
+    columns: 1
+  Calendar:
+    header: true
+    style: row
+    columns: 2
