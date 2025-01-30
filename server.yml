@@ -1,8 +1,5 @@
-version: "3.8"
 networks:
   server-network:
-    driver: bridge
-  youtubeDL-network:
     driver: bridge
 
 services:
@@ -17,12 +14,12 @@ services:
     volumes:
       - ${HOMEPAGE_HOST_CONFIG}:${HOMEPAGE_CONTAINER_CONFIG} # Make sure your local config directory exists
       - ${HOMEPAGE_HOST_DOCKER}:${HOMEPAGE_CONTAINER_DOCKER} # (optional) For docker integrations
-      - ${HOMEPAGE_HOST_IMAGES}:${HOMEPAGE_CONTAINER_IMAGES} #to store local images and use them later as background
+      - ${HOMEPAGE_HOST_IMAGES}:${HOMEPAGE_CONTAINER_IMAGES} # To store local images and use them later as background
     restart: unless-stopped
 
 ##Monitoring
   uptime-kuma:
-    image: louislam/uptime-kuma:latest
+    image: docker.io/louislam/uptime-kuma:latest
     container_name: uptime-kuma
     networks:
       - server-network
@@ -34,7 +31,7 @@ services:
     restart: unless-stopped
 
   prometheus:
-    image: prom/prometheus
+    image: docker.io/prom/prometheus:latest
     container_name: prometheus
     networks:
       - server-network
@@ -45,7 +42,7 @@ services:
     restart: unless-stopped
 
   grafana:
-    image: grafana/grafana-enterprise:10.4.1
+    image: docker.io/grafana/grafana-enterprise:latest
     container_name: grafana
     networks:
       - server-network
@@ -57,7 +54,7 @@ services:
 
   glances:
     image: nicolargo/glances:ubuntu-latest-full
-    container_name: Glances
+    container_name: glances
     networks:
       - server-network
     ports:
@@ -73,7 +70,7 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     env_file:
-      - .arr.env
+      - env/.arr.env
     networks:
       - server-network
     ports:
@@ -88,7 +85,7 @@ services:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
     env_file:
-      - .arr.env
+      - env/.arr.env
     networks:
       - server-network
     ports:
@@ -103,7 +100,7 @@ services:
     image: lscr.io/linuxserver/jackett:latest
     container_name: jackett
     env_file:
-      - .arr.env
+      - env/.arr.env
     networks:
       - server-network
     ports:
@@ -114,10 +111,10 @@ services:
     restart: unless-stopped
 
   jellyseerr:
-    image: fallenbagel/jellyseerr:latest
+    image: docker.io/fallenbagel/jellyseerr:latest
     container_name: jellyseerr
     env_file:
-      - .arr.env
+      - env/.arr.env
     networks:
       - server-network
     ports:
@@ -131,7 +128,7 @@ services:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
     env_file:
-      - .jellyfin.env
+      - env/.jellyfin.env
     networks:
       - server-network
     ports:
@@ -158,8 +155,10 @@ services:
     restart: unless-stopped
 
 ##Web Check
-  web-check: #https://github.com/Lissy93/web-check?ref=selfh.st
-    image: lissy93/web-check
+  web-check: 
+    # https://github.com/Lissy93/web-check?ref=selfh.st
+    # https://hub.docker.com/r/lissy93/web-check
+    image: docker.io/lissy93/web-check:latest
     container_name: Web-Check
     networks:
       - server-network
@@ -186,80 +185,5 @@ services:
       - ${CODE_HOST_CONFIG}:${CODE_CONTAINER_CONFIG}
     restart: unless-stopped
 
-##YoutubeDL
-  ytdl_material: #https://github.com/Tzahi12345/YoutubeDL-Material?ref=selfh.st
-    image: tzahi12345/youtubedl-material:latest
-    container_name: youtubeDL
-    depends_on:
-      - ytdl-mongo-db
-    networks:
-      - youtubeDL-network
-    ports:
-      - ${YOUTUBEDL_HOST_PORT}:${YOUTUBEDL_CONTAINER_PORT}
-    volumes:
-      - ${YOUTUBEDL_APPDATA_HOST}:${YOUTUBEDL_APPDATA_CONTAINER}
-      - ${YOUTUBEDL_AUDIO_HOST}:${YOUTUBEDL_AUDIO_CONTAINER}
-      - ${YOUTUBEDL_VIDEO_HOST}:${YOUTUBEDL_VIDEO_CONTAINER}
-      - ${YOUTUBEDL_SUBSCRIPTIONS_HOST}:${YOUTUBEDL_SUBSCRIPTIONS_CONTAINER}
-      - ${YOUTUBEDL_USERS_HOST}:${YOUTUBEDL_USERS_CONTAINER}
-    environment:
-      ytdl_mongodb_connection_string: 'mongodb://ytdl-mongo-db:27017'
-      ytdl_use_local_db: 'false'
-      write_ytdl_config: 'true'
-    restart: unless-stopped
-
-  ytdl-mongo-db: # If you are using a Raspberry Pi, use mongo:4.4.18
-    image: mongo:4 #Don't change the version
-    logging:
-      driver: "none"
-    container_name: mongo-db
-    restart: unless-stopped
-    volumes:
-      - ./youtubeDL/db/:/data/db
-    networks:
-      - youtubeDL-network
-
-##freshRSS
-  freshrss: #https://github.com/FreshRSS/FreshRSS/tree/edge/Docker#quick-run
-    image: freshrss/freshrss:edge
-    container_name: freshRSS
-    # Optional build section if you want to build the image locally:
-    build:
-      # Pick #latest (stable release) or #edge (rolling release) or a specific release like #1.21.0
-      context: https://github.com/FreshRSS/FreshRSS.git#latest
-      dockerfile: Docker/Dockerfile-Alpine
-    logging:
-      options:
-        max-size: 10m
-    networks:
-      - server-network
-    ports:
-      # If you want to open a port 8080 on the local machine:
-      - :${FRESHRSS_HOST_PORT}:${FRESHRSS_CONTAINER_PORT}
-    volumes:
-      # Recommended volume for FreshRSS persistent data such as configuration and SQLite databases
-      - ${FRESHRSS_DATA_HOST}:${FRESHRSS_DATA_CONTAINER}
-      # Optional volume for storing third-party extensions
-      - ${FRESHRSS_EXTENSIONS_HOST}:${FRESHRSS_EXTENSIONS_CONTAINER}
-      # Optional file providing custom global settings (used before a FreshRSS install)
-      - ${FRESHRSS_CONFIGCUSTOMPHP_HOST}:${FRESHRSS_CONFIGCUSTOMPHP_CONTAINER}
-      # Optional file providing custom user settings (used before a new user is created)
-      - ${FRESHRSS_CONFIGUSERCUSTOMPHP_HOST}:${FRESHRSS_CONFIGUSERCUSTOMPHP_CONTAINER}
-    restart: unless-stopped
-
-## Portainer
-  portainer-ce:
-    image: 'portainer/portainer-ce:latest'
-    volumes:
-      - '/var/snap/docker/common/var-lib-docker/volumes/portainer_data/_data:/data' # docker volume create portainer_data | docker volumes inspect portainer_data -> Mount point
-      - '/var/run/docker.sock:/var/run/docker.sock'
-    restart: unless-stopped
-    networks:
-      - devops-network
-    container_name: portainer
-    ports:
-      - '9443:9443' #HTTPS Login
-      - '8000:8000' #TCP
-      - '9000:9000' #HTTP Login
-
-
+  # TODO grafana Error: must provide a non-empty container port to publish
+  # TODO Error: statfs /var/run/podman/podman.sock: permission denied
