@@ -26,7 +26,7 @@ services:
     ports:
       - ${UPTIMEKUMA_HOST_PORT}:${UPTIMEKUMA_CONTAINER_PORT}
     volumes:
-      - ${UPTIMEKUMA_HOST_DATA}:${UPTIMEKUMA_CONATINER_DATA}
+      - ${UPTIMEKUMA_HOST_DATA}:${UPTIMEKUMA_CONTAINER_DATA}
       - ${UPTIMEKUMA_HOST_DOCKER}:${UPTIMEKUMA_CONTAINER_DOCKER}
     restart: unless-stopped
 
@@ -53,14 +53,12 @@ services:
     restart: unless-stopped
 
   glances:
-    image: nicolargo/glances:ubuntu-latest-full
+    image: docker.io/nicolargo/glances:latest-full
     container_name: glances
     networks:
       - server-network
-    ports:
-      - ${GLANCES_HOST_PORT}:${GLANCES_CONTAINER_PORT}
     volumes:
-      - ${GLANCES_DOCKER_HOST}:${GLANCES_DOCKER_CONTAINER}
+      - ${GLANCES_HOST_DOCKER}:${GLANCES_CONTAINER_DOCKER}
     environment:
       - "GLANCES_OPT=-w"
     restart: unless-stopped
