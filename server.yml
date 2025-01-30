@@ -1,4 +1,10 @@
 version: "3.8"
+networks:
+  server-network:
+    driver: bridge
+  youtubeDL-network:
+    driver: bridge
+
 services:
 ##Homepage
   homepage:
@@ -9,9 +15,9 @@ services:
     ports:
       - ${HOMEPAGE_HOST_PORT}:${HOMEPAGE_CONTAINER_PORT}
     volumes:
-      - ${HOMEPAGE_CONFIG_HOST}:${HOMEPAGE_CONFIG_CONTAINER} # Make sure your local config directory exists
-      - ${HOMEPAGE_DOCKER_HOST}:${HOMEPAGE_DOCKER_CONTAINER} # (optional) For docker integrations
-      - ${HOMEPAGE_IMAGES_HOST}:${HOMEPAGE_IMAGES_CONTAINER} #to store local images and use them later as background
+      - ${HOMEPAGE_HOST_CONFIG}:${HOMEPAGE_CONTAINER_CONFIG} # Make sure your local config directory exists
+      - ${HOMEPAGE_HOST_DOCKER}:${HOMEPAGE_CONTAINER_DOCKER} # (optional) For docker integrations
+      - ${HOMEPAGE_HOST_IMAGES}:${HOMEPAGE_CONTAINER_IMAGES} #to store local images and use them later as background
     restart: unless-stopped
 
 ##Monitoring
@@ -23,8 +29,8 @@ services:
     ports:
       - ${UPTIMEKUMA_HOST_PORT}:${UPTIMEKUMA_CONTAINER_PORT}
     volumes:
-      - ${UPTIMEKUMA_DATA_HOST}:${UPTIMEKUMA_DATA_CONTAINER}
-      - ${UPTIMEKUMA_DOCKER_HOST}:${UPTIMEKUMA_DOCKER_CONTAINER}
+      - ${UPTIMEKUMA_HOST_DATA}:${UPTIMEKUMA_CONATINER_DATA}
+      - ${UPTIMEKUMA_HOST_DOCKER}:${UPTIMEKUMA_CONTAINER_DOCKER}
     restart: unless-stopped
 
   prometheus:
@@ -35,7 +41,7 @@ services:
     ports:
       - ${PROMETHEUS_HOST_PORT}:${PROMETHEUS_CONTAINER_PORT}
     volumes:
-      - ${PROMETHEUS_CONFIG_HOST}:${PROMETHEUS_CONFIG_CONTAINER}
+      - ${PROMETHEUS_HOST_CONFIG}:${PROMETHEUS_CONTAINER_CONFIG}
     restart: unless-stopped
 
   grafana:
@@ -46,7 +52,7 @@ services:
     ports:
       - ${GRAFANA_HOST_PORT}:${GRAFANA_CONTAINER_PORT}
     volumes:
-      - ${GRAFANA_DATA_HOST}:${GRAFANA_DATA_CONTAINER}
+      - ${GRAFANA_HOST_DATA}:${GRAFANA_CONTAINER_DATA}
     restart: unless-stopped
 
   glances:
@@ -88,7 +94,7 @@ services:
     ports:
       - ${SONARR_HOST_PORT}:${SONARR_CONTAINER_PORT}
     volumes:
-      - ${RADARR_CONFIG_HOST}:${RADARR_CONFIG_CONTAINER}
+      - ${RADARR_HOST_CONFIG}:${RADARR_CONTAINER_CONFIG}
      # - /path/to/tvseries:/tv #optional
      # - /path/to/downloadclient-downloads:/downloads #optional
     restart: unless-stopped
@@ -103,8 +109,8 @@ services:
     ports:
       - ${JACKETT_HOST_PORT}:${JACKETT_CONTAINER_PORT}
     volumes:
-      - ${JACKETT_CONFIG_HOST}:${JACKETT_CONFIG_CONTAINER}
-      - ${JACKETT_BLACKHOLE_HOST}:${JACKETT_BLACKHOLE_CONTAINER}
+      - ${JACKETT_HOST_CONFIG}:${JACKETT_CONTAINER_CONFIG}
+      - ${JACKETT_HOST_BLACKHOLE}:${JACKETT_CONTAINER_BLACKHOLE}
     restart: unless-stopped
 
   jellyseerr:
@@ -117,7 +123,7 @@ services:
     ports:
       - ${JELLYSEERR_HOST_PORT}:${JELLYSEERR_CONTAINER_PORT}
     volumes:
-      - ${JELLYSEERR_CONFIG_HOST}:${JELLYSEERR_CONFIG_CONTAINER}
+      - ${JELLYSEERR_HOST_CONFIG}:${JELLYSEERR_CONTAINER_CONFIG}
     restart: unless-stopped
 
 ##Jellyfin
@@ -134,7 +140,7 @@ services:
       - 7359:7359/udp #optional
       - 1900:1900/udp #optional
     volumes:
-      - ${JELLYFIN_CONFIG_HOST}:${JELLYFIN_CONFIG_CONTAINER}
+      - ${JELLYFIN_HOST_CONFIG}:${JELLYFIN_CONTAINER_CONFIG}
       #- ./qbitorrent/downloads:/data/tvshows #this will be eventually mapped to a different folder
       #- ./qbitorrent/downloads:/data/movies  #same here
     devices:
@@ -177,7 +183,7 @@ services:
     ports:
       - ${CODE_HOST_PORT}:${CODE_CONTAINER_PORT}
     volumes:
-      - ${CODE_CONFIG_HOST}:${CODE_CONFIG_CONTAINER}
+      - ${CODE_HOST_CONFIG}:${CODE_CONTAINER_CONFIG}
     restart: unless-stopped
 
 ##YoutubeDL
@@ -247,7 +253,7 @@ services:
     volumes:
       - '/var/snap/docker/common/var-lib-docker/volumes/portainer_data/_data:/data' # docker volume create portainer_data | docker volumes inspect portainer_data -> Mount point
       - '/var/run/docker.sock:/var/run/docker.sock'
-    restart: always
+    restart: unless-stopped
     networks:
       - devops-network
     container_name: portainer
@@ -256,8 +262,4 @@ services:
       - '8000:8000' #TCP
       - '9000:9000' #HTTP Login
 
-networks:
-  server-network:
-    driver: bridge
-  youtubeDL-network:
-    driver: bridge
+
