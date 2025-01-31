@@ -5,6 +5,8 @@ networks:
 volumes:
   grafana-storage: {} # TODO change volume tipe
 
+## Monitoring and Logging
+
 services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
@@ -17,9 +19,9 @@ services:
     ports:
       - ${HOMEPAGE_HOST_PORT}:${HOMEPAGE_CONTAINER_PORT}
     volumes:
-      - ${HOMEPAGE_HOST_CONFIG}:${HOMEPAGE_CONTAINER_CONFIG} # Make sure your local config directory exists
-      - ${HOMEPAGE_HOST_DOCKER}:${HOMEPAGE_CONTAINER_DOCKER} # For docker integrations
-      - ${HOMEPAGE_HOST_IMAGES}:${HOMEPAGE_CONTAINER_IMAGES} # To store local images and use them later as background
+      - ${HOMEPAGE_HOST_CONFIG}:${HOMEPAGE_CONTAINER_CONFIG} 
+      - ${HOMEPAGE_HOST_DOCKER}:${HOMEPAGE_CONTAINER_DOCKER}  # path to docker.sock. Requires running the container as root
+      - ${HOMEPAGE_HOST_IMAGES}:${HOMEPAGE_CONTAINER_IMAGES}
     restart: unless-stopped
 
   glances:
@@ -27,12 +29,13 @@ services:
     container_name: glances
     environment:
       - "GLANCES_OPT=-w"
+      - TZ=${TZ}
     networks:
       - internal_network
     ports:
       - ${GLANCES_HOST_PORT}:${GLANCES_CONTAINER_PORT}
     volumes:
-      - ${GLANCES_HOST_DOCKER}:${GLANCES_CONTAINER_DOCKER}
+      - ${GLANCES_HOST_DOCKER}:${GLANCES_CONTAINER_DOCKER} # path to docker.sock
     restart: unless-stopped
 
   uptime-kuma:
@@ -46,23 +49,27 @@ services:
       - ${UPTIMEKUMA_HOST_PORT}:${UPTIMEKUMA_CONTAINER_PORT}
     volumes:
       - ${UPTIMEKUMA_HOST_DATA}:${UPTIMEKUMA_CONTAINER_DATA}
-      - ${UPTIMEKUMA_HOST_DOCKER}:${UPTIMEKUMA_CONTAINER_DOCKER}
+      - ${UPTIMEKUMA_HOST_DOCKER}:${UPTIMEKUMA_CONTAINER_DOCKER} # path to docker.sock
     restart: unless-stopped
 
   prometheus:
     image: docker.io/prom/prometheus:latest
     container_name: prometheus
+    environment:
+      TZ: ${TZ}
     networks:
       - internal_network
     ports:
       - ${PROMETHEUS_HOST_PORT}:${PROMETHEUS_CONTAINER_PORT}
-    volumes: # Add data volume to persist data
-      - ${PROMETHEUS_HOST_CONFIG}:${PROMETHEUS_CONTAINER_CONFIG}
+    volumes: # TODO Add data volume to persist data
+      - ${PROMETHEUS_HOST_CONFIG}:${PROMETHEUS_CONTAINER_CONFIG} # path to /etc/prometheus.yml
     restart: unless-stopped
 
   grafana:
     image: docker.io/grafana/grafana-enterprise:latest
     container_name: grafana
+    environment:
+      TZ: ${TZ}
     networks:
       - internal_network
     ports:
@@ -70,4 +77,46 @@ services:
     volumes:
       - grafana-storage:${GRAFANA_CONTAINER_DATA}
     restart: unless-stopped
-  
+
+## Apps
+
+  it-tools: 
+    image: corentinth/it-tools:latest
+    container_name: "IT_Tools"
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${ITTOOLS_HOST_PORT}:${ITTOOLS_CONTAINER_PORT}
+    restart: unless-stopped
+
+  web-check: 
+    image: docker.io/lissy93/web-check:latest
+    container_name: Web-Check
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${WEBCHECK_HOST_PORT}:${WEBCHECK_CONTAINER_PORT}
+    restart: unless-stopped
+
+  codeServer:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${CODE_HOST_PORT}:${CODE_CONTAINER_PORT}
+    volumes:
+      - ${CODE_HOST_CONFIG}:${CODE_CONTAINER_CONFIG}
+    restart: unless-stopped
