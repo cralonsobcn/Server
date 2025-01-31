@@ -13,3 +13,6 @@ uptime_kuma/data/*.db-*
 
 # Ignore Uptime Kuma certificates
 uptime_kuma/data/docker-tls
+
+# Ignore jellyfin folder
+/jellyfin/*
