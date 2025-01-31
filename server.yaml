@@ -1,0 +1,73 @@
+networks:
+  internal_network:
+    driver: bridge
+
+volumes:
+  grafana-storage: {} # TODO change volume tipe
+
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    environment: # TODO pass ports in the config file to env variables
+      TZ: ${TZ}
+      HOMEPAGE_VAR_IP: ${IP}
+    networks:
+      - internal_network
+    ports:
+      - ${HOMEPAGE_HOST_PORT}:${HOMEPAGE_CONTAINER_PORT}
+    volumes:
+      - ${HOMEPAGE_HOST_CONFIG}:${HOMEPAGE_CONTAINER_CONFIG} # Make sure your local config directory exists
+      - ${HOMEPAGE_HOST_DOCKER}:${HOMEPAGE_CONTAINER_DOCKER} # For docker integrations
+      - ${HOMEPAGE_HOST_IMAGES}:${HOMEPAGE_CONTAINER_IMAGES} # To store local images and use them later as background
+    restart: unless-stopped
+
+  glances:
+    image: docker.io/nicolargo/glances:latest-full
+    container_name: glances
+    environment:
+      - "GLANCES_OPT=-w"
+    networks:
+      - internal_network
+    ports:
+      - ${GLANCES_HOST_PORT}:${GLANCES_CONTAINER_PORT}
+    volumes:
+      - ${GLANCES_HOST_DOCKER}:${GLANCES_CONTAINER_DOCKER}
+    restart: unless-stopped
+
+  uptime-kuma:
+    image: docker.io/louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    environment:
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${UPTIMEKUMA_HOST_PORT}:${UPTIMEKUMA_CONTAINER_PORT}
+    volumes:
+      - ${UPTIMEKUMA_HOST_DATA}:${UPTIMEKUMA_CONTAINER_DATA}
+      - ${UPTIMEKUMA_HOST_DOCKER}:${UPTIMEKUMA_CONTAINER_DOCKER}
+    restart: unless-stopped
+
+  prometheus:
+    image: docker.io/prom/prometheus:latest
+    container_name: prometheus
+    networks:
+      - internal_network
+    ports:
+      - ${PROMETHEUS_HOST_PORT}:${PROMETHEUS_CONTAINER_PORT}
+    volumes: # Add data volume to persist data
+      - ${PROMETHEUS_HOST_CONFIG}:${PROMETHEUS_CONTAINER_CONFIG}
+    restart: unless-stopped
+
+  grafana:
+    image: docker.io/grafana/grafana-enterprise:latest
+    container_name: grafana
+    networks:
+      - internal_network
+    ports:
+      - ${GRAFANA_HOST_PORT}:${GRAFANA_CONTAINER_PORT}
+    volumes:
+      - grafana-storage:${GRAFANA_CONTAINER_DATA}
+    restart: unless-stopped
+  
