@@ -6,3 +6,10 @@ config-pfSense.home.arpa-20240722205932.xml
 
 # Ignore homepage logs
 homepage/config/logs/*
+
+# Ignore Uptime Kuma database
+uptime_kuma/data/*.db
+uptime_kuma/data/*.db-*
+
+# Ignore Uptime Kuma certificates
+uptime_kuma/data/docker-tls
