@@ -61,7 +61,7 @@ services:
       - internal_network
     ports:
       - ${PROMETHEUS_HOST_PORT}:${PROMETHEUS_CONTAINER_PORT}
-    volumes: # TODO Add data volume to persist data
+    volumes: # TODO Add data volume and persist the data
       - ${PROMETHEUS_HOST_CONFIG}:${PROMETHEUS_CONTAINER_CONFIG} # path to /etc/prometheus.yml
     restart: unless-stopped
 
@@ -119,4 +119,28 @@ services:
       - ${CODE_HOST_PORT}:${CODE_CONTAINER_PORT}
     volumes:
       - ${CODE_HOST_CONFIG}:${CODE_CONTAINER_CONFIG}
+    restart: unless-stopped
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    env_file:
+      - env/.jellyfin.env
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${JELLYFIN_HOST_PORT}:${JELLYFIN_CONTAINER_PORT}
+      - ${JELLYFIN_HOST_PORT_HTTPS}:${JELLYFIN_CONTAINER_PORT_HTTPS}
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    volumes:
+      - ${JELLYFIN_HOST_CONFIG}:${JELLYFIN_CONTAINER_CONFIG} # TODO switch to volume type
+      # TODO - ./qbitorrent/downloads:/data/tvshows #this will be eventually mapped to a different folder
+      # TODO - ./qbitorrent/downloads:/data/movies  #same here
+    devices:
+      - /dev/dri:/dev/dri # Allows the application access the render and iGPU devices
     restart: unless-stopped
