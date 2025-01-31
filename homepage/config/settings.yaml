@@ -1,7 +1,8 @@
 ---
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/settings
-title: Cristian's Server
+title: "Cristian's Server"
+description: "v0.1"
 
 background:
   image: /images/witcher_wallpaper.jpg
@@ -21,9 +22,9 @@ disableCollapse: true
 useEqualHeights: true
 
 layout:
-  Graphs:
+  Metrics:
     style: row
-    columns: 5
+    columns: 4
   Apps:
     tab: Apps
     style: row
@@ -31,7 +32,7 @@ layout:
   Monitoring & Logging:
     tab: Monitoring & Logging
     style: row
-    columns: 5
+    columns: 4
   ARR:
     tab: ARR
     style: row

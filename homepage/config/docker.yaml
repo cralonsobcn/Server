@@ -2,7 +2,7 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/docker/
 
-my-docker:
-  #host: 172.17.0.1
-  #port: 2375
-  socket: /var/run/docker.sock
+docker-internal:
+  # host: 172.17.0.1
+  # port: 2375
+  socket: /var/run/docker.sock 

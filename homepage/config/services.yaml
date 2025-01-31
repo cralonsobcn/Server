@@ -1,0 +1,197 @@
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- Metrics:
+  - CPU Usage:
+      widget:
+        type: glances
+        version: 4
+        url: http://{{HOMEPAGE_VAR_IP}}:61208
+        metric: cpu
+  - Memory Usage:
+      widget:
+        type: glances
+        version: 4
+        url: http://{{HOMEPAGE_VAR_IP}}:61208
+        metric: memory
+  - Disk I/O:
+      widget:
+        type: glances
+        version: 4
+        url: http://{{HOMEPAGE_VAR_IP}}:61208
+        metric: disk:sda
+        chart: true
+  - System Info:
+      widget:
+        type: glances
+        version: 4
+        url: http://{{HOMEPAGE_VAR_IP}}:61208
+        metric: info
+
+- Monitoring & Logging:
+    - Uptime Kuma:
+        href: http://{{HOMEPAGE_VAR_IP}}:3001
+        description: "L7 health checks"
+        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/uptime-kuma.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:3001
+        showStats: true
+        server: docker-internal
+        container: uptime-kuma
+    - Prometheus:
+        href: http://{{HOMEPAGE_VAR_IP}}:9090
+        description: Prometheus
+        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/prometheus.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:9090
+        showStats: true
+        server: docker-internal
+        container: prometheus
+    - Grafana:
+        href: http://{{HOMEPAGE_VAR_IP}}:3002
+        description: Grafana
+        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/grafana.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:3002
+        showStats: true
+        server: docker-internal
+        container: grafana
+    - Glances:
+        href: http://{{HOMEPAGE_VAR_IP}}:61208
+        description: Glances
+        icon: glances.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:61208
+        showstats: true
+        server: docker-internal
+        container: glances
+
+- Apps:
+    - Reactive Resume:
+        href: http://{{HOMEPAGE_VAR_IP}}:3000
+        description: Cristian's Online Resume
+        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/svg/reactive-resume.svg
+        ping: http://{{HOMEPAGE_VAR_IP}}:3000
+        showStats: true
+        server: docker-internal
+        container: resume
+    - Jellyfin:
+        href: http://192.168.1.83:8096
+        description: Jellyfin media player
+        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/svg/jellyfin.svg
+        ping: http://{{HOMEPAGE_VAR_IP}}:8096
+        showStats: true
+        server: docker-internal
+        container: jellyfin
+    - IT Tools:
+        href: http://{{HOMEPAGE_VAR_IP}}:8085
+        description: Interesting IT Aplications (quality of life improvement)
+        icon: kubernetes.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:8085
+        showstats: true
+        server: docker-internal
+        container: IT_Tools
+    - Web Check:
+        href: http://{{HOMEPAGE_VAR_IP}}:8097
+        description: Website analysis
+        icon: chrome.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:8097
+        showstats: true
+        server: docker-internal
+        container: Web-Check
+    - Code Server:
+        href: http://{{HOMEPAGE_VAR_IP}}:8443
+        description: VS Code
+        icon: vscode.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:8443
+        showstats: true
+        server: docker-internal
+        container: code-server
+    - YoutubeDL:
+        href: http://192.168.1.83:8998
+        description: Youtube Downloader
+        icon: youtube.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:8998
+        showstats: true
+        server: docker-internal
+        container: code-server
+    - freshRSS:
+        href: http://192.168.1.83:8100
+        description: RSS feed
+        icon: freshrss.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:8100
+        showstats: true
+        server: docker-internal
+        container: freshRSS
+
+- ARR:
+    - Sonarr:
+        href: http://{{HOMEPAGE_VAR_IP}}:8989
+        description: Sonarr for Movies
+        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/sonarr.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:8989
+        showStats: true
+        server: docker-internal
+        container: sonarr
+    - Radarr:
+        href: http://{{HOMEPAGE_VAR_IP}}:7878
+        description: Radarr for TV Shows
+        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/radarr.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:7878
+        showStats: true
+        server: docker-internal
+        container: radarr
+    - Tdarr:
+        href: http://{{HOMEPAGE_VAR_IP}}:8265
+        description: Tdarr for video transcoding
+        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/tdarr.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:8265
+        showStats: true
+        server: docker-internal
+        container: tdarr-server
+    - Jackett:
+        href: http://{{HOMEPAGE_VAR_IP}}:9117
+        description: Jacket for torrent trackers
+        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jackett.png
+        ping: 192.168.1.83:9117
+        showStats: true
+        server: docker-internal
+        container: jackett
+    - Jellyseerr:
+        href: http://{{HOMEPAGE_VAR_IP}}:5056
+        description: Jellyseer
+        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyseerr.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:5056
+        showStats: true
+        server: docker-internal
+        container: jellyseerr
+
+- Steam:
+    - Profile:
+        id: steam
+
+- Calendar:
+    - Calendar:
+         widget:
+            type: calendar
+            firstDayInWeek: monday # optional - defaults to monday
+            view: monthly # optional - possible values monthly, agenda
+            maxEvents: 10 # optional - defaults to 10
+            showTime: true # optional - show time for event happening today - defaults to false
+            integrations:
+              - type: ical
+                url: https://calendar.google.com/calendar/ical/cralonsh8%40gmail.com/private-393b7eb4fd85a92efe4366b779b14f28/basic.ics
+                name: Cristian
+                color: zinc
+                params: # optional - additional params for the service
+                showName: true
+    - Agenda:
+        widget:
+            type: calendar
+            view: agenda
+            maxEvents: 10 # optional - defaults to 10
+            showTime: true # optional - show time for event happening today - defaults to false
+            previousDays: 3 # optional - shows events since three days ago - defaults to 0
+            integrations:
+              - type: ical
+                url: https://calendar.google.com/calendar/ical/cralonsh8%40gmail.com/private-393b7eb4fd85a92efe4366b779b14f28/basic.ics
+                name: Cristian
+                color: zinc
+                params: # optional - additional params for the service
+                showName: true
