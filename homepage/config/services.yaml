@@ -95,22 +95,6 @@
         showstats: true
         server: docker-internal
         container: code-server
-    - YoutubeDL:
-        href: http://192.168.1.83:8998
-        description: Youtube Downloader
-        icon: youtube.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:8998
-        showstats: true
-        server: docker-internal
-        container: code-server
-    - freshRSS:
-        href: http://192.168.1.83:8100
-        description: RSS feed
-        icon: freshrss.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:8100
-        showstats: true
-        server: docker-internal
-        container: freshRSS
 
 - ARR:
     - Sonarr:
@@ -129,14 +113,6 @@
         showStats: true
         server: docker-internal
         container: radarr
-    - Tdarr:
-        href: http://{{HOMEPAGE_VAR_IP}}:8265
-        description: Tdarr for video transcoding
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/tdarr.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:8265
-        showStats: true
-        server: docker-internal
-        container: tdarr-server
     - Jackett:
         href: http://{{HOMEPAGE_VAR_IP}}:9117
         description: Jacket for torrent trackers
