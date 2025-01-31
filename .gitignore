@@ -16,3 +16,6 @@ uptime_kuma/data/docker-tls
 
 # Ignore jellyfin folder
 /jellyfin/*
+
+# Ignore code-server folder
+/code-server/*
