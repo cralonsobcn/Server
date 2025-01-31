@@ -63,14 +63,6 @@
         container: glances
 
 - Apps:
-    - Reactive Resume:
-        href: http://{{HOMEPAGE_VAR_IP}}:3000
-        description: Cristian's Online Resume
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/svg/reactive-resume.svg
-        ping: http://{{HOMEPAGE_VAR_IP}}:3000
-        showStats: true
-        server: docker-internal
-        container: resume
     - Jellyfin:
         href: http://192.168.1.83:8096
         description: Jellyfin media player
