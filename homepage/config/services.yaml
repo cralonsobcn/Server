@@ -95,6 +95,22 @@
         showstats: true
         server: docker-internal
         container: code-server
+    - Portainer:
+        href: https://{{HOMEPAGE_VAR_IP}}:9443
+        description: Portainer
+        icon: portainer.png
+        ping: https://{{HOMEPAGE_VAR_IP}}:9443
+        showstats: true
+        server: docker-internal
+        container: portainer
+    - Gitea:
+        href: https://{{HOMEPAGE_VAR_IP}}:8087
+        description: Gitea. Private GIT repo in the cloud 
+        icon: gitea.png
+        ping: https://{{HOMEPAGE_VAR_IP}}:8087
+        showstats: true
+        server: docker-internal
+        container: portainer
 
 - ARR:
     - Sonarr:
