@@ -3,9 +3,14 @@ networks:
     driver: bridge
 
 volumes:
-  grafana-storage: {} # TODO change volume tipe
+  grafana-storage: {} # TODO change volume type
+  kuma-data: {}
+  portainer-data: {} # TODO change volume tipe
+  gitea-data: {}
+  media: {}
+  arr-data: {}
 
-## Monitoring and Logging
+## Monitoring and root apps
 
 services:
   homepage:
@@ -20,7 +25,7 @@ services:
       - ${HOMEPAGE_HOST_PORT}:${HOMEPAGE_CONTAINER_PORT}
     volumes:
       - ${HOMEPAGE_HOST_CONFIG}:${HOMEPAGE_CONTAINER_CONFIG} 
-      - ${HOMEPAGE_HOST_DOCKER}:${HOMEPAGE_CONTAINER_DOCKER}  # path to docker.sock. Requires running the container as root
+      - ${DOCKER_SOCK}:${DOCKER_SOCK}  # path to docker.sock. Requires running the container as root
       - ${HOMEPAGE_HOST_IMAGES}:${HOMEPAGE_CONTAINER_IMAGES}
     restart: unless-stopped
 
@@ -35,7 +40,7 @@ services:
     ports:
       - ${GLANCES_HOST_PORT}:${GLANCES_CONTAINER_PORT}
     volumes:
-      - ${GLANCES_HOST_DOCKER}:${GLANCES_CONTAINER_DOCKER} # path to docker.sock
+      - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock
     restart: unless-stopped
 
   uptime-kuma:
@@ -48,8 +53,8 @@ services:
     ports:
       - ${UPTIMEKUMA_HOST_PORT}:${UPTIMEKUMA_CONTAINER_PORT}
     volumes:
-      - ${UPTIMEKUMA_HOST_DATA}:${UPTIMEKUMA_CONTAINER_DATA}
-      - ${UPTIMEKUMA_HOST_DOCKER}:${UPTIMEKUMA_CONTAINER_DOCKER} # path to docker.sock
+      - kuma-data:${UPTIMEKUMA_CONTAINER_DATA}
+      - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock
     restart: unless-stopped
 
   prometheus:
@@ -78,10 +83,26 @@ services:
       - grafana-storage:${GRAFANA_CONTAINER_DATA}
     restart: unless-stopped
 
-## Apps
+  portainer-ce:
+    image: docker.io/portainer/portainer-ce:latest
+    container_name: portainer
+    environment:
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:  #TODO
+      - 9443:9443 #HTTPS Login
+      # - 8000:8000 #TCP Optional. required if you plan to use the Edge compute features with Edge agents.
+      # - 9000:9000 #HTTP Login/not in use
+    volumes:  # TODO
+      - portainer-data:/data' # TODO
+      - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock
+    restart: unless-stopped
+
+## Non-root Apps
 
   it-tools: 
-    image: corentinth/it-tools:latest
+    image: docker.io/corentinth/it-tools:latest
     container_name: "IT_Tools"
     environment:
       PUID: ${PUID}
@@ -117,8 +138,27 @@ services:
       - internal_network
     ports:
       - ${CODE_HOST_PORT}:${CODE_CONTAINER_PORT}
-    volumes:
+    volumes: # TODO map volume
       - ${CODE_HOST_CONFIG}:${CODE_CONTAINER_CONFIG}
+    restart: unless-stopped
+  
+  gitea: # TODO troubleshoot connection issue
+    image: docker.io/gitea/gitea:latest
+    container_name: gitea
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      LOCAL_ROOT_URL: "http://${IP}:${GITEA_CONTAINER_PORT}"
+    networks:
+      - internal_network
+    ports:
+      - ${GITEA_HOST_PORT}:${GITEA_CONTAINER_PORT}
+      - ${GITEA_HOST_SSH_PORT}:${GITEA_CONTAINER_SSH_PORT}
+    volumes:
+      - gitea-data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
 
   jellyfin:
@@ -138,9 +178,81 @@ services:
       - 7359:7359/udp #optional
       - 1900:1900/udp #optional
     volumes:
-      - ${JELLYFIN_HOST_CONFIG}:${JELLYFIN_CONTAINER_CONFIG} # TODO switch to volume type
-      # TODO - ./qbitorrent/downloads:/data/tvshows #this will be eventually mapped to a different folder
-      # TODO - ./qbitorrent/downloads:/data/movies  #same here
+      - media:${JELLYFIN_CONTAINER_CONFIG} # TODO switch to volume
     devices:
-      - /dev/dri:/dev/dri # Allows the application access the render and iGPU devices
+      - /dev/dri:/dev/dri # Allows the application to access the render and iGPU devices
     restart: unless-stopped
+
+
+## ARR Stack
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    env_file:
+      - env/.arr.env
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${RADARR_HOST_PORT}:${RADARR_CONTAINER_PORT}
+    volumes:
+      - arr-data:/config
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    env_file:
+      - env/.arr.env
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${SONARR_HOST_PORT}:${SONARR_CONTAINER_PORT}
+    volumes:
+      - arr-data:${RADARR_CONTAINER_CONFIG}
+    restart: unless-stopped
+
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    env_file:
+      - env/.arr.env
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${JACKETT_HOST_PORT}:${JACKETT_CONTAINER_PORT}
+    volumes:
+      - ${JACKETT_HOST_CONFIG}:${JACKETT_CONTAINER_CONFIG}
+      - ${JACKETT_HOST_BLACKHOLE}:${JACKETT_CONTAINER_BLACKHOLE}
+    restart: unless-stopped
+
+  jellyseerr: # TODO Crashes
+    image: docker.io/fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    env_file:
+      - env/.arr.env
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${JELLYSEERR_HOST_PORT}:${JELLYSEERR_CONTAINER_PORT}
+    volumes:
+      - ${JELLYSEERR_HOST_CONFIG}:${JELLYSEERR_CONTAINER_CONFIG}
+    restart: unless-stopped
+
+
