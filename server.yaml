@@ -146,17 +146,17 @@ services:
     image: docker.io/gitea/gitea:latest
     container_name: gitea
     environment:
+      USER: git
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
-      LOCAL_ROOT_URL: "http://${IP}:${GITEA_CONTAINER_PORT}"
     networks:
       - internal_network
     ports:
       - ${GITEA_HOST_PORT}:${GITEA_CONTAINER_PORT}
       - ${GITEA_HOST_SSH_PORT}:${GITEA_CONTAINER_SSH_PORT}
     volumes:
-      - gitea-data:/data
+      - gitea-data:/data # app.ini in /var/lib/docker/volumes/server_gitea-data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
@@ -238,7 +238,7 @@ services:
       - ${JACKETT_HOST_BLACKHOLE}:${JACKETT_CONTAINER_BLACKHOLE}
     restart: unless-stopped
 
-  jellyseerr: # TODO Crashes
+  jellyseerr:
     image: docker.io/fallenbagel/jellyseerr:latest
     container_name: jellyseerr
     env_file:
