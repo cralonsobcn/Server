@@ -3,67 +3,67 @@
 # https://gethomepage.dev/latest/configs/bookmarks
 
 - Github:
-    - Cristian's Home Server Repo:
-        - abbr: HL
-          href: https://github.com/cralonsobcn/home-server
-          icon: github-light.png
-          description: Home Server Repo
+  - Cristian's Home Server Repo:
+    - abbr: HL
+      href: https://github.com/cralonsobcn/home-server
+      icon: github-light.png
+      description: Home Server Repo
 
 - Reddit:
-    - ARR feed:
-        - abbr: ARR
-          href: https://www.reddit.com/user/melodic-ladder-6161/m/arr/
-          icon: https://www.redditstatic.com/custom_feeds/custom_feed_default_6.png
-          description:
-    - Gaming feed:
-        - abbr: GM
-          href: https://www.reddit.com/user/melodic-ladder-6161/m/gaming/
-          icon: https://www.redditstatic.com/custom_feeds/custom_feed_default_8.png
-          description:
-    - Home Server feed:
-        - abbr: HM
-          href: https://www.reddit.com/user/melodic-ladder-6161/m/home_server/
-          icon: https://www.redditstatic.com/custom_feeds/custom_feed_default_0.png
-          description:
-    - Certs feed:
-        - abbr: RE
-          href: https://www.reddit.com/user/melodic-ladder-6161/m/learning_certs/
-          icon: https://www.redditstatic.com/custom_feeds/custom_feed_default_5.png
-          description:
+  - ARR feed:
+    - abbr: ARR
+      href: https://www.reddit.com/user/melodic-ladder-6161/m/arr/
+      icon: https://www.redditstatic.com/custom_feeds/custom_feed_default_6.png
+      description:
+  - Gaming feed:
+    - abbr: GM
+      href: https://www.reddit.com/user/melodic-ladder-6161/m/gaming/
+      icon: https://www.redditstatic.com/custom_feeds/custom_feed_default_8.png
+      description:
+  - Home Server feed:
+    - abbr: HM
+      href: https://www.reddit.com/user/melodic-ladder-6161/m/home_server/
+      icon: https://www.redditstatic.com/custom_feeds/custom_feed_default_0.png
+      description:
+  - Certs feed:
+    - abbr: RE
+      href: https://www.reddit.com/user/melodic-ladder-6161/m/learning_certs/
+      icon: https://www.redditstatic.com/custom_feeds/custom_feed_default_5.png
+      description:
 
 - Youtube:
-    - Techno Tim:
-        - abbr: TT
-          href: https://www.youtube.com/@TechnoTim
-          icon: https://yt3.googleusercontent.com/ytc/AIdro_nGJyJb61DqT1C0fQ1CkRoalHuH3Nu8CIQbfqaflvaoUyU=s176-c-k-c0x00ffffff-no-rj
-          description:
-    - Christian Lempa:
-        - abbr: CL
-          href: https://www.youtube.com/@christianlempa
-          icon: https://yt3.googleusercontent.com/YO4Re8Kv_C0uC-WjtAh0W93Tfv6kJ0Ri7ENCUVWjJwIaBTTbly_-g6525UkqqvKmLv1ME9pBOg=s176-c-k-c0x00ffffff-no-rj
-          description:
-    - Lawrence Systems:
-        - abbr: LS
-          href: https://www.youtube.com/@LAWRENCESYSTEMS
-          icon: https://yt3.googleusercontent.com/ytc/AIdro_ljGsJzu39Ds6K0RgGuk_2c5aoYOIbdtUSD1hPhfCDKaRU=s176-c-k-c0x00ffffff-no-rj
-          description:
-    - Tech World with Nana:
-        - abbr: TN
-          href: https://www.youtube.com/@TechWorldwithNana
-          icon: https://yt3.googleusercontent.com/kXyR8Aa32KXnZWVdkAFUYK5utM752kSJPHGtYiJ4ev6BmdFHi-dl1EFbI3TogmHBjszwc7m2=s176-c-k-c0x00ffffff-no-rj
-          description:
-    - Learn Linux TV:
-        - abbr: LLTV
-          href: https://www.youtube.com/@LearnLinuxTV
-          icon: https://yt3.googleusercontent.com/ET-B1I46Ca0OKID2_mYyGOjkLdEJ_WbTCaEtzc2nJ-zcn1A-NPh92nA19pD7vgtFj1FQ_EVzRA=s176-c-k-c0x00ffffff-no-rj
-          description:
-    - Chris Greer:
-        - abbr: CG
-          href: https://www.youtube.com/@ChrisGreer
-          icon: https://yt3.googleusercontent.com/KJ49_5HVpTUg5mDaZX8VxtbSg6cJZET_Q-VEkji8-Dxsbtf4ucR6kr0SF-Ca2cLuFDnUv6DQ=s176-c-k-c0x00ffffff-no-rj
-          description:
-    - Anastasi In Tech:
-        - abbr: AiT
-          href: https://www.youtube.com/@AnastasiInTech
-          icon: https://yt3.googleusercontent.com/5z6ZeoT0-1YlT6HzJYHhU2mIwSfSXmbzA1gMJw0aWoGCw0-K05w-6idzww1u5pZP7gHXafQD=s176-c-k-c0x00ffffff-no-rj
-          description:
+  - Techno Tim:
+    - abbr: TT
+      href: https://www.youtube.com/@TechnoTim
+      icon: https://yt3.googleusercontent.com/ytc/AIdro_nGJyJb61DqT1C0fQ1CkRoalHuH3Nu8CIQbfqaflvaoUyU=s176-c-k-c0x00ffffff-no-rj
+      description:
+  - Christian Lempa:
+    - abbr: CL
+      href: https://www.youtube.com/@christianlempa
+      icon: https://yt3.googleusercontent.com/YO4Re8Kv_C0uC-WjtAh0W93Tfv6kJ0Ri7ENCUVWjJwIaBTTbly_-g6525UkqqvKmLv1ME9pBOg=s176-c-k-c0x00ffffff-no-rj
+      description:
+  - Jim's Garage:
+    - abbr: JG
+      href: https://www.youtube.com/@Jims-Garage
+      icon: https://yt3.googleusercontent.com/Jn8DfcI4aNq_U1_LR-PpUV73Dwoen2t8hEonzZVfsrTAfEK09SWq-pRh7wg-Ae4fsATPs38_7w=s160-c-k-c0x00ffffff-no-rj
+      description:
+  - Lawrence Systems:
+    - abbr: LS
+      href: https://www.youtube.com/@LAWRENCESYSTEMS
+      icon: https://yt3.googleusercontent.com/ytc/AIdro_ljGsJzu39Ds6K0RgGuk_2c5aoYOIbdtUSD1hPhfCDKaRU=s176-c-k-c0x00ffffff-no-rj
+      description:
+  - Learn Linux TV:
+    - abbr: LLTV
+      href: https://www.youtube.com/@LearnLinuxTV
+      icon: https://yt3.googleusercontent.com/mfgw9-hHFToOujVfKxwqvvg1hhqbzEPTj2otSrWfF9kB7baYbqyu8GqCykaUaviVj151ZThW=s160-c-k-c0x00ffffff-no-rj
+      description:
+  - Chris Greer:
+    - abbr: CG
+      href: https://www.youtube.com/@ChrisGreer
+      icon: https://yt3.googleusercontent.com/KJ49_5HVpTUg5mDaZX8VxtbSg6cJZET_Q-VEkji8-Dxsbtf4ucR6kr0SF-Ca2cLuFDnUv6DQ=s176-c-k-c0x00ffffff-no-rj
+      description:
+  - Anastasi In Tech:
+    - abbr: AiT
+      href: https://www.youtube.com/@AnastasiInTech
+      icon: https://yt3.googleusercontent.com/w-s22RHLgUFxxxJQ0USf-_hsuIDZQyRNnPRv17J8QfV9jcqJDIEf2lsEabhxMEF_uPpcH7rGDoA=s160-c-k-c0x00ffffff-no-rj
+      description:

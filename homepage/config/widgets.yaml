@@ -27,7 +27,7 @@
       maximumFractionDigits: 1
 
 - search:
-    provider: google # google, duckduckgo, bing, baidu, brave or custom
+    provider: brave # google, duckduckgo, bing, baidu, brave or custom
     focus: true # Optional, will set focus to the search bar on page load
     showSearchSuggestions: true # Optional, will show search suggestions. Defaults to false
     target: _blank # One of _self, _blank, _parent or _tab

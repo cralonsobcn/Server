@@ -64,7 +64,7 @@
 
 - Apps:
     - Jellyfin:
-        href: http://192.168.1.83:8096
+        href: http://{{HOMEPAGE_VAR_IP}}:8096
         description: Jellyfin media player
         icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/svg/jellyfin.svg
         ping: http://{{HOMEPAGE_VAR_IP}}:8096
@@ -104,15 +104,15 @@
         server: docker-internal
         container: portainer
     - Gitea:
-        href: https://{{HOMEPAGE_VAR_IP}}:8087
+        href: https://{{HOMEPAGE_VAR_IP}}:8080
         description: Gitea. Private GIT repo in the cloud 
         icon: gitea.png
-        ping: https://{{HOMEPAGE_VAR_IP}}:8087
+        ping: https://{{HOMEPAGE_VAR_IP}}:8080
         showstats: true
         server: docker-internal
         container: portainer
 
-- ARR:
+- Arr:
     - Sonarr:
         href: http://{{HOMEPAGE_VAR_IP}}:8989
         description: Sonarr for Movies
@@ -133,7 +133,7 @@
         href: http://{{HOMEPAGE_VAR_IP}}:9117
         description: Jacket for torrent trackers
         icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jackett.png
-        ping: 192.168.1.83:9117
+        ping: http://{{HOMEPAGE_VAR_IP}}:9117
         showStats: true
         server: docker-internal
         container: jackett
