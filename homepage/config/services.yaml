@@ -1,5 +1,5 @@
 # For configuration options and examples, please see:
-# https://gethomepage.dev/latest/configs/services
+# http://gethomepage.dev/latest/configs/services
 
 - Metrics:
   - CPU Usage:
@@ -32,7 +32,7 @@
     - Uptime Kuma:
         href: http://{{HOMEPAGE_VAR_IP}}:3001
         description: "L7 health checks"
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/uptime-kuma.png
+        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/uptime-kuma.png
         ping: http://{{HOMEPAGE_VAR_IP}}:3001
         showStats: true
         server: docker-internal
@@ -40,7 +40,7 @@
     - Prometheus:
         href: http://{{HOMEPAGE_VAR_IP}}:9090
         description: Prometheus
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/prometheus.png
+        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/prometheus.png
         ping: http://{{HOMEPAGE_VAR_IP}}:9090
         showStats: true
         server: docker-internal
@@ -48,7 +48,7 @@
     - Grafana:
         href: http://{{HOMEPAGE_VAR_IP}}:3002
         description: Grafana
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/grafana.png
+        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/grafana.png
         ping: http://{{HOMEPAGE_VAR_IP}}:3002
         showStats: true
         server: docker-internal
@@ -66,7 +66,7 @@
     - Jellyfin:
         href: http://{{HOMEPAGE_VAR_IP}}:8096
         description: Jellyfin media player
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/svg/jellyfin.svg
+        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/svg/jellyfin.svg
         ping: http://{{HOMEPAGE_VAR_IP}}:8096
         showStats: true
         server: docker-internal
@@ -96,27 +96,35 @@
         server: docker-internal
         container: code-server
     - Portainer:
-        href: https://{{HOMEPAGE_VAR_IP}}:9443
+        href: http://{{HOMEPAGE_VAR_IP}}:9000
         description: Portainer
         icon: portainer.png
-        ping: https://{{HOMEPAGE_VAR_IP}}:9443
+        ping: http://{{HOMEPAGE_VAR_IP}}:9000
         showstats: true
         server: docker-internal
         container: portainer
     - Gitea:
-        href: https://{{HOMEPAGE_VAR_IP}}:8080
+        href: http://{{HOMEPAGE_VAR_IP}}:8080
         description: Gitea. Private GIT repo in the cloud 
         icon: gitea.png
-        ping: https://{{HOMEPAGE_VAR_IP}}:8080
+        ping: http://{{HOMEPAGE_VAR_IP}}:8080
         showstats: true
         server: docker-internal
-        container: portainer
+        container: gitea
+    - Stirling:
+        href: http://{{HOMEPAGE_VAR_IP}}:8081
+        description: Stirling PDF
+        icon: stirling-pdf.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:8081
+        showstats: true
+        server: docker-internal
+        container: stirling
 
 - Arr:
     - Sonarr:
         href: http://{{HOMEPAGE_VAR_IP}}:8989
         description: Sonarr for Movies
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/sonarr.png
+        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/sonarr.png
         ping: http://{{HOMEPAGE_VAR_IP}}:8989
         showStats: true
         server: docker-internal
@@ -124,7 +132,7 @@
     - Radarr:
         href: http://{{HOMEPAGE_VAR_IP}}:7878
         description: Radarr for TV Shows
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/radarr.png
+        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/radarr.png
         ping: http://{{HOMEPAGE_VAR_IP}}:7878
         showStats: true
         server: docker-internal
@@ -132,7 +140,7 @@
     - Jackett:
         href: http://{{HOMEPAGE_VAR_IP}}:9117
         description: Jacket for torrent trackers
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jackett.png
+        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jackett.png
         ping: http://{{HOMEPAGE_VAR_IP}}:9117
         showStats: true
         server: docker-internal
@@ -140,7 +148,7 @@
     - Jellyseerr:
         href: http://{{HOMEPAGE_VAR_IP}}:5056
         description: Jellyseer
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyseerr.png
+        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyseerr.png
         ping: http://{{HOMEPAGE_VAR_IP}}:5056
         showStats: true
         server: docker-internal
@@ -152,7 +160,7 @@
 
 - Calendar:
     - Calendar:
-         widget:
+        widget:
             type: calendar
             firstDayInWeek: monday # optional - defaults to monday
             view: monthly # optional - possible values monthly, agenda
@@ -160,7 +168,7 @@
             showTime: true # optional - show time for event happening today - defaults to false
             integrations:
               - type: ical
-                url: https://calendar.google.com/calendar/ical/cralonsh8%40gmail.com/private-393b7eb4fd85a92efe4366b779b14f28/basic.ics
+                url: {{HOMEPAGE_VAR_CALENDAR}}
                 name: Cristian
                 color: zinc
                 params: # optional - additional params for the service
@@ -174,7 +182,7 @@
             previousDays: 3 # optional - shows events since three days ago - defaults to 0
             integrations:
               - type: ical
-                url: https://calendar.google.com/calendar/ical/cralonsh8%40gmail.com/private-393b7eb4fd85a92efe4366b779b14f28/basic.ics
+                url: {{HOMEPAGE_VAR_CALENDAR}}
                 name: Cristian
                 color: zinc
                 params: # optional - additional params for the service
