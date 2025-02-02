@@ -19,6 +19,7 @@ services:
     environment: # TODO pass ports in the config file to env variables
       TZ: ${TZ}
       HOMEPAGE_VAR_IP: ${IP}
+      HOMEPAGE_VAR_CALENDAR: ${CALENDAR_URL}
     networks:
       - internal_network
     ports:
@@ -93,7 +94,7 @@ services:
     ports:  #TODO
       - 9443:9443 #HTTPS Login
       # - 8000:8000 #TCP Optional. required if you plan to use the Edge compute features with Edge agents.
-      # - 9000:9000 #HTTP Login/not in use
+      - 9000:9000 #HTTP Login  in use
     volumes:  # TODO
       - portainer-data:/data' # TODO
       - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock
@@ -142,24 +143,6 @@ services:
       - ${CODE_HOST_CONFIG}:${CODE_CONTAINER_CONFIG}
     restart: unless-stopped
   
-  gitea: # TODO troubleshoot connection issue
-    image: docker.io/gitea/gitea:latest
-    container_name: gitea
-    environment:
-      USER: git
-      PUID: ${PUID}
-      PGID: ${PGID}
-      TZ: ${TZ}
-    networks:
-      - internal_network
-    ports:
-      - ${GITEA_HOST_PORT}:${GITEA_CONTAINER_PORT}
-      - ${GITEA_HOST_SSH_PORT}:${GITEA_CONTAINER_SSH_PORT}
-    volumes:
-      - gitea-data:/data # app.ini in /var/lib/docker/volumes/server_gitea-data
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    restart: unless-stopped
 
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
@@ -183,6 +166,46 @@ services:
       - /dev/dri:/dev/dri # Allows the application to access the render and iGPU devices
     restart: unless-stopped
 
+  stirling: # TODO fix connection
+    image: docker.io/stirlingtools/stirling-pdf:latest
+    container_name: stirling
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DOCKER_ENABLE_SECURITY=false
+      - LANGS="en_US"
+      - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
+      #SECURITY_LOGINMETHOD: "none"
+      #SECURITY_OAUTH2_ENABLED: false
+    networks:
+      - internal_network
+    ports:
+      - ${STIRLING_HOST_PORT}:${STIRLING_CONTAINER_PORT}
+    volumes:
+      - ./stirlingPDF/trainingData:/usr/share/tessdata #Required for extra OCR languages
+      - ./stirlingPDF/extraConfigs:/configs
+    restart: unless-stopped
+
+  gitea:
+    image: docker.io/gitea/gitea:latest
+    container_name: gitea
+    environment:
+      # USER: git
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    ports:
+      - ${GITEA_HOST_PORT}:${GITEA_CONTAINER_PORT}
+      - ${GITEA_HOST_SSH_PORT}:${GITEA_CONTAINER_SSH_PORT}
+    volumes: # TODO move to named volume
+      # - gitea-data:/data # app.ini in /var/lib/docker/volumes/server_gitea-data
+      # /data/gitea/gitea.db container path to the sqlite3 database
+      - ${GITEA_HOST_DATA}:${GITEA_CONTAINER_DATA}
+      - ${GITEA_HOST_CONFIG}:${GITEA_CONTAINER_CONFIG}
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
 
 ## ARR Stack
 
@@ -217,7 +240,7 @@ services:
     ports:
       - ${SONARR_HOST_PORT}:${SONARR_CONTAINER_PORT}
     volumes:
-      - arr-data:${RADARR_CONTAINER_CONFIG}
+      - ${RADARR_HOST_CONFIG}:${RADARR_CONTAINER_CONFIG}
     restart: unless-stopped
 
   jackett:
