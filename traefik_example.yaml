@@ -1,0 +1,67 @@
+networks:
+  internal_network:
+    driver: bridge
+
+services:
+# Traefik reverse proxy
+  reverse-proxy:
+    image: traefik:latest 
+    container_name: traefik
+    networks:
+      - internal_network
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=true"
+      # Traefik will listen to incoming request on the port 80 (http)
+      - "--entryPoints.web.address=:80"
+      # Traefik will listen to incoming request on the port 443 (https)
+      - "--entryPoints.websecure.address=:443"
+      # Enable a tls challenge named "myresolver"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      #- "--certificatesresolvers.myresolver.acme.email=postmaster@example.com"
+      # Tell to store the certificate on a path under our volume
+      - "--certificatesresolvers.myresolver.acme.storage=/config/certs/acme.json"
+    ports: 
+      - 80:80
+      - 443:443
+      # -- (Optional) Enable Dashboard, don't do in production as the API does not require authentication
+      - 8082:8080
+    volumes:
+      - /run/docker.sock:/run/docker.sock:ro
+      #- ./config/traefik.yaml:/etc/traefik/traefik.yaml:ro
+      - ./config/conf/:/etc/traefik/conf/
+      # Create a certs folder where letsencrypt will store the certificates
+      - ./config/certs/:/etc/traefik/certs/
+    restart: unless-stopped
+
+  ##IT Tools for testing
+  it-tools: 
+    image: docker.io/corentinth/it-tools:latest
+    container_name: "IT_Tools"
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${ITTOOLS_HOST_PORT}:${ITTOOLS_CONTAINER_PORT}
+    labels:
+      # Explicitly tell Traefik to expose this container
+      - "traefik.enable=true"
+      # The domain the service will respond to ittools.localhost
+      - "traefik.http.routers.ittools.rule=Host(`ittools.localhost`)"
+      # Allow request only from the predefined entry point named "web"
+      - "traefik.http.routers.ittools.entrypoints=web"
+      # Uses the Host rule to define which certificate to issue
+      - "traefik.http.routers.ittools.tls.certresolver=myresolver"
+    restart: unless-stopped
+
+##Documentation
+# https://doc.traefik.io/traefik/v3.1/getting-started/quick-start/ 
+# https://doc.traefik.io/traefik/v3.1/user-guides/docker-compose/acme-tls/
+# https://doc.traefik.io/traefik/v3.1/user-guides/docker-compose/basic-example/
+# https://doc.traefik.io/traefik/v3.1/user-guides/docker-compose/acme-http/
+# https://doc.traefik.io/traefik/v3.1/user-guides/docker-compose/acme-dns/
