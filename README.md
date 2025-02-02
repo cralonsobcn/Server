@@ -7,6 +7,7 @@ For security reasons, I'm not commiting my .env files in this repo.
 
 # Virtualization
 The test environment is a virtualized Rocky Linux running in Virtual Box bridged to the host machine. The production environment is a Beelink Mini S12 with an Intel N95, 8GB DDR4 and a 256GB SSD running Rocky Linux.
+![alt text](https://raw.githubusercontent.com/cralonsobcn/Server/refs/heads/main/Home%20Server%20diagram.webp)
 
 # Containerization
 [Docker](https://docs.docker.com/get-started/get-docker/) is the container orchestration application that runs all the apps of my home server.
