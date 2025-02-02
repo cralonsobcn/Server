@@ -1,12 +1,12 @@
 # Home Server
-This public repo contains the script I use too set up my linux home server. 
+This public repo contains the scripts I use too set up my home server. 
 
 Although I deploy the services in a virtualized test environment first, I'm actively modifying the script in order to harden the security and automate the deployment in my production environment later.
 
 For security reasons, I'm not commiting my .env files in this repo.
 
 # Virtualization
-The test environment is a virtualized Ubuntu Server running in Virtual Box bridged to the host machine. The production environment is a Beelink Mini S12 with an Intel N95, 8GB DDR4 and a 256GB SSD running Ubuntu Server.
+The test environment is a virtualized Rocky Linux running in Virtual Box bridged to the host machine. The production environment is a Beelink Mini S12 with an Intel N95, 8GB DDR4 and a 256GB SSD running Rocky Linux.
 
 # Containerization
 [Docker](https://docs.docker.com/get-started/get-docker/) is the container orchestration application that runs all the apps of my home server.
@@ -26,9 +26,9 @@ Almost all the images can be pulled from the official Docker Hub website, howeve
 - [Jellyseer](https://hub.docker.com/r/linuxserver/jellyfin)
 - [IT tools](https://github.com/CorentinTh/it-tools)
 - [Web Check](https://github.com/Lissy93/web-check?ref=selfh.st)
+- [Stirling PDF](https://docs.stirlingpdf.com/Installation/Docker%20Install/)
+- [Gitea](https://github.com/go-gitea/gitea)
 - [Code Server](https://hub.docker.com/r/linuxserver/code-server)
-- [Youtube DL](https://github.com/Tzahi12345/YoutubeDL-Material?ref=selfh.st)
-- [FreshRSS](https://github.com/FreshRSS/FreshRSS/tree/edge/Docker#quick-run)
 - [Uptime Kuma](https://github.com/louislam/uptime-kuma)
 - [Glances](https://github.com/nicolargo/glances)
 - [Prometheus](https://prometheus.io/docs/prometheus/latest/installation/)
@@ -37,7 +37,7 @@ Almost all the images can be pulled from the official Docker Hub website, howeve
 ## Deployment
 As easy as typing in the terminal:
 
-```docker compose -f server.yml --env-file my-env up -d```
+```docker compose -f server.yml --env-file my-env --verbose up -d```
 
 ## Transcoding
 Some media applications such as Jellyfin require hardware acceleration. This will improve CPU usage as the main load will be carried over by the iGPU.
@@ -53,9 +53,9 @@ Example:
 ```
 
 ## TODO
-- Finish the implementation of the reverse Proxy and the self signed certificates.
+- Finish the implementation of the reverse Proxy, http to https redirection and self signed certificates.
 - Finish the implementation of pfsense running in my firewall appliance.
-- Perform iperf3 test on my firewall appliance.
+- Perform iperf3 test on all the devices.
 - Implement 2FA, IAM, ZFS and PubSub solutions.
 - Implement Grafana and Prometheus, monitor and logging solutions.
 - Review the Networking diagram and refine the firewall policies if necessary.
