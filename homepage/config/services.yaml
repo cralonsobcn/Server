@@ -28,6 +28,74 @@
         url: http://{{HOMEPAGE_VAR_IP}}:61208
         metric: info
 
+- Prometheus:
+    - Target Overview:
+        widget:
+            type: prometheus
+            url: http://{{HOMEPAGE_VAR_IP}}:9090
+    - CPU Usage Average:
+        widget:
+            type: prometheusmetric
+            url: http://{{HOMEPAGE_VAR_IP}}:9090
+            refreshinterval: 15000
+            metrics:
+                - label: Average CPU
+                  query: avg without (mode,cpu) (1 - rate(node_cpu_seconds_total{mode="idle", job="node"}[1m]))
+                  format:
+                    type: number
+                    scale: 100
+                    suffix: "%"
+    - Docker Disk and Memory:
+        widget:
+            type: prometheusmetric
+            url: http://{{HOMEPAGE_VAR_IP}}:9090
+            refreshinterval: 15000
+            metrics:
+                - label: Disk I/O
+                  query: sum(container_blkio_device_usage_total{name!~""}) # container_fs_io_current{name!~""}
+                  format:
+                    type: bytes
+                - label: Memory Used
+                  query: sum(container_memory_usage_bytes{name!~""}) 
+                  format:
+                    type: bytes
+    - Docker Network Sent:
+        widget:
+            type: prometheusmetric
+            url: http://{{HOMEPAGE_VAR_IP}}:9090
+            refreshinterval: 15000
+            metrics:
+                - label: Total Sent
+                  query: sum(container_network_transmit_bytes_total{name!~""})
+                  format:
+                    type: bytes
+                - label:  Total Errors
+                  query: sum(container_network_transmit_errors_total{name!~""})
+                  format:
+                    type: bytes
+                - label:  Total Dropped
+                  query: sum(container_network_transmit_packets_dropped_total{name!~""})
+                  format:
+                    type: bytes
+    - Docker Network Received:
+        widget:
+            type: prometheusmetric
+            url: http://{{HOMEPAGE_VAR_IP}}:9090
+            refreshinterval: 15000
+            metrics:
+                - label: Total Received
+                  query: sum(container_network_receive_bytes_total{name!~""})
+                  format:
+                    type: bytes
+                - label:  Total Errors
+                  query: sum(container_network_receive_errors_total{name!~""})
+                  format:
+                    type: bytes
+                - label:  Total Dropped
+                  query: sum(container_network_receive_packets_dropped_total{name!~""})
+                  format:
+                    type: bytes
+
 - Monitoring & Logging:
     - Uptime Kuma:
         href: http://{{HOMEPAGE_VAR_IP}}:3001
@@ -78,7 +146,7 @@
         ping: http://{{HOMEPAGE_VAR_IP}}:8085
         showstats: true
         server: docker-internal
-        container: IT_Tools
+        container: it_tools
     - Web Check:
         href: http://{{HOMEPAGE_VAR_IP}}:8097
         description: Website analysis

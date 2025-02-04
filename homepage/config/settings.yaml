@@ -25,6 +25,9 @@ layout:
   Metrics:
     style: row
     columns: 4
+  Prometheus:
+    style: row
+    columns: 4
   Apps:
     tab: Apps
     style: row
