@@ -4,11 +4,12 @@ networks:
 
 volumes:
   grafana-storage: {} # TODO change volume type
-  kuma-data: {}
+  kuma-data: {} # TODO I'll keep the configuration but not the logging
   portainer-data: {} # TODO change volume tipe
-  gitea-data: {}
-  media: {}
-  arr-data: {}
+  gitea-data: {} # TODO change volume type
+  media: {} # TODO change volume type
+  arr-data: {} # TODO change volume type
+  prometheus-data: {} # TODO change volume type
 
 ## Monitoring and root apps
 
@@ -67,8 +68,39 @@ services:
       - internal_network
     ports:
       - ${PROMETHEUS_HOST_PORT}:${PROMETHEUS_CONTAINER_PORT}
-    volumes: # TODO Add data volume and persist the data
+    volumes: # TODO Add volume and persist the data
       - ${PROMETHEUS_HOST_CONFIG}:${PROMETHEUS_CONTAINER_CONFIG} # path to /etc/prometheus.yml
+    depends_on:
+      - cadvisor
+    restart: unless-stopped
+  
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    environment:
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+    - ${CADVISOR_HOST_PORT}:${CADVISOR_CONTAINER_PORT}
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+    - redis
+    restart: unless-stopped
+
+  redis:
+    image: docker.io/redis:latest
+    container_name: redis
+    environment:
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+    - ${REDIS_HOST_PORT}:${REDIS_HOST_PORT}
     restart: unless-stopped
 
   grafana:
@@ -104,7 +136,7 @@ services:
 
   it-tools: 
     image: docker.io/corentinth/it-tools:latest
-    container_name: "IT_Tools"
+    container_name: "it_tools"
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
@@ -195,6 +227,8 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
+    networks:
+      - internal_network
     ports:
       - ${GITEA_HOST_PORT}:${GITEA_CONTAINER_PORT}
       - ${GITEA_HOST_SSH_PORT}:${GITEA_CONTAINER_SSH_PORT}
