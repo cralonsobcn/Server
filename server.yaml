@@ -103,6 +103,17 @@ services:
     - ${REDIS_HOST_PORT}:${REDIS_HOST_PORT}
     restart: unless-stopped
 
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: server_node_exporter
+    command:
+      - '--path.rootfs=/host'
+    network_mode: host
+    pid: host
+    volumes:
+      - '/:/host:ro,rslave'
+    restart: unless-stopped
+
   grafana:
     image: docker.io/grafana/grafana-enterprise:latest
     container_name: grafana
