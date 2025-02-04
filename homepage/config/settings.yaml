@@ -3,6 +3,7 @@
 # https://gethomepage.dev/latest/configs/settings
 title: "Cristian's Server"
 description: "v0.1"
+favicon: /images/Dalek.ico
 
 background:
   image: /images/witcher_wallpaper.jpg
