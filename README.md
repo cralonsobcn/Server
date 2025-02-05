@@ -10,14 +10,12 @@ The test environment is a virtualized Rocky Linux running in Virtual Box bridged
 ![alt text](https://raw.githubusercontent.com/cralonsobcn/Server/refs/heads/main/Home%20Server%20diagram.webp)
 
 # Containerization
-[Docker](https://docs.docker.com/get-started/get-docker/) is the container orchestration application that runs all the apps of my home server.
+[Docker](https://docs.docker.com/get-started/get-docker/) is the container management application that runs all the apps of my home server.
 
-Note: Docker compose has been update to the v2 recently. ```apt install docker-compose-v2```
-
-It's worth mentioning that Docker, by default, requests sudo permission for every command and hence following [this linux post-installation step]([url](https://docs.docker.com/engine/install/linux-postinstall/)) is hihgly advised.
+Installation Steps are covered in the [Rocky Linux documentation](https://docs.rockylinux.org/gemstones/containers/docker).
 
 ## Docker Images
-Almost all the images can be pulled from the official Docker Hub website, however I prefer [linuxserver.io](https://www.linuxserver.io/) and [github.com](https://github.com/).
+Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), [linuxserver.io](https://www.linuxserver.io/) and [github.com](https://github.com/).
 - [Homepage](https://gethomepage.dev/latest/installation/docker/)
 - [Jackett](https://hub.docker.com/r/linuxserver/jackett)
 - [Jellyfin](https://hub.docker.com/r/linuxserver/jellyfin)
@@ -34,6 +32,7 @@ Almost all the images can be pulled from the official Docker Hub website, howeve
 - [Glances](https://github.com/nicolargo/glances)
 - [Prometheus](https://prometheus.io/docs/prometheus/latest/installation/)
 - [Grafana](https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/)
+- [Traefik](https://github.com/traefik/traefik)
 
 ## Deployment
 As easy as typing in the terminal:
