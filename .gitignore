@@ -15,10 +15,16 @@ uptime_kuma/data/*.db-*
 uptime_kuma/data/docker-tls
 
 # Ignore jellyfin folder
-/jellyfin/*
+/jellyfin
 
 # Ignore code-server folder
 /code-server/*
 
 # Ignore traefik static configuration
 traefik.yaml
+
+# Ignored folders
+jackett/
+jellyseerr/
+sonarr/
+stirlingPDF/
