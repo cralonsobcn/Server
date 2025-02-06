@@ -23,8 +23,12 @@ uptime_kuma/data/docker-tls
 # Ignore traefik static configuration
 traefik.yaml
 
-# Ignored folders
+# Ignore folders
 jackett/
 jellyseerr/
 sonarr/
 stirlingPDF/
+
+# Ignore NAS and security compose files
+nas.yaml
+security.yaml
