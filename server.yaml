@@ -6,8 +6,6 @@ volumes:
   grafana-storage: {} # TODO change volume type
   kuma-data: {} # TODO I'll keep the configuration but not the logging
   portainer-data: {} # TODO change volume tipe
-  gitea-data: {} # TODO change volume type
-  media: {} # TODO change volume type
   arr-data: {} # TODO change volume type
   prometheus-data: {} # TODO change volume type
 
@@ -21,6 +19,8 @@ services:
       TZ: ${TZ}
       HOMEPAGE_VAR_IP: ${IP}
       HOMEPAGE_VAR_CALENDAR: ${CALENDAR_URL}
+      HOMEPAGE_VAR_STEAM: ${STEAM_URL}
+      HOMEPAGE_VAR_DISCORD_ID: ${DISCORD_WIDGET_ID}
     networks:
       - internal_network
     ports:
@@ -171,42 +171,21 @@ services:
       - ${WEBCHECK_HOST_PORT}:${WEBCHECK_CONTAINER_PORT}
     restart: unless-stopped
 
-  codeServer:
+  codeServer: # TODO review container not responding after apt update and apt install
     image: lscr.io/linuxserver/code-server:latest
     container_name: code-server
+    # command: ["apt update","apt install -y iputils-ping"]
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
+      SUDO_PASSWORD: "test"
     networks:
       - internal_network
     ports:
       - ${CODE_HOST_PORT}:${CODE_CONTAINER_PORT}
     volumes: # TODO map volume
       - ${CODE_HOST_CONFIG}:${CODE_CONTAINER_CONFIG}
-    restart: unless-stopped
-  
-
-  jellyfin:
-    image: lscr.io/linuxserver/jellyfin:latest
-    container_name: jellyfin
-    env_file:
-      - env/.jellyfin.env
-    environment:
-      PUID: ${PUID}
-      PGID: ${PGID}
-      TZ: ${TZ}
-    networks:
-      - internal_network
-    ports:
-      - ${JELLYFIN_HOST_PORT}:${JELLYFIN_CONTAINER_PORT}
-      - ${JELLYFIN_HOST_PORT_HTTPS}:${JELLYFIN_CONTAINER_PORT_HTTPS}
-      - 7359:7359/udp #optional
-      - 1900:1900/udp #optional
-    volumes:
-      - media:${JELLYFIN_CONTAINER_CONFIG} # TODO switch to volume
-    devices:
-      - /dev/dri:/dev/dri # Allows the application to access the render and iGPU devices
     restart: unless-stopped
 
   stirling: # TODO fix connection
@@ -228,28 +207,6 @@ services:
     volumes:
       - ./stirlingPDF/trainingData:/usr/share/tessdata #Required for extra OCR languages
       - ./stirlingPDF/extraConfigs:/configs
-    restart: unless-stopped
-
-  gitea:
-    image: docker.io/gitea/gitea:latest
-    container_name: gitea
-    environment:
-      # USER: git
-      PUID: ${PUID}
-      PGID: ${PGID}
-      TZ: ${TZ}
-    networks:
-      - internal_network
-    ports:
-      - ${GITEA_HOST_PORT}:${GITEA_CONTAINER_PORT}
-      - ${GITEA_HOST_SSH_PORT}:${GITEA_CONTAINER_SSH_PORT}
-    volumes: # TODO move to named volume
-      # - gitea-data:/data # app.ini in /var/lib/docker/volumes/server_gitea-data
-      # /data/gitea/gitea.db container path to the sqlite3 database
-      - ${GITEA_HOST_DATA}:${GITEA_CONTAINER_DATA}
-      - ${GITEA_HOST_CONFIG}:${GITEA_CONTAINER_CONFIG}
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
 
 ## ARR Stack
