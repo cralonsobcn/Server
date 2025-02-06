@@ -127,22 +127,6 @@ services:
       - grafana-storage:${GRAFANA_CONTAINER_DATA}
     restart: unless-stopped
 
-  portainer-ce:
-    image: docker.io/portainer/portainer-ce:latest
-    container_name: portainer
-    environment:
-      TZ: ${TZ}
-    networks:
-      - internal_network
-    ports:  #TODO
-      - 9443:9443 #HTTPS Login
-      # - 8000:8000 #TCP Optional. required if you plan to use the Edge compute features with Edge agents.
-      - 9000:9000 #HTTP Login  in use
-    volumes:  # TODO
-      - portainer-data:/data' # TODO
-      - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock
-    restart: unless-stopped
-
 ## Non-root Apps
 
   it-tools: 
