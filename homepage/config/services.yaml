@@ -39,8 +39,8 @@
             url: http://{{HOMEPAGE_VAR_IP}}:9090
             refreshinterval: 15000
             metrics:
-                - label: Average CPU
-                  query: avg without (mode,cpu) (1 - rate(node_cpu_seconds_total{mode="idle", job="node"}[1m]))
+                - label: Average CPU/min
+                  query: 'avg without (mode,cpu) (1 - rate(node_cpu_seconds_total{mode="idle", job="server"}[1m]))'
                   format:
                     type: number
                     scale: 100
@@ -99,7 +99,7 @@
 - Monitoring & Logging:
     - Uptime Kuma:
         href: http://{{HOMEPAGE_VAR_IP}}:3001
-        description: "L7 health checks"
+        description: "L7 and L4 health checks"
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/uptime-kuma.png
         ping: http://{{HOMEPAGE_VAR_IP}}:3001
         showStats: true
@@ -224,7 +224,43 @@
 
 - Steam:
     - Profile:
-        id: steam
+        widget:
+            type: iframe
+            id: profile
+            name: Jamoncín
+            src: {{HOMEPAGE_VAR_STEAM}}
+            classes: h-max sm:h-60 md:h-60 lg:h-60 xl:h-60 2xl:h-72 # optional, use tailwind height classes, see https://tailwindcss.com/docs/height
+            referrerPolicy: same-origin # optional, no default
+            allowPolicy: autoplay; fullscreen; gamepad # optional, no default
+            allowFullscreen: false # optional, default: true
+            loadingStrategy: eager # optional, default: eager
+            allowScrolling: no # optional, default: yes
+            refreshInterval: 0 #ptional, no default
+    - Achievements:
+        widget:
+            type: iframe
+            name: Jamoncín's Achievements
+            src: /images/achievement_showcase.jpg
+            classes: h-max sm:h-60 md:h-60 lg:h-60 xl:h-60 2xl:h-72 # optional, use tailwind height classes, see https://tailwindcss.com/docs/height
+            referrerPolicy: same-origin # optional, no default
+            allowPolicy: autoplay; fullscreen; gamepad # optional, no default
+            allowFullscreen: false # optional, default: true
+            loadingStrategy: eager # optional, default: eager
+            allowScrolling: no # optional, default: yes
+            refreshInterval: 0 #ptional, no default
+    - Dalek Empire Discord:
+        widget:
+            type: iframe
+            name: Dalek Empire
+            src: https://discord.com/widget?id={{HOMEPAGE_VAR_DISCORD_ID}}&theme=dark
+            classes: h-auto sm:h-60 md:h-60 lg:h-60 xl:h-60 2xl:h-72 # optional, use tailwind height classes, see https://tailwindcss.com/docs/height
+            referrerPolicy: same-origin # optional, no default
+            allowPolicy: autoplay; fullscreen; gamepad # optional, no default
+            allowFullscreen: false # optional, default: true
+            loadingStrategy: eager # optional, default: eager
+            allowScrolling: no # optional, default: yes
+            refreshInterval: 0 # optional, no default
+                   
 
 - Calendar:
     - Calendar:

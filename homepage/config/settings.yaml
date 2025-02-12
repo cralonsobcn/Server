@@ -26,26 +26,32 @@ layout:
   Metrics:
     style: row
     columns: 4
+    icon: /images/Tardis.ico
   Prometheus:
     style: row
     columns: 4
+    icon: /images/Tardis.ico
   Apps:
     tab: Apps
     style: row
     columns: 5
+    icon: /images/Tardis.ico
   Monitoring & Logging:
     tab: Monitoring & Logging
     style: row
     columns: 4
+    icon: /images/Tardis.ico
   Arr:
     tab: Arr Stack
     style: row
     columns: 5
+    icon: /images/Tardis.ico
   Steam:
     style: row
-    columns: 1
+    columns: 3
+    icon: /images/Tardis.ico
   Calendar:
     header: true
     style: row
     columns: 2
-
+    icon: /images/Tardis.ico
