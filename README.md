@@ -37,7 +37,7 @@ Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), 
 ## Deployment
 As easy as typing in the terminal:
 
-```docker compose -f server.yml --env-file my-env --verbose up -d```
+```docker compose -f server.yml --env-file my-env up -d```
 
 ## Transcoding
 Some media applications such as Jellyfin require hardware acceleration. This will improve CPU usage as the main load will be carried over by the iGPU.
