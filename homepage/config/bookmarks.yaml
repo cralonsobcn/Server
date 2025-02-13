@@ -40,7 +40,7 @@
   - Christian Lempa:
     - abbr: CL
       href: https://www.youtube.com/@christianlempa
-      icon: https://yt3.googleusercontent.com/YO4Re8Kv_C0uC-WjtAh0W93Tfv6kJ0Ri7ENCUVWjJwIaBTTbly_-g6525UkqqvKmLv1ME9pBOg=s176-c-k-c0x00ffffff-no-rj
+      icon: https://yt3.googleusercontent.com/bCGRJiR-Xv6V-9iPGlOqV0wPJ836A2S5r-eQpdPVcGOAW_iRk9Dl3lfV1Hab_OlSfQubB30UIA=s160-c-k-c0x00ffffff-no-rj
       description:
   - Jim's Garage:
     - abbr: JG
@@ -66,4 +66,14 @@
     - abbr: AiT
       href: https://www.youtube.com/@AnastasiInTech
       icon: https://yt3.googleusercontent.com/w-s22RHLgUFxxxJQ0USf-_hsuIDZQyRNnPRv17J8QfV9jcqJDIEf2lsEabhxMEF_uPpcH7rGDoA=s160-c-k-c0x00ffffff-no-rj
+      description:
+  - Anton Putra:
+    - abbr: AP
+      href: https://www.youtube.com/@AntonPutra
+      icon: https://yt3.googleusercontent.com/Uke6wNNttpMYbAaK9oCPGTtQuY8dWW3T_6DAiwXpA7LGSvEeunmNSBF0urBoXMaz1uWIPbN4=s160-c-k-c0x00ffffff-no-rj
+      description:
+  - Electronics Wizardry:
+    - abbr: EW
+      href: https://www.youtube.com/@ElectronicsWizardry
+      icon: https://yt3.googleusercontent.com/ytc/AIdro_lucrxWGlb8DNNzgaHwvmsaaO9HvS01eqtotxCa0zVMoQ=s160-c-k-c0x00ffffff-no-rj
       description:
