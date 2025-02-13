@@ -19,12 +19,31 @@ services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
-    environment: # TODO pass ports in the config file to env variables
+    environment: 
       TZ: ${TZ}
       HOMEPAGE_VAR_IP: ${IP}
       HOMEPAGE_VAR_CALENDAR: ${CALENDAR_URL}
       HOMEPAGE_VAR_STEAM: ${STEAM_URL}
       HOMEPAGE_VAR_DISCORD_ID: ${DISCORD_WIDGET_ID}
+      # PORTS
+      HOMEPAGE_VAR_CADVISOR: ${CADVISOR_HOST_PORT}
+      HOMEPAGE_VAR_CODE: ${CODE_HOST_PORT}
+      HOMEPAGE_VAR_GITEA: ${GITEA_HOST_PORT}
+      HOMEPAGE_VAR_GLANCES: ${GLANCES_HOST_PORT}
+      HOMEPAGE_VAR_GRAFANA: ${GRAFANA_HOST_PORT}
+      HOMEPAGE_VAR_HOMEPAGE: ${HOMEPAGE_HOST_PORT}
+      HOMEPAGE_VAR_ITTOOLS: ${ITTOOLS_HOST_PORT}
+      HOMEPAGE_VAR_JACKETT: ${JACKETT_HOST_PORT}
+      HOMEPAGE_VAR_JELLYFIN: ${JELLYFIN_HOST_PORT}
+      HOMEPAGE_VAR_JELLYSEERR: ${JELLYSEERR_HOST_PORT}
+      HOMEPAGE_VAR_PORTAINER: ${PORTAINER_HOST_PORT}
+      HOMEPAGE_VAR_PROMETHEUS: ${PROMETHEUS_HOST_PORT}
+      HOMEPAGE_VAR_RADARR: ${RADARR_HOST_PORT}
+      HOMEPAGE_VAR_REDIS: ${REDIS_HOST_PORT}
+      HOMEPAGE_VAR_SONARR: ${SONARR_HOST_PORT}
+      HOMEPAGE_VAR_STIRLING: ${STIRLING_HOST_PORT}
+      HOMEPAGE_VAR_UPTIMEKUMA: ${UPTIMEKUMA_HOST_PORT}
+      HOMEPAGE_VAR_WEBCHECK: ${WEBCHECK_HOST_PORT}
     networks:
       - internal_network
     ports:
@@ -109,7 +128,7 @@ services:
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
-    container_name: server_node_exporter
+    container_name: node_exporter
     command:
       - '--path.rootfs=/host'
     network_mode: host
@@ -175,16 +194,16 @@ services:
       - ${CODE_HOST_CONFIG}:${CODE_CONTAINER_CONFIG}
     restart: unless-stopped
 
-  stirling: # TODO fix connection
+  stirling:
     image: docker.io/stirlingtools/stirling-pdf:latest
     container_name: stirling
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - DOCKER_ENABLE_SECURITY=false
-      - LANGS="en_US"
-      - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      DOCKER_ENABLE_SECURITY: false
+      LANGS: "en_US"
+      INSTALL_BOOK_AND_ADVANCED_HTML_OPS: false
       #SECURITY_LOGINMETHOD: "none"
       #SECURITY_OAUTH2_ENABLED: false
     networks:
@@ -201,8 +220,6 @@ services:
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
-    env_file:
-      - env/.arr.env
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
@@ -218,8 +235,6 @@ services:
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
-    env_file:
-      - env/.arr.env
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
@@ -235,12 +250,11 @@ services:
   jackett:
     image: lscr.io/linuxserver/jackett:latest
     container_name: jackett
-    env_file:
-      - env/.arr.env
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
+      AUTO_UPDATE: true
     networks:
       - internal_network
     ports:
@@ -253,12 +267,11 @@ services:
   jellyseerr:
     image: docker.io/fallenbagel/jellyseerr:latest
     container_name: jellyseerr
-    env_file:
-      - env/.arr.env
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
+      LOG_LEVEL: debug
     networks:
       - internal_network
     ports:
