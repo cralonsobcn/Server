@@ -18,14 +18,14 @@ elif [[ ! $(dnf list --installed "containerd.io") ]]; then
 elif [[ ! $(dnf list --installed "docker-compose-plugin") ]]; then
     dnf -y install docker-compose-plugin
 else
-    echo "Docker and Docker compose is already installed"
+    echo "Docker and Docker compose are already installed"
 fi
 
 # Check if user is in the docker group (sudo-less docker)
 if [[ ! $(groups ${hostname} | grep "docker") ]]; then
     usermod -a -G docker $(whoami)
 else
-    echo "User is already in the docker group"
+    echo "User is already included in the docker group"
 fi
 
 # If this script is executed in the NAS, install the VPN as well
