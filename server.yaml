@@ -10,10 +10,12 @@ volumes:
     name: kuma-data  # TODO I'll keep the configuration but not the logging
   arr-data:
     name: arr-data # TODO change volume type
+  prowlarr-data:
+    name: prowlarr-data
   prometheus-data:
     name: prometheus-data # TODO change volume type
 
-## Monitoring and root apps
+## ( -- Monitoring and root apps -- )
 
 services:
   homepage:
@@ -27,18 +29,20 @@ services:
       HOMEPAGE_VAR_DISCORD_ID: ${DISCORD_WIDGET_ID}
       # PORTS
       HOMEPAGE_VAR_CADVISOR: ${CADVISOR_HOST_PORT}
+      HOMEPAGE_VAR_CHANGEDETECTION: ${CHANGEDETECTION_HOST_PORT}
       HOMEPAGE_VAR_CODE: ${CODE_HOST_PORT}
       HOMEPAGE_VAR_GITEA: ${GITEA_HOST_PORT}
       HOMEPAGE_VAR_GLANCES: ${GLANCES_HOST_PORT}
       HOMEPAGE_VAR_GRAFANA: ${GRAFANA_HOST_PORT}
       HOMEPAGE_VAR_HOMEPAGE: ${HOMEPAGE_HOST_PORT}
       HOMEPAGE_VAR_ITTOOLS: ${ITTOOLS_HOST_PORT}
-      HOMEPAGE_VAR_JACKETT: ${JACKETT_HOST_PORT}
       HOMEPAGE_VAR_JELLYFIN: ${JELLYFIN_HOST_PORT}
       HOMEPAGE_VAR_JELLYSEERR: ${JELLYSEERR_HOST_PORT}
       HOMEPAGE_VAR_PORTAINER: ${PORTAINER_HOST_PORT}
       HOMEPAGE_VAR_PROMETHEUS: ${PROMETHEUS_HOST_PORT}
+      HOMEPAGE_VAR_PROWLARR: ${PROWLARR_HOST_PORT}
       HOMEPAGE_VAR_RADARR: ${RADARR_HOST_PORT}
+      HOMEPAGE_VAR_READARR: ${READARR_HOST_PORT}
       HOMEPAGE_VAR_REDIS: ${REDIS_HOST_PORT}
       HOMEPAGE_VAR_SONARR: ${SONARR_HOST_PORT}
       HOMEPAGE_VAR_STIRLING: ${STIRLING_HOST_PORT}
@@ -150,7 +154,7 @@ services:
       - grafana-data:${GRAFANA_CONTAINER_DATA}
     restart: unless-stopped
 
-## Non-root Apps
+## ( -- Non-root Apps -- )
   it-tools: 
     image: docker.io/corentinth/it-tools:latest
     container_name: "it_tools"
@@ -177,10 +181,9 @@ services:
       - ${WEBCHECK_HOST_PORT}:${WEBCHECK_CONTAINER_PORT}
     restart: unless-stopped
 
-  codeServer: # TODO review container not responding after apt update and apt install
+  codeServer:
     image: lscr.io/linuxserver/code-server:latest
     container_name: code-server
-    # command: ["apt update","apt install -y iputils-ping"]
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
@@ -215,7 +218,81 @@ services:
       - ./stirlingPDF/extraConfigs:/configs
     restart: unless-stopped
 
-## ARR Stack
+  changedetection:
+    image: lscr.io/linuxserver/changedetection.io:latest
+    container_name: changedetection
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${CHANGEDETECTION_HOST_PORT}:${CHANGEDETECTION_CONTAINER_PORT}
+    volumes:
+      - ./changedetection/config:/config # Persistent config files
+    restart: unless-stopped
+
+  ## ( -- Lingua Cafe -- ) ## TODO move to NAS
+
+  webserver:
+    image: ghcr.io/simjanos-dev/linguacafe-webserver:${VERSION:-latest}
+    container_name: linguacafe-webserver
+    restart: unless-stopped
+    depends_on:
+        mysql:
+            condition: service_healthy
+    volumes:
+        - ./storage:/var/www/html/storage
+    environment:
+        DB_DATABASE: ${DB_DATABASE}
+        DB_USERNAME: ${DB_USERNAME}
+        DB_PASSWORD: ${DB_PASSWORD}
+        DB_HOST: ${DB_HOST}
+        DB_PORT: ${DB_PORT}
+    ports:
+        - "9191:80"
+    networks:
+        - internal_network
+    extra_hosts:
+        - "host.docker.internal:host-gateway"
+  mysql:
+    image: mysql:8.0
+    container_name: linguacafe-database
+    restart: unless-stopped
+    tty: true
+    healthcheck:
+        test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$MYSQL_ROOT_PASSWORD']
+        interval: 10s
+        timeout: 5s
+        retries: 10
+    volumes:
+        - ./database:/var/lib/mysql
+    environment:
+        MYSQL_DATABASE: ${DB_DATABASE}
+        MYSQL_USER: ${DB_USERNAME}
+        MYSQL_PASSWORD: ${DB_PASSWORD}
+        MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+        SERVICE_NAME: linguacafe
+    command: mysqld --general-log=1 --general-log-file=/var/lib/mysql/general-log.log
+    networks:
+        - internal_network
+          
+  python:
+    container_name: linguacafe-python-service
+    command: "python3 /app/tokenizer.py"
+    restart: unless-stopped
+    tty: true
+    image: ghcr.io/simjanos-dev/linguacafe-python-service:${VERSION:-latest}
+    environment:
+        PYTHONPATH: "/var/www/html/storage/app/model"
+    volumes:
+        - ./storage:/var/www/html/storage
+    networks:
+        - internal_network
+    platform: ${PLATFORM:-}
+
+## ( -- ARR Stack -- )
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -244,24 +321,37 @@ services:
     ports:
       - ${SONARR_HOST_PORT}:${SONARR_CONTAINER_PORT}
     volumes:
-      - ${RADARR_HOST_CONFIG}:${RADARR_CONTAINER_CONFIG}
+      - ${SONARR_HOST_CONFIG}:${SONARR_CONTAINER_CONFIG}
     restart: unless-stopped
 
-  jackett:
-    image: lscr.io/linuxserver/jackett:latest
-    container_name: jackett
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
-      AUTO_UPDATE: true
     networks:
       - internal_network
     ports:
-      - ${JACKETT_HOST_PORT}:${JACKETT_CONTAINER_PORT}
+      - ${PROWLARR_HOST_PORT}:${PROWLARR_CONTAINER_PORT}
+    volumes: # TODO
+      - prowlarr-data:/config # Database and Prowlarr configs
+    restart: unless-stopped
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
     volumes:
-      - ${JACKETT_HOST_CONFIG}:${JACKETT_CONTAINER_CONFIG}
-      - ${JACKETT_HOST_BLACKHOLE}:${JACKETT_CONTAINER_BLACKHOLE}
+      - ./readarr/config:/config # Database and Readarr configs
+      - ./readarr/books:/books # Location of Book library on disk (See note in Application setup) optional
+      - ./readarr/downloads:/downloads # Location of download managers output directory (See note in Application setup) optional
+    ports:
+      - ${READARR_HOST_PORT}:${READARR_CONTAINER_PORT}
     restart: unless-stopped
 
   jellyseerr:
