@@ -22,6 +22,9 @@ jackett/
 jellyseerr/
 sonarr/
 stirlingPDF/
+changedetection/
+database/
+readarr/
 
 # Ignore NAS and security compose files
 nas.yaml
