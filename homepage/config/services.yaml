@@ -187,12 +187,27 @@
         showstats: true
         server: docker-internal
         container: stirling
-
+    - Change Detection:
+        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_CHANGEDETECTION}}
+        description: Change Detection
+        icon: changedetection.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_CHANGEDETECTION}}
+        showstats: true
+        server: docker-internal
+        container: changedetection
 - Arr:
+    - Prowlarr:
+        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PROWLARR}}
+        description: prowlarr indexer
+        icon: prowlarr.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PROWLARR}}
+        showStats: true
+        server: docker-internal
+        container: prowlarr
     - Sonarr:
         href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_SONARR}}
         description: Sonarr for Movies
-        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/sonarr.png
+        icon: sonarr.png
         ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_SONARR}}
         showStats: true
         server: docker-internal
@@ -200,23 +215,23 @@
     - Radarr:
         href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_RADARR}}
         description: Radarr for TV Shows
-        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/radarr.png
+        icon: radarr.png
         ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_RADARR}}
         showStats: true
         server: docker-internal
         container: radarr
-    - Jackett:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_JACKETT}}
-        description: Jacket for torrent trackers
-        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jackett.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_JACKETT}}
+    - Readarr:
+        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_READARR}}
+        description: Readarr for Books
+        icon: readarr.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_READARR}}
         showStats: true
         server: docker-internal
-        container: jackett
+        container: readarr
     - Jellyseerr:
         href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_JELLYSEERR}}
         description: Jellyseer
-        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/jellyseerr.png
+        icon: jellyseerr.png
         ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_JELLYSEERR}}
         showStats: true
         server: docker-internal
