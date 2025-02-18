@@ -23,7 +23,7 @@ services:
     container_name: homepage
     environment: 
       TZ: ${TZ}
-      HOMEPAGE_VAR_IP: ${IP}
+      HOMEPAGE_VAR_IP: ${SERVER_IP}
       HOMEPAGE_VAR_CALENDAR: ${CALENDAR_URL}
       HOMEPAGE_VAR_STEAM: ${STEAM_URL}
       HOMEPAGE_VAR_DISCORD_ID: ${DISCORD_WIDGET_ID}
@@ -232,65 +232,6 @@ services:
     volumes:
       - ./changedetection/config:/config # Persistent config files
     restart: unless-stopped
-
-  ## ( -- Lingua Cafe -- ) ## TODO move to NAS
-
-  webserver:
-    image: ghcr.io/simjanos-dev/linguacafe-webserver:${VERSION:-latest}
-    container_name: linguacafe-webserver
-    restart: unless-stopped
-    depends_on:
-        mysql:
-            condition: service_healthy
-    volumes:
-        - ./storage:/var/www/html/storage
-    environment:
-        DB_DATABASE: ${DB_DATABASE}
-        DB_USERNAME: ${DB_USERNAME}
-        DB_PASSWORD: ${DB_PASSWORD}
-        DB_HOST: ${DB_HOST}
-        DB_PORT: ${DB_PORT}
-    ports:
-        - "9191:80"
-    networks:
-        - internal_network
-    extra_hosts:
-        - "host.docker.internal:host-gateway"
-  mysql:
-    image: mysql:8.0
-    container_name: linguacafe-database
-    restart: unless-stopped
-    tty: true
-    healthcheck:
-        test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$MYSQL_ROOT_PASSWORD']
-        interval: 10s
-        timeout: 5s
-        retries: 10
-    volumes:
-        - ./database:/var/lib/mysql
-    environment:
-        MYSQL_DATABASE: ${DB_DATABASE}
-        MYSQL_USER: ${DB_USERNAME}
-        MYSQL_PASSWORD: ${DB_PASSWORD}
-        MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-        SERVICE_NAME: linguacafe
-    command: mysqld --general-log=1 --general-log-file=/var/lib/mysql/general-log.log
-    networks:
-        - internal_network
-          
-  python:
-    container_name: linguacafe-python-service
-    command: "python3 /app/tokenizer.py"
-    restart: unless-stopped
-    tty: true
-    image: ghcr.io/simjanos-dev/linguacafe-python-service:${VERSION:-latest}
-    environment:
-        PYTHONPATH: "/var/www/html/storage/app/model"
-    volumes:
-        - ./storage:/var/www/html/storage
-    networks:
-        - internal_network
-    platform: ${PLATFORM:-}
 
 ## ( -- ARR Stack -- )
 
