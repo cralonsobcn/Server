@@ -14,17 +14,17 @@ uptime_kuma/data/*.db-*
 # Ignore Uptime Kuma certificates
 uptime_kuma/data/docker-tls
 
-# Ignore code-server folder
-/code-server/*
-
 # Ignore folders
-jackett/
 jellyseerr/
 sonarr/
+radarr/
 stirlingPDF/
 changedetection/
 database/
 readarr/
+code-server/
+grafana/
 
 # Ignore NAS and security compose files
 nas.yaml
+security.yaml
