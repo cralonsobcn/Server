@@ -129,6 +129,14 @@
         showstats: true
         server: docker-internal
         container: glances
+    - cAdvisor:
+        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_CADVISOR}}
+        description: Detailed Container metrics
+        icon: cadvisor.png
+        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_CADVISOR}}
+        showstats: true
+        server: docker-internal
+        container: cadvisor
 
 - Apps:
     - Jellyfin:
