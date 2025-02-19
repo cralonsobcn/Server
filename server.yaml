@@ -1,3 +1,6 @@
+# TODO /homepage/config/services.yaml add remote docker https://gethomepage.dev/configs/docker/
+# TODO server.yaml migrate to named volumes
+
 networks:
   internal_network:
     driver: bridge
@@ -8,22 +11,41 @@ volumes:
     name: grafana-data # TODO change volume type
   kuma-data:
     name: kuma-data  # TODO I'll keep the configuration but not the logging
-  arr-data:
-    name: arr-data # TODO change volume type
   prowlarr-data:
     name: prowlarr-data
+  arr-data:
+    name: arr-data # TODO change volume type. Avoid /home.
+      #    data
+      #    ├── torrents
+      #    │   ├── books
+      #    │   ├── movies
+      #    │   ├── music
+      #    │   └── tv
+      #    ├── usenet
+      #    │   ├── incomplete
+      #    │   └── complete
+      #    │       ├── books
+      #    │       ├── movies
+      #    │       ├── music
+      #    │       └── tv
+      #    └── media
+      #        ├── books
+      #        ├── movies
+      #        ├── music
+      #        └── tv
   prometheus-data:
     name: prometheus-data # TODO change volume type
 
-## ( -- Monitoring and root apps -- )
-
 services:
+
+## ( -- Monitoring and root apps -- )
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
     environment: 
       TZ: ${TZ}
-      HOMEPAGE_VAR_IP: ${SERVER_IP}
+      HOMEPAGE_VAR_SERVER_IP: ${SERVER_IP}
+      HOMEPAGE_VAR_SECURITY_IP: ${SECURITY_IP}
       HOMEPAGE_VAR_CALENDAR: ${CALENDAR_URL}
       HOMEPAGE_VAR_STEAM: ${STEAM_URL}
       HOMEPAGE_VAR_DISCORD_ID: ${DISCORD_WIDGET_ID}
@@ -38,7 +60,6 @@ services:
       HOMEPAGE_VAR_ITTOOLS: ${ITTOOLS_HOST_PORT}
       HOMEPAGE_VAR_JELLYFIN: ${JELLYFIN_HOST_PORT}
       HOMEPAGE_VAR_JELLYSEERR: ${JELLYSEERR_HOST_PORT}
-      HOMEPAGE_VAR_PORTAINER: ${PORTAINER_HOST_PORT}
       HOMEPAGE_VAR_PROMETHEUS: ${PROMETHEUS_HOST_PORT}
       HOMEPAGE_VAR_PROWLARR: ${PROWLARR_HOST_PORT}
       HOMEPAGE_VAR_RADARR: ${RADARR_HOST_PORT}
@@ -48,6 +69,10 @@ services:
       HOMEPAGE_VAR_STIRLING: ${STIRLING_HOST_PORT}
       HOMEPAGE_VAR_UPTIMEKUMA: ${UPTIMEKUMA_HOST_PORT}
       HOMEPAGE_VAR_WEBCHECK: ${WEBCHECK_HOST_PORT}
+      HOMEPAGE_VAR_PORTAINER: ${PORTAINER_HTTP_HOST_PORT}
+      HOMEPAGE_VAR_PIHOLE: ${PIHOLE_HOST_PORT}
+      HOMEPAGE_VAR_AUTHELIA: ${AUTHELIA_HOST_PORT}
+      HOMEPAGE_VAR_WAHTSAPPDOCKER: ${WHATSAPPDOCKER_HOST_PORT}
     networks:
       - internal_network
     ports:
@@ -56,6 +81,22 @@ services:
       - ${HOMEPAGE_HOST_CONFIG}:${HOMEPAGE_CONTAINER_CONFIG} 
       - ${DOCKER_SOCK}:${DOCKER_SOCK}  # path to docker.sock. Requires running the container as root
       - ${HOMEPAGE_HOST_IMAGES}:${HOMEPAGE_CONTAINER_IMAGES}
+    depends_on:
+      - glances
+      - uptime-kuma
+      - prometheus
+      - grafana
+      - node_exporter
+      - it-tools
+      - web-check
+      - codeServer
+      - stirling
+      - changedetection
+      - radarr
+      - sonarr
+      - prowlarr
+      - readarr
+      - jellyseerr
     restart: unless-stopped
 
   glances:
@@ -154,7 +195,7 @@ services:
       - grafana-data:${GRAFANA_CONTAINER_DATA}
     restart: unless-stopped
 
-## ( -- Non-root Apps -- )
+## ( -- Apps -- )
   it-tools: 
     image: docker.io/corentinth/it-tools:latest
     container_name: "it_tools"
@@ -205,7 +246,7 @@ services:
       PGID: ${PGID}
       TZ: ${TZ}
       DOCKER_ENABLE_SECURITY: false
-      LANGS: "en_US"
+      LANGS: "en_GB"
       INSTALL_BOOK_AND_ADVANCED_HTML_OPS: false
       #SECURITY_LOGINMETHOD: "none"
       #SECURITY_OAUTH2_ENABLED: false
@@ -234,7 +275,6 @@ services:
     restart: unless-stopped
 
 ## ( -- ARR Stack -- )
-
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
@@ -287,12 +327,14 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${READARR_HOST_PORT}:${READARR_CONTAINER_PORT}
     volumes:
       - ./readarr/config:/config # Database and Readarr configs
       - ./readarr/books:/books # Location of Book library on disk (See note in Application setup) optional
       - ./readarr/downloads:/downloads # Location of download managers output directory (See note in Application setup) optional
-    ports:
-      - ${READARR_HOST_PORT}:${READARR_CONTAINER_PORT}
     restart: unless-stopped
 
   jellyseerr:
