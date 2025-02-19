@@ -6,37 +6,37 @@
       widget:
         type: glances
         version: 4
-        url: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_GLANCES}}
+        url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
         metric: cpu
   - Memory Usage:
       widget:
         type: glances
         version: 4
-        url: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_GLANCES}}
+        url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
         metric: memory
   - Disk I/O:
       widget:
         type: glances
         version: 4
-        url: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_GLANCES}}
+        url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
         metric: disk:sda
         chart: true
   - System Info:
       widget:
         type: glances
         version: 4
-        url: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_GLANCES}}
+        url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
         metric: info
 
 - Prometheus:
     - Target Overview:
         widget:
             type: prometheus
-            url: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
     - CPU Usage Average:
         widget:
             type: prometheusmetric
-            url: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
             refreshinterval: 15000
             metrics:
                 - label: Average CPU/min
@@ -48,7 +48,7 @@
     - Docker Disk and Memory:
         widget:
             type: prometheusmetric
-            url: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
             refreshinterval: 15000
             metrics:
                 - label: Disk I/O
@@ -62,7 +62,7 @@
     - Docker Network Sent:
         widget:
             type: prometheusmetric
-            url: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
             refreshinterval: 15000
             metrics:
                 - label: Total Sent
@@ -80,7 +80,7 @@
     - Docker Network Received:
         widget:
             type: prometheusmetric
-            url: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
             refreshinterval: 15000
             metrics:
                 - label: Total Received
@@ -98,149 +98,151 @@
 
 - Monitoring & Logging:
     - Uptime Kuma:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_UPTIMEKUMA}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_UPTIMEKUMA}}
         description: "L7 and L4 health checks"
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/uptime-kuma.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_UPTIMEKUMA}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_UPTIMEKUMA}}
         showStats: true
         server: docker-internal
         container: uptime-kuma
     - Prometheus:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
         description: Prometheus
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/prometheus.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
         showStats: true
         server: docker-internal
         container: prometheus
     - Grafana:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_GRAFANA}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GRAFANA}}
         description: Grafana
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/grafana.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_GRAFANA}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GRAFANA}}
         showStats: true
         server: docker-internal
         container: grafana
     - Glances:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_GLANCES}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
         description: Glances
         icon: glances.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_GLANCES}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
         showstats: true
         server: docker-internal
         container: glances
     - cAdvisor:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_CADVISOR}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CADVISOR}}
         description: Detailed Container metrics
         icon: cadvisor.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_CADVISOR}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CADVISOR}}
         showstats: true
         server: docker-internal
         container: cadvisor
 
 - Apps:
     - Jellyfin:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_JELLYFIN}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_JELLYFIN}}
         description: Jellyfin media player
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/svg/jellyfin.svg
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_JELLYFIN}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_JELLYFIN}}
         showStats: true
         server: docker-internal
         container: jellyfin
     - IT Tools:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_ITTOOLS}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_ITTOOLS}}
         description: Interesting IT Aplications (quality of life improvement)
         icon: kubernetes.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_ITTOOLS}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_ITTOOLS}}
         showstats: true
         server: docker-internal
         container: it_tools
     - Web Check:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_WEBCHECK}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_WEBCHECK}}
         description: Website analysis
         icon: chrome.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_WEBCHECK}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_WEBCHECK}}
         showstats: true
         server: docker-internal
         container: Web-Check
     - Code Server:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_CODE}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CODE}}
         description: VS Code
         icon: vscode.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_CODE}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CODE}}
         showstats: true
         server: docker-internal
         container: code-server
-    - Portainer:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PORTAINER}}
-        description: Portainer
-        icon: portainer.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PORTAINER}}
-        showstats: true
-        server: docker-internal
-        container: portainer
     - Gitea:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_GITEA}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GITEA}}
         description: Gitea. Private GIT repo in the cloud 
         icon: gitea.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_GITEA}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GITEA}}
         showstats: true
         server: docker-internal
         container: gitea
     - Stirling:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_STIRLING}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_STIRLING}}
         description: Stirling PDF
         icon: stirling-pdf.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_STIRLING}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_STIRLING}}
         showstats: true
         server: docker-internal
         container: stirling
     - Change Detection:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_CHANGEDETECTION}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CHANGEDETECTION}}
         description: Change Detection
         icon: changedetection.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_CHANGEDETECTION}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CHANGEDETECTION}}
         showstats: true
         server: docker-internal
         container: changedetection
+    - Portainer: # TODO add remote docker https://gethomepage.dev/configs/docker/
+        href: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PORTAINER}}
+        description: Portainer
+        icon: portainer.png
+        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PORTAINER}}
+    - Pihole:
+        href: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PIHOLE}}}/admin
+        description: Pihole DNS
+        icon: pi-hole.png
+        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PIHOLE}}
 - Arr:
     - Prowlarr:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PROWLARR}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROWLARR}}
         description: prowlarr indexer
         icon: prowlarr.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_PROWLARR}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROWLARR}}
         showStats: true
         server: docker-internal
         container: prowlarr
     - Sonarr:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_SONARR}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_SONARR}}
         description: Sonarr for Movies
         icon: sonarr.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_SONARR}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_SONARR}}
         showStats: true
         server: docker-internal
         container: sonarr
     - Radarr:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_RADARR}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_RADARR}}
         description: Radarr for TV Shows
         icon: radarr.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_RADARR}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_RADARR}}
         showStats: true
         server: docker-internal
         container: radarr
     - Readarr:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_READARR}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_READARR}}
         description: Readarr for Books
         icon: readarr.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_READARR}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_READARR}}
         showStats: true
         server: docker-internal
         container: readarr
     - Jellyseerr:
-        href: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_JELLYSEERR}}
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_JELLYSEERR}}
         description: Jellyseer
         icon: jellyseerr.png
-        ping: http://{{HOMEPAGE_VAR_IP}}:{{HOMEPAGE_VAR_JELLYSEERR}}
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_JELLYSEERR}}
         showStats: true
         server: docker-internal
         container: jellyseerr
