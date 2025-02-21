@@ -146,6 +146,13 @@
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CADVISOR}}
         server: docker-server
         container: cadvisor
+    - Dozzle:
+        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_DOZZLE}}
+        description: Container logging
+        icon: dozzle.png
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_DOZZLE}}
+        server: docker-server
+        container: dozzle-logger
 
 - Apps:
     - IT Tools:
