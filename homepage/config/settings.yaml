@@ -18,7 +18,7 @@ language: en
 target: _blank # Possible options include _blank, _self, and _top
 hideVersion: true
 showStats: true
-statusStyle: "basic" #basic OR dot
+statusStyle: "dot" #basic OR dot
 disableCollapse: true
 useEqualHeights: true
 
