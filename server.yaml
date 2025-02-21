@@ -56,6 +56,7 @@ services:
       HOMEPAGE_VAR_CADVISOR: ${CADVISOR_HOST_PORT}
       HOMEPAGE_VAR_CHANGEDETECTION: ${CHANGEDETECTION_HOST_PORT}
       HOMEPAGE_VAR_CODE: ${CODE_HOST_PORT}
+      HOMEPAGE_VAR_DOZZLE: ${DOZZLE_HOST_PORT}
       HOMEPAGE_VAR_GITEA: ${GITEA_HOST_PORT}
       HOMEPAGE_VAR_GLANCES: ${GLANCES_HOST_PORT}
       HOMEPAGE_VAR_GRAFANA: ${GRAFANA_HOST_PORT}
@@ -103,6 +104,7 @@ services:
       - prowlarr
       - readarr
       - jellyseerr
+      - dozzle
     restart: unless-stopped
 
   glances:
@@ -168,7 +170,7 @@ services:
 
   redis:
     image: docker.io/redis:latest
-    container_name: redis
+    container_name: "cadvisor-redis"
     environment:
       TZ: ${TZ}
     networks:
@@ -179,7 +181,7 @@ services:
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
-    container_name: node_exporter
+    container_name: "prometheus-node_exporter"
     command:
       - '--path.rootfs=/host'
     network_mode: host
@@ -200,6 +202,23 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana # ./grafana/data:/var/lib/grafana
     restart: unless-stopped
+
+  dozzle:
+    image: docker.io/amir20/dozzle:latest
+    container_name: "dozzle-logger"
+    environment:
+      TZ: ${TZ}
+      DOZZLE_REMOTE_HOST: tcp://${SECURITY_IP}:2375 #,tcp://${NAS_IP}:2375 # https://dozzle.dev/guide/agent#how-to-connect-to-an-agent
+                                                    # Enable access to the CONTAINER API in the docker proxy
+      DOZZLE_NO_ANALYTICS: true
+    networks:
+      - internal_network
+    ports:
+      - ${DOZZLE_HOST_PORT}:${DOZZLE_CONTAINER_PORT}
+    volumes:
+      - ${DOCKER_SOCK}:${DOCKER_SOCK}
+    restart: unless-stopped
+
 
 ## ( -- Apps -- )
   it-tools: 
