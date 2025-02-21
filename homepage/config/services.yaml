@@ -269,6 +269,13 @@
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_JELLYSEERR}}
         server: docker-server
         container: jellyseerr
+    - QBitorrent:
+        href: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_QBITORRENT}}
+        description: qbittorrent
+        icon: qbittorrent.png
+        ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_QBITORRENT}}
+        server: docker-nas
+        container: qbittorrent
 
 - Steam:
     - Profile:
