@@ -2,7 +2,13 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/docker/
 
-docker-internal:
-  # host: 172.17.0.1
-  # port: 2375
-  socket: /var/run/docker.sock 
+docker-server:
+  socket: {{HOMEPAGE_VAR_DOCKER}}
+
+docker-security:
+  host: {{HOMEPAGE_VAR_SECURITY_IP}}
+  port: 2375
+
+docker-nas:
+  host: {{HOMEPAGE_VAR_NAS_IP}}
+  port: 2375
