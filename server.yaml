@@ -84,9 +84,9 @@ services:
     ports:
       - ${HOMEPAGE_HOST_PORT}:${HOMEPAGE_CONTAINER_PORT}
     volumes:
-      - ${HOMEPAGE_HOST_CONFIG}:${HOMEPAGE_CONTAINER_CONFIG} 
+      - ./homepage/config:/app/config # Path to the config folder
+      - ./homepage/config/images:/app/public/images # Adding images
       - ${DOCKER_SOCK}:${DOCKER_SOCK}  # path to docker.sock. Requires running the container as root
-      - ${HOMEPAGE_HOST_IMAGES}:${HOMEPAGE_CONTAINER_IMAGES}
     depends_on:
       - glances
       - uptime-kuma
@@ -129,7 +129,7 @@ services:
     ports:
       - ${UPTIMEKUMA_HOST_PORT}:${UPTIMEKUMA_CONTAINER_PORT}
     volumes:
-      - kuma-data:${UPTIMEKUMA_CONTAINER_DATA}
+      - kuma-data:/app/data # ./uptime_kuma/data:/app/data
       - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock
     restart: unless-stopped
 
@@ -143,7 +143,7 @@ services:
     ports:
       - ${PROMETHEUS_HOST_PORT}:${PROMETHEUS_CONTAINER_PORT}
     volumes: # TODO Add volume and persist the data
-      - ${PROMETHEUS_HOST_CONFIG}:${PROMETHEUS_CONTAINER_CONFIG} # path to /etc/prometheus.yml
+      - ./prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml # path to /etc/prometheus.yml
     depends_on:
       - cadvisor
     restart: unless-stopped
@@ -198,7 +198,7 @@ services:
     ports:
       - ${GRAFANA_HOST_PORT}:${GRAFANA_CONTAINER_PORT}
     volumes:
-      - grafana-data:${GRAFANA_CONTAINER_DATA}
+      - grafana-data:/var/lib/grafana # ./grafana/data:/var/lib/grafana
     restart: unless-stopped
 
 ## ( -- Apps -- )
@@ -240,8 +240,8 @@ services:
       - internal_network
     ports:
       - ${CODE_HOST_PORT}:${CODE_CONTAINER_PORT}
-    volumes: # TODO map volume
-      - ${CODE_HOST_CONFIG}:${CODE_CONTAINER_CONFIG}
+    volumes: # TODO 
+      - ./code-server/config:/config
     restart: unless-stopped
 
   stirling:
@@ -293,7 +293,7 @@ services:
     ports:
       - ${RADARR_HOST_PORT}:${RADARR_CONTAINER_PORT}
     volumes:
-      - arr-data:/config
+      - ./radarr/config:/config # ./radarr/config:/config
     restart: unless-stopped
 
   sonarr:
@@ -308,7 +308,7 @@ services:
     ports:
       - ${SONARR_HOST_PORT}:${SONARR_CONTAINER_PORT}
     volumes:
-      - ${SONARR_HOST_CONFIG}:${SONARR_CONTAINER_CONFIG}
+      - ./sonarr/config:/config
     restart: unless-stopped
 
   prowlarr:
@@ -356,5 +356,5 @@ services:
     ports:
       - ${JELLYSEERR_HOST_PORT}:${JELLYSEERR_CONTAINER_PORT}
     volumes:
-      - ${JELLYSEERR_HOST_CONFIG}:${JELLYSEERR_CONTAINER_CONFIG}
+      - ./jellyseerr/config:/app/config
     restart: unless-stopped
