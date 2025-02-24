@@ -208,8 +208,8 @@ services:
     container_name: "dozzle-logger"
     environment:
       TZ: ${TZ}
-      DOZZLE_REMOTE_HOST: tcp://${SECURITY_IP}:2375 #,tcp://${NAS_IP}:2375 # https://dozzle.dev/guide/agent#how-to-connect-to-an-agent
-                                                    # Enable access to the CONTAINER API in the docker proxy
+      DOZZLE_REMOTE_HOST: tcp://${SECURITY_IP}:2375,tcp://${NAS_IP}:2375  # https://dozzle.dev/guide/agent#how-to-connect-to-an-agent
+                                                                          # Enable access to the CONTAINER API in the docker proxy
       DOZZLE_NO_ANALYTICS: true
     networks:
       - internal_network
