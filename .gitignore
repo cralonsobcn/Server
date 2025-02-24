@@ -1,11 +1,10 @@
 # ignore ALL .env files
 *.env
 
-# Ignore pfSense config file
-config-pfSense.home.arpa-20240722205932.xml
-
 # Ignore homepage logs
 homepage/config/logs/*
+.log
+.logs
 
 # Ignore Uptime Kuma database
 uptime_kuma/data/*.db
