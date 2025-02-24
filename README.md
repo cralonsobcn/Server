@@ -67,10 +67,9 @@ Example:
 ```
 
 ### TODO
-- Finish Traefik implementation + http to https redirection + self signed certificates.
+- Finish Traefik implementation.
 - Implement VPN.
-- Implement Cloudfare.
-- Disable IPv6.
+- Implement Cloudfare Tunnel + Switch from acme certificates to cloudfare certificates.
 - Perform iperf3 tests on all the devices.
 - Migrate env passwords to secrets.
 - Implement 2FA and IAM with Authelia.
@@ -78,8 +77,6 @@ Example:
 - Implement ntfy.
 - Implement Prometheus scrappers.
 - Implement Grafana.
-- Implement Loki.
 - Implement cronjob to prune unused images and unused volumes.
-- Validate that all folders belong to `${USER}:${USER}`
 - Review the Networking diagram + validate and refine the firewall policies.
 
