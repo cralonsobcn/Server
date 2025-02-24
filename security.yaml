@@ -13,8 +13,6 @@ networks:
 #          gateway: 192.168.1.1
 #          ip_range: 192.168.1.2/32
 
-
-
 volumes:
   portainer-data:
     name: portainer-data # TODO change volume type
