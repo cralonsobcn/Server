@@ -26,5 +26,4 @@ code-server/
 grafana/
 
 # Ignore NAS and security compose files
-nas.yaml
 security.yaml
