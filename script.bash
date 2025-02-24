@@ -5,7 +5,8 @@
 # 1. Installs docker, docker compose and git
 # 2. Creates application folders depending the role of the host machine
 # 3. Updates hostnames in /etc/hosts
-# 4. 
+# 4. Disables IPv6 in all hosts
+# 5. Sets pihole DNS as the primary DNS in all hosts
 #############################################
 
 nas_name=""
@@ -14,6 +15,8 @@ security_name=""
 server_ip=""
 security_ip=""
 nas_ip=""
+interface=""
+pihole_dns=""
 
 # If docker-ce.repo is not present download it and add it to /etc/yum.repos.d/
 if [[ ! -f "/etc/yum.repos.d/docker-ce.repo" ]]; then
@@ -51,7 +54,7 @@ fi
 
 
 # Actions to be done as per appliance purpose basis
-security_actions(){
+securityActions(){
 
     # Application folders within the security appliance
     folders=("pihole/" "/authelia/" "traefik/" "traefik/config" "traefik/config/certs" "traefik/config/logs")
@@ -68,10 +71,11 @@ security_actions(){
     done
 
     modify_hosts()
-    # TODO /etc/resolv.conf  # Careful this is handled via NetworkManager
+    disableIpv6()
+    setPiholeDNS()
 }
 
-nas_actions(){
+nasActions(){
     
     # Add the VPN client repo and install it 
     if [[ ! $(dnf list --installed "mullvad-vpn") ]]; then
@@ -83,10 +87,11 @@ nas_actions(){
 
     # TODO Application folders within the nas appliance
     modify_hosts()
-    # TODO /etc/resolv.conf  # Careful this is handled via NetworkManager
+    disableIpv6()
+    setPiholeDNS()
 }
 
-server_actions(){
+serverActions(){
 
     # Application folders within the server appliance
     folders=("changedetection/" "code-server/" "grafana/" "homepage/" "homepage/config" "homepaeg/config/images" "jellyseerr" "jellyseerr/config" "prometheus/" "prometheus/config" "radarr/" "readarr/" "sonarr/" "stirlingPDF/" "uptime_kuma/")
@@ -103,13 +108,29 @@ server_actions(){
     done
 
     modify_hosts()
-    # TODO /etc/resolv.conf  # Careful this is handled via NetworkManager
+    disableIpv6()
+    setPiholeDNS()
 }
 
-modify_hosts(){ # TODO get static IP from each appliance
+modifyHosts(){ # TODO get static IP from each appliance
 
     # Refactor this. 100% sure that there's a way to make this acceptable
     echo "${server_ip}  ${server_name}" >> /etc/hosts
     echo "${security_ip}  ${security_name}" >> /etc/hosts
     echo "${nas_ip}  ${nas_name}" >> /etc/hosts
 }
+
+disableIpv6(){ # TODO
+    if [[ ! $(cat /proc/sys/net/ipv6/conf/${interface}/disable_ipv6) = 1]]; then
+        nmcli connection modify ${interface} ipv6.method "disabled"
+        nmcli connection up ${interface}
+    fi
+}
+
+setPiholeDNS(){ # TODO
+    # Create /etc/NetworkManager/conf.d/90-dns-none.conf
+    echo "[main]" >> /etc/NetworkManager/conf.d/90-dns-none.conf
+    echo "dns=none" >> /etc/NetworkManager/conf.d/90-dns-none.conf
+    echo "nameserver  ${pihole_dns}" >> /etc/resolv.conf
+}
+
