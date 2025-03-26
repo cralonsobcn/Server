@@ -19,6 +19,12 @@ Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), 
 
 ## Server
 - [Homepage](https://gethomepage.dev/latest/installation/docker/)
+- [Uptime Kuma](https://github.com/louislam/uptime-kuma)
+- [Glances](https://github.com/nicolargo/glances)
+- [Prometheus](https://prometheus.io/docs/prometheus/latest/installation/)
+- [cAdvisor](https://prometheus.io/docs/guides/cadvisor/#docker-compose-configuration)
+- [Grafana](https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/)
+- [Dozzle] (https://dozzle.dev/guide/getting-started#standalone-docker)
 - [Prowlarr](https://docs.linuxserver.io/images/docker-prowlarr/)
 - [Radarr](https://hub.docker.com/r/linuxserver/radarr)
 - [Readarr](https://docs.linuxserver.io/images/docker-readarr/)
@@ -30,11 +36,7 @@ Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), 
 - [Stirling PDF](https://docs.stirlingpdf.com/Installation/Docker%20Install/)
 - [Code Server](https://hub.docker.com/r/linuxserver/code-server)
 - [Jsoncrack](https://github.com/AykutSarac/jsoncrack.com)
-- [Uptime Kuma](https://github.com/louislam/uptime-kuma)
-- [Glances](https://github.com/nicolargo/glances)
-- [Prometheus](https://prometheus.io/docs/prometheus/latest/installation/)
-- [cAdvisor](https://prometheus.io/docs/guides/cadvisor/#docker-compose-configuration)
-- [Grafana](https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/)
+- [MK Docs Material](https://github.com/squidfunk/mkdocs-material)
 
 ## NAS
 - [Jellyfin](https://hub.docker.com/r/linuxserver/jellyfin)
@@ -44,7 +46,7 @@ Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), 
 ## Security
 - [Traefik](https://github.com/traefik/traefik)
 - [Portainer](https://docs.portainer.io/start/install-ce/server/docker/linux)
-- [Watchtower](https://containrrr.dev/watchtower/usage-overview/)
+- [Whatsupdocker](https://getwud.github.io/wud/#/quickstart/)
 - [Pihole](https://hub.docker.com/r/pihole/pihole)
 - [Authelia](https://www.authelia.com/integration/deployment/docker/)
 - [Mullvad VPN](https://mullvad.net/es/help/install-mullvad-app-linux#fedora)
