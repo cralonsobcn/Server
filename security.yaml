@@ -48,15 +48,23 @@ services:
       TZ: ${TZ}
       SECURITY_IP: ${SECURITY_IP}
       SERVER_IP: ${SERVER_IP}
+      NAS_IP: ${NAS_IP}
       DOCKER_SOCK: ${DOCKER_SOCK}
       # Traefik specific
-      EMAIL: ${EMAIL}
+      TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARERESOLVER_ACME_EMAIL: ${EMAIL}
+      SERVER_SUBDOMAIN_NAME: ${SERVER_SUBDOMAIN_NAME}
+      SECURITY_SUBDOMAIN_NAME: ${SECURITY_SUBDOMAIN_NAME}
+      NAS_SUBDOMAIN_NAME: ${NAS_SUBDOMAIN_NAME}
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      # Cloudflare Specific
+      CLOUDFLARE_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
       # Security ports
       PORTAINER_HTTP_HOST_PORT: ${PORTAINER_HTTP_HOST_PORT} 
+      PORTAINER_HTTPS_HOST_PORT: ${PORTAINER_HTTPS_HOST_PORT} 
       PIHOLE_HOST_PORT: ${PIHOLE_HOST_HTTP_PORT}
       TRAEFIK_DASHBOARD_HOST_PORT: ${TRAEFIK_DASHBOARD_HOST_PORT}
       AUTHELIA_HOST_PORT: ${AUTHELIA_HOST_PORT}
-      WHATSAPPDOCKER_HOST_PORT: ${WHATSAPPDOCKER_HOST_PORT}
+      WHATSUPDOCKER_HOST_PORT: ${WHATSUPDOCKER_HOST_PORT}
       # Server ports
       CADVISOR_HOST_PORT: ${CADVISOR_HOST_PORT}
       CHANGEDETECTION_HOST_PORT: ${CHANGEDETECTION_HOST_PORT}
@@ -67,6 +75,7 @@ services:
       HOMEPAGE_HOST_PORT: ${HOMEPAGE_HOST_PORT}
       ITTOOLS_HOST_PORT: ${ITTOOLS_HOST_PORT}
       JELLYSEERR_HOST_PORT: ${JELLYSEERR_HOST_PORT}
+      JSONCRACK_HOST_PORT: ${JSONCRACK_HOST_PORT}
       PROMETHEUS_HOST_PORT: ${PROMETHEUS_HOST_PORT}
       PROWLARR_HOST_PORT: ${PROWLARR_HOST_PORT}
       RADARR_HOST_PORT: ${RADARR_HOST_PORT}
@@ -76,37 +85,55 @@ services:
       UPTIMEKUMA_HOST_HTTPS: ${UPTIMEKUMA_HOST_HTTPS}
       UPTIMEKUMA_HOST_PORT: ${UPTIMEKUMA_HOST_PORT}
       WEBCHECK_HOST_PORT: ${WEBCHECK_HOST_PORT}
+      # NAS Ports
+      GITEA_HOST_PORT: ${GITEA_HOST_PORT}
+      JELLYFIN_HOST_PORT: ${JELLYFIN_HOST_PORT}
+      QBITORRENT_UI_HOST_PORT: ${QBITORRENT_UI_HOST_PORT}
+      NETBOOT_HOST_TCP_PORT: ${NETBOOT_HOST_TCP_PORT}
     networks: 
-       - security_network
-    #command:
-      #- --add-host=host.docker.internal:172.17.0.1
-      # Enable a tls challenge named "myresolver"
-      #- "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      #- "--certificatesresolvers.myresolver.acme.email=postmaster@example.com"
-      # Tell to store the certificate on a path under our volume
-      #- "--certificatesresolvers.myresolver.acme.storage=/config/certs/acme.json"
+      - security_network
+    extra_hosts: # Explictly defines the hostnames. Equivalent to write on /etc/hosts within the container
+      - ${SECURITY_SUBDOMAIN_NAME}:${SECURITY_IP}
+      - ${SERVER_SUBDOMAIN_NAME}:${SERVER_IP}
+      - ${NAS_SUBDOMAIN_NAME}:${NAS_IP}
     ports: 
       - ${TRAEFIK_HTTP_PORT}:${TRAEFIK_HTTP_PORT}
       - ${TRAEFIK_HTTPS_PORT}:${TRAEFIK_HTTPS_PORT}
       - ${TRAEFIK_DASHBOARD_HOST_PORT}:${TRAEFIK_DASHBOARD_CONTAINER_PORT} # (Optional) Enable Dashboard, don't do in production as the API does not require authentication
     volumes:
       - ${DOCKER_SOCK}:${DOCKER_SOCK}
-      - ./traefik/config:/etc/traefik/ # Static and Dynamic configuration path
-      - ./traefik/config/certs:/etc/traefik/certs # Certs folder where letsencrypt will store the certificates
-      - ./traefik/config/logs:/etc/traefik/logs # Logs folder
+      - "./traefik/traefik.yaml:/etc/traefik/traefik.yaml" # Static and Dynamic configuration path
+      - "./traefik/certs/acme.json:/etc/traefik/acme.json" # Certs folder where letsencrypt will store the certificates
+      - "./traefik/logs:/etc/traefik/logs" # Logs folder
+    restart: unless-stopped
+
+  cloudflared: # Clodufare tunnel
+    image: cloudflare/cloudflared:latest
+    container_name: custodes-tunnel
+    command: tunnel --no-autoupdate --loglevel error run
+    environment:
+      TZ: ${TZ}
+      TUNNEL_TOKEN: ${SECURITY_CLOUDFARE_TUNNEL_TOKEN}
+    networks:
+      - security_network
+    extra_hosts: # Explictly defines the hostnames. Equivalent to write on /etc/hosts within the container
+      - ${SECURITY_SUBDOMAIN_NAME}:${SECURITY_IP}
+      - ${SERVER_SUBDOMAIN_NAME}:${SERVER_IP}
+      - ${NAS_SUBDOMAIN_NAME}:${NAS_IP}
     restart: unless-stopped
 
   portainer:
     image: docker.io/portainer/portainer-ce:latest
     container_name: portainer
+    command:
+      - --http-enabled
     environment:
       TZ: ${TZ}
     networks:
       - security_network
     ports:
-      - ${PORTAINER_HTTPS_HOST_PORT}:${PORTAINER_HTTPS_CONTAINER_PORT} #HTTPS Login
-      - ${PORTAINER_HTTP_HOST_PORT}:${PORTAINER_HTTP_CONTAINER_PORT} #HTTP Login
+      #- ${PORTAINER_HTTPS_HOST_PORT}:${PORTAINER_HTTPS_CONTAINER_PORT} #HTTPS Login
+      - ${SECURITY_IP}:${PORTAINER_HTTP_HOST_PORT}:${PORTAINER_HTTP_CONTAINER_PORT} #HTTP Login
     volumes:
       - portainer-data:/data
       - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock      
@@ -134,32 +161,14 @@ services:
       - security_network
       #- pihole_macvlan # macvlan to expose pihole as DNS upstream server
     ports: # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
-      - 53:53/tcp
-      - 53:53/udp
-      - ${PIHOLE_HOST_HTTP_PORT}:${PIHOLE_CONTAINER_HTTP_PORT}/tcp 
-      - ${PIHOLE_HOST_HTTPS_PORT}:${PIHOLE_CONTAINER_HTTPS_PORT}/tcp
+      - ${SECURITY_IP}:53:53/tcp
+      - ${SECURITY_IP}:53:53/udp
+      - ${SECURITY_IP}:${PIHOLE_HOST_HTTP_PORT}:${PIHOLE_CONTAINER_HTTP_PORT}/tcp 
+      #- ${SECURITY_IP}:${PIHOLE_HOST_HTTPS_PORT}:${PIHOLE_CONTAINER_HTTPS_PORT}/tcp
     volumes: #TODO move to env and named volumes
       - ./pihole/etc-pihole:/etc/pihole
       - ./pihole/etc-dnsmasq.d:/etc/dnsmasq.d
       # - ./pihole/logs/pihole.log:/var/log/pihole/pihole.log # Path to the logs?
-    restart: unless-stopped
-
-  authelia: # TODO. TS application crashing. Details @ authelia.log
-    image: docker.io/authelia/authelia:latest
-    container_name: authelia
-    environment: # TODO Migrate secrets
-      TZ: ${TZ}
-      AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE: '/secrets/JWT_SECRET'
-      AUTHELIA_SESSION_SECRET_FILE: '/secrets/SESSION_SECRET'
-      AUTHELIA_STORAGE_POSTGRES_PASSWORD_FILE: '/secrets/STORAGE_PASSWORD'
-      AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE: '/secrets/STORAGE_ENCRYPTION_KEY'
-    networks:
-      - security_network
-    ports:
-      - ${AUTHELIA_HOST_PORT}:${AUTHELIA_CONTAINER_PORT}
-    volumes: # TODO Migrate secrets
-      - ./authelia/config:/config
-      - ./authelia/secrets:/secrets # TODO define secrets
     restart: unless-stopped
 
   whatsupdocker:
@@ -170,7 +179,26 @@ services:
     networks:
       - security_network
     ports:
-      - ${WHATSAPPDOCKER_HOST_PORT}:${WHATSAPPDOCKER_CONTAINER_PORT}
+      - ${SECURITY_IP}:${WHATSUPDOCKER_HOST_PORT}:${WHATSUPDOCKER_CONTAINER_PORT}
     volumes:
       - ${DOCKER_SOCK}:${DOCKER_SOCK}
+    restart: unless-stopped
+
+  authelia: # TODO. TS application crashing. Details @ authelia.log
+    image: docker.io/authelia/authelia:latest
+    container_name: authelia
+    environment: # TODO Migrate secrets
+      TZ: ${TZ}
+      JWT_SECRET: ${JWT_SECRET}
+      SESSION_SECRET: ${SESSION_SECRET}
+      STORAGE_PASSWORD: ${STORAGE_PASSWORD}
+      STORAGE_ENCRYPTION_KEY: ${STORAGE_ENCRYPTION_KEY}
+      AUTHELIA_LOG_LEVEL: 'error'
+    networks:
+      - security_network
+    ports:
+      - ${AUTHELIA_HOST_PORT}:${AUTHELIA_CONTAINER_PORT}
+    volumes: # TODO Migrate secrets
+      - ./authelia/config:/config
+      - ./authelia/secrets:/secrets # TODO define secrets
     restart: unless-stopped
