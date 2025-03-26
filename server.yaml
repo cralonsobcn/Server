@@ -35,9 +35,10 @@ volumes:
       #        └── tv
   prometheus-data:
     name: prometheus-data # TODO change volume type
+  mkadocs-data:
+    name: mkdocs-data # TODO
 
 services:
-
 ## ( -- Monitoring and root apps -- )
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
@@ -56,6 +57,7 @@ services:
       HOMEPAGE_VAR_CADVISOR: ${CADVISOR_HOST_PORT}
       HOMEPAGE_VAR_CHANGEDETECTION: ${CHANGEDETECTION_HOST_PORT}
       HOMEPAGE_VAR_CODE: ${CODE_HOST_PORT}
+      HOMEPAGE_VAR_MKDOCS: ${MKDOCS_HOST_PORT}
       HOMEPAGE_VAR_DOZZLE: ${DOZZLE_HOST_PORT}
       HOMEPAGE_VAR_GITEA: ${GITEA_HOST_PORT}
       HOMEPAGE_VAR_GLANCES: ${GLANCES_HOST_PORT}
@@ -67,7 +69,7 @@ services:
       HOMEPAGE_VAR_NETBOOT: ${NETBOOT_HOST_TCP_PORT}
       HOMEPAGE_VAR_PROMETHEUS: ${PROMETHEUS_HOST_PORT}
       HOMEPAGE_VAR_PROWLARR: ${PROWLARR_HOST_PORT}
-      HOMEPAGE_VAR_QBITORRENT: ${QBTORRENT_UI_HOST_PORT}
+      HOMEPAGE_VAR_QBITORRENT: ${QBITORRENT_UI_HOST_PORT}
       HOMEPAGE_VAR_RADARR: ${RADARR_HOST_PORT}
       HOMEPAGE_VAR_READARR: ${READARR_HOST_PORT}
       HOMEPAGE_VAR_REDIS: ${REDIS_HOST_PORT}
@@ -79,7 +81,8 @@ services:
       HOMEPAGE_VAR_PORTAINER: ${PORTAINER_HTTP_HOST_PORT}
       HOMEPAGE_VAR_PIHOLE: ${PIHOLE_HOST_HTTP_PORT}
       HOMEPAGE_VAR_AUTHELIA: ${AUTHELIA_HOST_PORT}
-      HOMEPAGE_VAR_WHATSAPPDOCKER: ${WHATSAPPDOCKER_HOST_PORT}
+      HOMEPAGE_VAR_WHATSUPDOCKER: ${WHATSUPDOCKER_HOST_PORT}
+      HOMEPAGE_VAR_JSONCRACK: ${JSONCRACK_HOST_PORT}
     networks:
       - internal_network
     ports:
@@ -105,6 +108,8 @@ services:
       - readarr
       - jellyseerr
       - dozzle
+      - jsoncrack
+      - documentation
     restart: unless-stopped
 
   glances:
@@ -219,6 +224,19 @@ services:
       - ${DOCKER_SOCK}:${DOCKER_SOCK}
     restart: unless-stopped
 
+  cloudflared: # Cloudfare tunnel
+    image: cloudflare/cloudflared:latest
+    container_name: mechanicus-tunnel
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${MECHANICUS_CLOUDFARE_TUNNEL_TOKEN}
+    networks:
+      - internal_network
+    extra_hosts: # Explictly defines the hostnames. Equivalent to write on /etc/hosts within the container
+      - custodes:${SECURITY_IP}
+      - mechanicus:${SERVER_IP}
+      - librarius:${NAS_IP}
+    restart: unless-stopped
 
 ## ( -- Apps -- )
   it-tools: 
@@ -297,6 +315,35 @@ services:
       - ${CHANGEDETECTION_HOST_PORT}:${CHANGEDETECTION_CONTAINER_PORT}
     volumes:
       - ./changedetection/config:/config # Persistent config files
+    restart: unless-stopped
+
+  jsoncrack:
+    image: jsoncrack
+    container_name: jsoncrack
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      NODE_ENV: "production[cristian@mechanicus jsoncrack.com]$"
+    networks:
+      - internal_network
+    ports:
+      - ${JSONCRACK_HOST_PORT}:${JSONCRACK_CONTAINER_PORT}
+    restart: unless-stopped
+
+  documentation:
+    image: docker.io/squidfunk/mkdocs-material:latest
+    container_name: documentation
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${MKDOCS_HOST_PORT}:${MKDOCS_CONTAINER_PORT}
+    volumes:
+      - "./mkdocs:/docs" # TODO map to named volume documentation-data
     restart: unless-stopped
 
 ## ( -- ARR Stack -- )
