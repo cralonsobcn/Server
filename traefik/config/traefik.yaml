@@ -1,4 +1,5 @@
 # ( --- Static Configuration --- )
+
 global:
   checkNewVersion: true
   sendAnonymousUsage: false
@@ -11,13 +12,13 @@ providers:
 
 api:
   dashboard: true # Enables Traefik dashboard
-  insecure: true # Enable the API in insecure mode, which means that the API will be available directly on the entryPoint named traefik, on path /api
+  insecure: true # Enable the API in insecure mode.
   disabledashboardad: true
   debug: true # Enable additional endpoints for debugging and profiling, served under /debug/
 
 log:
-  level: DEBUG # Switch to ERROR in production env
-  filePath: /etc/traefik/logs/traefik.log  # Mount this path in the volumes section of the docker compose
+  level: ERROR # Switch to ERROR in production env
+  filePath: /etc/traefik/logs/traefik.log # Mount this path in the volumes section of the docker compose
   format: common  # format [common, json, logfmt]
   maxBackups: 3 # maximum number of old log files to retain.
   maxAge: 7 # maximum number of days to retain old log files based on the timestamp encoded in their filename
@@ -25,7 +26,7 @@ log:
 accesslog:
   format: common  # format [common, json, logfmt]
   addInternals: true # Enables access logs for internal resources 
-  filePath: /etc/traefik/logs/access.log  # Mount this path in the volumes section of the docker compose
+  filePath: /etc/traefik/logs/access.log
 
 tracing:
   addInternals: true
@@ -36,65 +37,58 @@ metrics:
   prometheus:
     addEntryPointsLabels: true # Enable metrics on entry points.
     addRoutersLabels: true # Enable metrics on routers.
-    addServicesLabels: true
+    addServicesLabels: true # Enable metrics on services.
+    entryPoint: metrics
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0
 
 entryPoints:
   web:
     address: ":80"
+    observability:
+      tracing: true # Enables tracing for http
     http: # Redirect to https
       redirections:
         entryPoint:
           to: websecure
           scheme: https
   websecure:
+    observability:
+      tracing: true # Enables tracing for https
     address: ":443"
-  metrics: # Entrypoint for Prometheus scrapper
-    address: ":8082"
-
-serversTransport:
-  insecureSkipVerify: true
-
-certificatesResolvers:
-  security-resolver: # Names the resolvers 
-    acme:
-      tlschallenge: true
-      email: '{{env "EMAIL"}}'
-      certificatesDuration: 30
-      storage: ./traefik/config/certs/security.json # File path used for certificates storage.
-      #dnsChallenge:
-      #  provider: cloudflare  # <-- (Optional) Change this to your DNS provider
-      #  resolvers:
-      #    - "1.1.1.1:53"
-      #    - "8.8.8.8:53"
-  server-resolver: 
-    acme:
-      tlschallenge: true
-      email: '{{env "EMAIL"}}'
-      certificatesDuration: 30
-      storage: ./traefik/config/certs/server.json
-  nas-resolver: 
-    acme:
-      tlschallenge: true
-      email: '{{env "EMAIL"}}'
-      certificatesDuration: 30
-      storage: ./traefik/config/certs/nas.json
+  metrics:
+    address: :8082
 
 # ( --- Dynamic Configuration --- )
+
+certificatesResolvers:
+  cloudflareResolver:
+    acme:
+      email: '{{env "TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARE_ACME_EMAIL"}}'
+      storage: /etc/traefik/acme.json
+      # https://acme-v02.api.letsencrypt.org/directory
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      dnsChallenge:
+        provider: cloudflare
+        delayBeforeCheck: 10
+        disablePropagationCheck: true
+        resolvers: # Explicitly add Cloudflare resolvers
+          - "1.1.1.2:53"
+          - "1.0.0.2:53"
 
 http:
   routers:
   # ( --- Security Routers--- )
     portainer:
-      entryPoints: # Allows request only from the predefined entry point named "web" and "websecure" (http and https respectively).
-        - web
+      entryPoints: # Allows request only from the predefined entry points named "web" and "websecure" (http and https respectively).
         - websecure
-      rule: Host(`portainer.localhost`)       # The domain portainer.localhost will resolve but portainer.mechanicus doesn't
-                                              # Mechanicus is addded in my personal router as DNS record (A)
-                                              # pinging this address uses ipv6????
-            #PathPrefix(`/portainer`)
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.portainer.{{env "DOMAIN_NAME"}}`)
       service: portainer # References the service
       tls:
-        certResolver: security-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -102,38 +96,23 @@ http:
 
     traefik:
       entryPoints:
-        - web
         - websecure
-      rule: Host(`traefik.localhost`)
-      service: pihole
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.traefik.{{env "DOMAIN_NAME"}}`)
+      service: traefik
       tls:
-        certResolver: security-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
         metrics: true 
  
-    pihole:
+    pihole:  # TODO Fix redirection rule to /admin
       entryPoints:
-        - web
         - websecure
-      rule: Host(`pihole.localhost`)
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.pihole.{{env "DOMAIN_NAME"}}`)
       service: pihole
       tls:
-        certResolver: security-resolver
-      observability:
-        accessLogs: true
-        tracing: true
-        metrics: true
-
-    authelia:
-      entryPoints:
-        - web
-        - websecure
-      rule: Host(`authelia.localhost`)
-      service: authelia
-      tls:
-        certResolver: security-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -141,12 +120,23 @@ http:
 
     whatsupdocker: 
       entryPoints:
-        - web
         - websecure
-      rule: Host(`whatsupdocker.localhost`)
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.whatsupdocker.{{env "DOMAIN_NAME"}}`)
       service: whatsupdocker
       tls:
-        certResolver: security-resolver
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+
+    authelia:
+      entryPoints:
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.authelia.{{env "DOMAIN_NAME"}}`)
+      service: authelia
+      tls:
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -156,12 +146,11 @@ http:
 
     homepage: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`homepage.localhost`)
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.{{env "DOMAIN_NAME"}}`)
       service: homepage
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -169,12 +158,11 @@ http:
 
     dozzle: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`dozzle.localhost`)
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.dozzle.{{env "DOMAIN_NAME"}}`)
       service: dozzle
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -182,25 +170,23 @@ http:
 
     glances: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`glances.localhost`)
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.glances.{{env "DOMAIN_NAME"}}`)
       service: glances
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
         metrics: true
 
-    uptime-kuma: 
+    uptimekuma: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`uptime-kuma.localhost`)
-      service: uptime-kuma 
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.uptimekuma.{{env "DOMAIN_NAME"}}`)
+      service: uptimekuma
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -208,12 +194,11 @@ http:
 
     prometheus: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`prometheus.localhost`)
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.prometheus.{{env "DOMAIN_NAME"}}`)
       service: prometheus
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -221,12 +206,11 @@ http:
 
     cadvisor: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`cadvisor.localhost`)
-      service: cadvisor 
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.cadvisor.{{env "DOMAIN_NAME"}}`)
+      service: cadvisor
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -234,51 +218,47 @@ http:
 
     grafana: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`grafana.localhost`)
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.grafana.{{env "DOMAIN_NAME"}}`)
       service: grafana
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
         metrics: true
 
-    it-tools: 
+    ittools: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`it-tools.localhost`)
-      service: it-tools 
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.ittools.{{env "DOMAIN_NAME"}}`)
+      service: ittools
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
         metrics: true
 
-    web-check: 
+    webcheck: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`web-check.localhost`)
-      service: web-check
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.webcheck.{{env "DOMAIN_NAME"}}`)
+      service: webcheck
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
         metrics: true
 
-    codeServer: 
+    codeserver: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`codeServer.localhost`)
-      service: codeServer
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.codeserver.{{env "DOMAIN_NAME"}}`)
+      service: codeserver
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -286,12 +266,11 @@ http:
 
     stirling: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`stirling.localhost`)
-      service: stirling 
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.stirling.{{env "DOMAIN_NAME"}}`)
+      service: stirling
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -299,12 +278,11 @@ http:
 
     changedetection: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`changedetection.localhost`)
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.changedetection.{{env "DOMAIN_NAME"}}`)
       service: changedetection
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -312,12 +290,11 @@ http:
 
     radarr: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`radarr.localhost`)
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.radarr.{{env "DOMAIN_NAME"}}`)
       service: radarr
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -325,12 +302,11 @@ http:
 
     sonarr: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`sonarr.localhost`)
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.sonarr.{{env "DOMAIN_NAME"}}`)
       service: sonarr
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -338,25 +314,23 @@ http:
 
     prowlarr: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`prowlarr.localhost`)
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.prowlarr.{{env "DOMAIN_NAME"}}`)
       service: prowlarr
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
         metrics: true
 
     readarr: 
-      entryPoints: 
-        - web
+      entryPoints:
         - websecure
-      rule: Host(`readarr.localhost`)
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.readarr.{{env "DOMAIN_NAME"}}`)
       service: readarr 
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
@@ -364,20 +338,80 @@ http:
 
     jellyseerr: 
       entryPoints: 
-        - web
         - websecure
-      rule: Host(`jellyseerr.localhost`)
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.jellyseerr.{{env "DOMAIN_NAME"}}`)
       service: jellyseerr
       tls:
-        certResolver: server-resolver
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+
+    jsoncrack: 
+      entryPoints: 
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.jsoncrack.{{env "DOMAIN_NAME"}}`)
+      service: jsoncrack
+      tls:
+        certResolver: cloudflareResolver
       observability:
         accessLogs: true
         tracing: true
         metrics: true
 
   # ( --- NAS Routers--- )
+    jellyfin: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "NAS_SUBDOMAIN_NAME"}}.jellyfin.{{env "DOMAIN_NAME"}}`)
+      service: jellyfin
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
 
+    gitea: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "NAS_SUBDOMAIN_NAME"}}.gitea.{{env "DOMAIN_NAME"}}`)
+      service: gitea
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
 
+    qbittorrent: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "NAS_SUBDOMAIN_NAME"}}.qbittorrent.{{env "DOMAIN_NAME"}}`)
+      service: qbittorrent
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+
+    netbootxyz: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "NAS_SUBDOMAIN_NAME"}}.netbootxyz.{{env "DOMAIN_NAME"}}`)
+      service: netbootxyz
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
 
   services:
   # ( --- Security Services--- )
@@ -385,15 +419,7 @@ http:
       loadBalancer:
         servers:
           - url: http://{{env "SECURITY_IP"}}:{{env "PORTAINER_HTTP_HOST_PORT"}} # Specify the port to be used by the service. Does not map to the correct port unless explicitly specified.
-            # weight: 100
             preservePath: true  # The preservePath option allows to preserve the URL path. When a health check is configured for the server, the path is not preserved.
-        passHostHeader: true
-
-    pihole:
-      loadBalancer:
-        servers:
-          - url: http://{{env "SECURITY_IP"}}:{{env "PIHOLE_HOST_PORT"}}/admin
-            preservePath: true
         passHostHeader: true
 
     traefik:
@@ -403,18 +429,25 @@ http:
             preservePath: true
         passHostHeader: true
 
-    authelia: 
+    pihole:
       loadBalancer:
         servers:
-          - url: http://{{env "SECURITY_IP"}}:{{env "AUTHELIA_HOST_PORT"}} 
+          - url: http://{{env "SECURITY_IP"}}:{{env "PIHOLE_HOST_PORT"}}
             preservePath: true
         passHostHeader: true
 
     whatsupdocker:
       loadBalancer:
         servers:
-          - url: http://{{env "SECURITY_IP"}}:{{env "WHATSAPPDOCKER_HOST_PORT"}}
+          - url: http://{{env "SECURITY_IP"}}:{{env "WHATSUPDOCKER_HOST_PORT"}}
             preservePath: true 
+        passHostHeader: true
+
+    authelia: 
+      loadBalancer:
+        servers:
+          - url: http://{{env "SECURITY_IP"}}:{{env "AUTHELIA_HOST_PORT"}} 
+            preservePath: true
         passHostHeader: true
 
   # ( --- Server Services--- )
@@ -440,7 +473,7 @@ http:
             preservePath: true
         passHostHeader: true
 
-    uptime-kuma:
+    uptimekuma:
       loadBalancer:
         servers:
           - url: http://{{env "SERVER_IP"}}:{{env "UPTIMEKUMA_HOST_PORT"}}
@@ -468,21 +501,21 @@ http:
             preservePath: true
         passHostHeader: true  
 
-    it-tools:
+    ittools:
       loadBalancer:
         servers:
           - url: http://{{env "SERVER_IP"}}:{{env "ITTOOLS_HOST_PORT"}}
             preservePath: true
         passHostHeader: true 
 
-    web-check:
+    webcheck:
       loadBalancer:
         servers:
           - url: http://{{env "SERVER_IP"}}:{{env "WEBCHECK_HOST_PORT"}}
             preservePath: true
         passHostHeader: true
 
-    codeServer:
+    codeserver:
       loadBalancer:
         servers:
           - url: http://{{env "SERVER_IP"}}:{{env "CODE_HOST_PORT"}}
@@ -538,4 +571,38 @@ http:
             preservePath: true
         passHostHeader: true
 
+    jsoncrack:
+      loadBalancer:
+        servers:
+          - url: http://{{env "SERVER_IP"}}:{{env "JSONCRACK_HOST_PORT"}}
+            preservePath: true
+        passHostHeader: true
+
   # ( --- NAS Services--- )
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: http://{{env "NAS_IP"}}:{{env "JELLYFIN_HOST_PORT"}}
+            preservePath: true
+        passHostHeader: true
+
+    gitea:
+      loadBalancer:
+        servers:
+          - url: http://{{env "NAS_IP"}}:{{env "GITEA_HOST_PORT"}}
+            preservePath: true
+        passHostHeader: true
+
+    qbittorrent:
+      loadBalancer:
+        servers:
+          - url: http://{{env "NAS_IP"}}:{{env "QBITORRENT_UI_HOST_PORT"}}
+            preservePath: true
+        passHostHeader: true
+
+    netbootxyz:
+      loadBalancer:
+        servers:
+          - url: http://{{env "NAS_IP"}}:{{env "NETBOOT_HOST_TCP_PORT"}}
+            preservePath: true
+        passHostHeader: true
