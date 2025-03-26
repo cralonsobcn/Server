@@ -1,0 +1,43 @@
+# Project information
+site_name: "Mechanicus Documentation"
+site_description: "MkDocs Material Boilerplate (Starter Kit) - Deploy documentation to hosting platforms (Netlify, GitHub Pages, GitLab Pages, and AWS Amplify Console) with Docker, pipenv, and GitHub Actions."
+site_author: "Cristian"
+site_url: ""
+
+# Copyright
+copyright: ""
+
+# Repository
+repo_name: "GitHub"
+repo_url: ""
+edit_uri: ""
+
+# Configuration
+docs_dir: "docs"
+theme:
+  name: "material"
+  language: "en"
+  shortcuts:
+    help: 191 # ?
+    next: 78 # n
+    previous: 80 # p
+    search: 83 # s
+  palette:
+    primary: "blue"
+    accent: "blue"
+  features:
+    - tabs
+  #font:
+  #text: 'Ubuntu'
+  #code: 'Ubuntu Mono'
+  #icon:
+  #logo: 'images/logo.svg'
+  #favicon: 'assets/images/favicon.ico'
+
+# Extensions
+
+plugins:
+  - search:
+      separator: '[\s\-\.]+'
+      lang:
+        - en
