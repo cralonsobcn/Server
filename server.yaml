@@ -40,6 +40,22 @@ volumes:
 
 services:
 ## ( -- Monitoring and root apps -- )
+  cloudflared: # Cloudfare tunnel
+    image: cloudflare/cloudflared:latest
+    container_name: mechanicus-tunnel
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${SERVER_CLOUDFARE_TUNNEL_TOKEN}
+    networks:
+      - internal_network
+    extra_hosts: # Explictly defines the hostnames. Equivalent to write on /etc/hosts within the container
+      - ${SECURITY_SUBDOMAIN_NAME}:${SECURITY_IP}
+      - ${SERVER_SUBDOMAIN_NAME}:${SERVER_IP}
+      - ${NAS_SUBDOMAIN_NAME}:${NAS_IP}
+    depends_on:
+      - homepage
+    restart: unless-stopped
+    
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
@@ -53,36 +69,41 @@ services:
       HOMEPAGE_VAR_STEAM: ${STEAM_URL}
       HOMEPAGE_VAR_DISCORD_ID: ${DISCORD_WIDGET_ID}
       HOMEPAGE_VAR_DOCKER: ${DOCKER_SOCK}
-      # PORTS
+      HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME: ${SERVER_SUBDOMAIN_NAME}
+      HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME: ${SECURITY_SUBDOMAIN_NAME}
+      HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME: ${NAS_SUBDOMAIN_NAME}
+      HOMEPAGE_VAR_DOMAIN_NAME: ${DOMAIN_NAME}
+      # SERVER PORTS
       HOMEPAGE_VAR_CADVISOR: ${CADVISOR_HOST_PORT}
       HOMEPAGE_VAR_CHANGEDETECTION: ${CHANGEDETECTION_HOST_PORT}
       HOMEPAGE_VAR_CODE: ${CODE_HOST_PORT}
       HOMEPAGE_VAR_MKDOCS: ${MKDOCS_HOST_PORT}
       HOMEPAGE_VAR_DOZZLE: ${DOZZLE_HOST_PORT}
-      HOMEPAGE_VAR_GITEA: ${GITEA_HOST_PORT}
       HOMEPAGE_VAR_GLANCES: ${GLANCES_HOST_PORT}
       HOMEPAGE_VAR_GRAFANA: ${GRAFANA_HOST_PORT}
       HOMEPAGE_VAR_HOMEPAGE: ${HOMEPAGE_HOST_PORT}
       HOMEPAGE_VAR_ITTOOLS: ${ITTOOLS_HOST_PORT}
-      HOMEPAGE_VAR_JELLYFIN: ${JELLYFIN_HOST_PORT}
       HOMEPAGE_VAR_JELLYSEERR: ${JELLYSEERR_HOST_PORT}
-      HOMEPAGE_VAR_NETBOOT: ${NETBOOT_HOST_TCP_PORT}
       HOMEPAGE_VAR_PROMETHEUS: ${PROMETHEUS_HOST_PORT}
       HOMEPAGE_VAR_PROWLARR: ${PROWLARR_HOST_PORT}
-      HOMEPAGE_VAR_QBITORRENT: ${QBITORRENT_UI_HOST_PORT}
       HOMEPAGE_VAR_RADARR: ${RADARR_HOST_PORT}
       HOMEPAGE_VAR_READARR: ${READARR_HOST_PORT}
-      HOMEPAGE_VAR_REDIS: ${REDIS_HOST_PORT}
       HOMEPAGE_VAR_SONARR: ${SONARR_HOST_PORT}
       HOMEPAGE_VAR_STIRLING: ${STIRLING_HOST_PORT}
+      HOMEPAGE_VAR_WEBCHECK: ${WEBCHECK_HOST_PORT}
+      HOMEPAGE_VAR_JSONCRACK: ${JSONCRACK_HOST_PORT}
+      # NAS PORTS
+      HOMEPAGE_VAR_JELLYFIN: ${JELLYFIN_HOST_PORT}
+      HOMEPAGE_VAR_GITEA: ${GITEA_HOST_PORT}
+      HOMEPAGE_VAR_QBITORRENT: ${QBITORRENT_UI_HOST_PORT}
+      HOMEPAGE_VAR_NETBOOT: ${NETBOOT_HOST_TCP_PORT}
+      # SECURITY PORTS
       HOMEPAGE_VAR_TRAEFIK: ${TRAEFIK_DASHBOARD_HOST_PORT}
       HOMEPAGE_VAR_UPTIMEKUMA: ${UPTIMEKUMA_HOST_PORT}
-      HOMEPAGE_VAR_WEBCHECK: ${WEBCHECK_HOST_PORT}
       HOMEPAGE_VAR_PORTAINER: ${PORTAINER_HTTP_HOST_PORT}
       HOMEPAGE_VAR_PIHOLE: ${PIHOLE_HOST_HTTP_PORT}
       HOMEPAGE_VAR_AUTHELIA: ${AUTHELIA_HOST_PORT}
       HOMEPAGE_VAR_WHATSUPDOCKER: ${WHATSUPDOCKER_HOST_PORT}
-      HOMEPAGE_VAR_JSONCRACK: ${JSONCRACK_HOST_PORT}
     networks:
       - internal_network
     ports:
@@ -94,8 +115,9 @@ services:
     depends_on:
       - glances
       - uptime-kuma
-      - prometheus
+      - prometheus # depends on cadvisor
       - grafana
+      - dozzle
       - node_exporter
       - it-tools
       - web-check
@@ -107,7 +129,6 @@ services:
       - prowlarr
       - readarr
       - jellyseerr
-      - dozzle
       - jsoncrack
       - documentation
     restart: unless-stopped
@@ -222,20 +243,6 @@ services:
       - ${DOZZLE_HOST_PORT}:${DOZZLE_CONTAINER_PORT}
     volumes:
       - ${DOCKER_SOCK}:${DOCKER_SOCK}
-    restart: unless-stopped
-
-  cloudflared: # Cloudfare tunnel
-    image: cloudflare/cloudflared:latest
-    container_name: mechanicus-tunnel
-    command: tunnel --no-autoupdate run
-    environment:
-      TUNNEL_TOKEN: ${MECHANICUS_CLOUDFARE_TUNNEL_TOKEN}
-    networks:
-      - internal_network
-    extra_hosts: # Explictly defines the hostnames. Equivalent to write on /etc/hosts within the container
-      - custodes:${SECURITY_IP}
-      - mechanicus:${SERVER_IP}
-      - librarius:${NAS_IP}
     restart: unless-stopped
 
 ## ( -- Apps -- )
