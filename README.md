@@ -29,6 +29,7 @@ Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), 
 - [Change Detection](https://docs.linuxserver.io/images/docker-changedetection.io/#linuxserverchangedetectionio)
 - [Stirling PDF](https://docs.stirlingpdf.com/Installation/Docker%20Install/)
 - [Code Server](https://hub.docker.com/r/linuxserver/code-server)
+- [Jsoncrack](https://github.com/AykutSarac/jsoncrack.com)
 - [Uptime Kuma](https://github.com/louislam/uptime-kuma)
 - [Glances](https://github.com/nicolargo/glances)
 - [Prometheus](https://prometheus.io/docs/prometheus/latest/installation/)
@@ -51,7 +52,7 @@ Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), 
 ## Deployment
 As easy as typing in the command:
 
-```docker compose -f server.yml --env-file my-env.env up -d```
+```docker compose -f compose-file.yml up -d```
 
 ## Transcoding
 Some media applications such as Jellyfin require hardware acceleration. This will improve CPU usage as the main load will be carried over by the iGPU.
@@ -67,9 +68,7 @@ Example:
 ```
 
 ### TODO
-- Finish Traefik implementation.
 - Implement VPN.
-- Implement Cloudfare Tunnel + Switch from acme certificates to cloudfare certificates.
 - Perform iperf3 tests on all the devices.
 - Migrate env passwords to secrets.
 - Implement 2FA and IAM with Authelia.
@@ -79,4 +78,3 @@ Example:
 - Implement Grafana.
 - Implement cronjob to prune unused images and unused volumes.
 - Review the Networking diagram + validate and refine the firewall policies.
-
