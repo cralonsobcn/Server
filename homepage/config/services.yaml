@@ -3,7 +3,7 @@
 
 - Traefik:
     - Traefik:
-        href: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_TRAEFIK}}
+        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.traefik.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Traefik
         icon: traefik.png
         ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_TRAEFIK}} # TODO endpoint shows healthy but not running
@@ -11,7 +11,7 @@
         container: traefik
         widget:
             type: traefik
-            url: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_TRAEFIK}}
+            url: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.traefik.{{HOMEPAGE_VAR_DOMAIN_NAME}}
             # username: username # optional
             # password: password # optional
 
@@ -20,37 +20,37 @@
         widget:
             type: glances
             version: 4
-            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
+            url: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.glances.{{HOMEPAGE_VAR_DOMAIN_NAME}}
             metric: cpu
     - Memory Usage:
         widget:
             type: glances
             version: 4
-            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
+            url: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.glances.{{HOMEPAGE_VAR_DOMAIN_NAME}}
             metric: memory
     - Disk I/O:
         widget:
             type: glances
             version: 4
-            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
+            url: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.glances.{{HOMEPAGE_VAR_DOMAIN_NAME}}
             metric: disk:sda
             chart: true
     - System Info:
         widget:
             type: glances
             version: 4
-            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
+            url: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.glances.{{HOMEPAGE_VAR_DOMAIN_NAME}}
             metric: info
 
 - Prometheus:
     - Target Overview:
         widget:
             type: prometheus
-            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+            url: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.prometheus.{{HOMEPAGE_VAR_DOMAIN_NAME}}
     - CPU Usage Average:
         widget:
             type: prometheusmetric
-            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+            url: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.prometheus.{{HOMEPAGE_VAR_DOMAIN_NAME}}
             refreshinterval: 15000
             metrics:
                 - label: Average CPU/min
@@ -62,7 +62,7 @@
     - Docker Disk and Memory:
         widget:
             type: prometheusmetric
-            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+            url: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.prometheus.{{HOMEPAGE_VAR_DOMAIN_NAME}}
             refreshinterval: 15000
             metrics:
                 - label: Disk I/O
@@ -76,7 +76,7 @@
     - Docker Network Sent:
         widget:
             type: prometheusmetric
-            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+            url: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.prometheus.{{HOMEPAGE_VAR_DOMAIN_NAME}}
             refreshinterval: 15000
             metrics:
                 - label: Total Sent
@@ -94,7 +94,7 @@
     - Docker Network Received:
         widget:
             type: prometheusmetric
-            url: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+            url: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.prometheus.{{HOMEPAGE_VAR_DOMAIN_NAME}}
             refreshinterval: 15000
             metrics:
                 - label: Total Received
@@ -112,42 +112,42 @@
 
 - Observability:
     - Uptime Kuma:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_UPTIMEKUMA}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.uptimekuma.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: "L7 and L4 health checks"
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/uptime-kuma.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_UPTIMEKUMA}}
         server: docker-server
         container: uptime-kuma
     - Prometheus:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.prometheus.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Prometheus
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/prometheus.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
         server: docker-server
         container: prometheus
     - Grafana:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GRAFANA}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.grafana.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Grafana
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/grafana.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GRAFANA}}
         server: docker-server
         container: grafana
     - Glances:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.glances.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Glances
         icon: glances.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
         server: docker-server
         container: glances
     - cAdvisor:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CADVISOR}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.cadvisor.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Detailed Container metrics
         icon: cadvisor.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CADVISOR}}
         server: docker-server
         container: cadvisor
     - Dozzle:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_DOZZLE}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.dozzle.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Container logging
         icon: dozzle.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_DOZZLE}}
@@ -156,128 +156,142 @@
 
 - Apps:
     - IT Tools:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_ITTOOLS}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.ittools.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Interesting IT Aplications (quality of life improvement)
         icon: kubernetes.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_ITTOOLS}}
         server: docker-server
         container: it_tools
     - Web Check:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_WEBCHECK}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.webcheck.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Website analysis
         icon: chrome.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_WEBCHECK}}
         server: docker-server
         container: Web-Check
     - Code Server:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CODE}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.codeserver.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: VS Code
         icon: vscode.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CODE}}
         server: docker-server
         container: code-server
     - Stirling:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_STIRLING}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.stirling.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Stirling PDF
         icon: stirling-pdf.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_STIRLING}}
         server: docker-server
         container: stirling
     - Change Detection:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CHANGEDETECTION}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.changedetection.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Change Detection
         icon: changedetection.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CHANGEDETECTION}}
         server: docker-server
         container: changedetection
+    - MKDocs:
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.mkdocs.{{HOMEPAGE_VAR_DOMAIN_NAME}}
+        description: MKDocs TODO
+        icon: mkdocs.png
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_MKDOCS}}
+        server: docker-server
+        container: documentation
     - Portainer:
-        href: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PORTAINER}}
+        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.portainer.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Portainer
         icon: portainer.png
         ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PORTAINER}}
         server: docker-security
         container: portainer
     - Pihole:
-        href: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PIHOLE}}/admin/login  
+        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.pihole.{{HOMEPAGE_VAR_DOMAIN_NAME}}/admin/login  
         description: Pihole DNS
         icon: pi-hole.png
         ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PIHOLE}} # TODO endpoint shows healthy but not running
         server: docker-security
         container: pihole
     - Whats Up Docker:
-        href: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_WHATSAPPDOCKER}}
+        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.whatsupdocker.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Update docker images
         icon: whats-up-docker-light.png
-        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_WHATSAPPDOCKER}} # TODO endpoint shows healthy but not running
+        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_WHATSUPDOCKER}} # TODO endpoint shows healthy but not running
         server: docker-security 
         container: whatsupdocker
     - Authelia:
-        href: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_AUTHELIA}}
+        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.authelia.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: 2FA
         icon: authelia.png
         ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_AUTHELIA}}
         server: docker-security
         container: authelia
     - Jellyfin:
-        href: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_JELLYFIN}}
+        href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.jellyfin.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Jellyfin media player
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/svg/jellyfin.svg
         ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_JELLYFIN}}
         server: docker-nas
         container: jellyfin
     - Gitea:
-        href: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_GITEA}}
+        href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.gitea.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Gitea. Private GIT repo in the cloud 
         icon: gitea.png
         ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_GITEA}}
         server: docker-nas
         container: gitea
     - NetbootXYZ:
-        href: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_NETBOOT}}
+        href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.netbootxyz.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: NetbootXYZ 
         icon: netboot.png
         ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_NETBOOT}}
         server: docker-nas
-        container: netbootxyz  
+        container: netbootxyz
+    - Jsoncrack:
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.jsoncrack.{{HOMEPAGE_VAR_DOMAIN_NAME}}/editor
+        description: jsoncrack
+        icon: mdi-code-braces
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_JSONCRACK}}
+        server: docker-server
+        container: jsoncrack
 
 - Arr:
     - Prowlarr:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROWLARR}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.prowlarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: prowlarr indexer
         icon: prowlarr.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROWLARR}}
         server: docker-server
         container: prowlarr
     - Sonarr:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_SONARR}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.sonarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Sonarr for Movies
         icon: sonarr.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_SONARR}}
         server: docker-server
         container: sonarr
     - Radarr:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_RADARR}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.radarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Radarr for TV Shows
         icon: radarr.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_RADARR}}
         server: docker-server
         container: radarr
     - Readarr:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_READARR}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.readarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Readarr for Books
         icon: readarr.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_READARR}}
         server: docker-server
         container: readarr
     - Jellyseerr:
-        href: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_JELLYSEERR}}
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.jellyseerr.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Jellyseer
         icon: jellyseerr.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_JELLYSEERR}}
         server: docker-server
         container: jellyseerr
     - QBitorrent:
-        href: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_QBITORRENT}}
+        href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.qbitorrent.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: qbittorrent
         icon: qbittorrent.png
         ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_QBITORRENT}}
