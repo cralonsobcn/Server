@@ -32,7 +32,21 @@ services:
     volumes:
       - ${DOCKER_SOCK}:${DOCKER_SOCK}:ro # Mounted as read-only
     restart: unless-stopped
-    
+
+  cloudflared: # Cloudfare tunnel
+    image: cloudflare/cloudflared:latest
+    container_name: nas-tunnel
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${NAS_CLOUDFARE_TUNNEL_TOKEN}
+    networks:
+      - nas_network
+    extra_hosts: # Explictly defines the hostnames. Equivalent to write on /etc/hosts within the container
+      - ${SECURITY_SUBDOMAIN_NAME}:${SECURITY_IP}
+      - ${SERVER_SUBDOMAIN_NAME}:${SERVER_IP}
+      - ${NAS_SUBDOMAIN_NAME}:${NAS_IP}
+    restart: unless-stopped
+
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
@@ -87,14 +101,14 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
-      WEBUI_PORT: ${QBTORRENT_UI_HOST_PORT}
-      TORRENTING_PORT: ${QBTORRENT_TORRENTING_HOST_PORT}
+      WEBUI_PORT: ${QBITORRENT_UI_HOST_PORT}
+      TORRENTING_PORT: ${QBITORRENT_TORRENTING_HOST_PORT}
     networks:
       - nas_network
     ports:
-      - ${QBTORRENT_UI_HOST_PORT}:${QBTORRENT_UI_CONTAINER_PORT}
-      - ${QBTORRENT_TORRENTING_HOST_PORT}:${QBTORRENT_TORRENTING_CONTAINER_PORT}/tcp
-      - ${QBTORRENT_TORRENTING_HOST_PORT}:${QBTORRENT_TORRENTING_CONTAINER_PORT}/udp
+      - ${QBITORRENT_UI_HOST_PORT}:${QBITORRENT_UI_CONTAINER_PORT}
+      - ${QBITORRENT_TORRENTING_HOST_PORT}:${QBITORRENT_TORRENTING_CONTAINER_PORT}/tcp
+      - ${QBITORRENT_TORRENTING_HOST_PORT}:${QBITORRENT_TORRENTING_CONTAINER_PORT}/udp
     volumes:
       - ./qbittorrent/appdata:/config # Contains all relevant configuration files.
       - ./qbittorrent/downloads:/downloads # Location of downloads on disk. This will be mapped to a different folder 
@@ -124,3 +138,66 @@ services:
       - ./netbootxyz/config:/config # Storage for boot menu files and web application config
       - ./netbootxyz/assets:/assets # optional # Storage for NETBOOT.XYZ bootable assets (live CDs and other files)
     restart: unless-stopped
+
+  scrutiny-db: # TODO https://github.com/AnalogJ/scrutiny
+    image: influxdb:2.2
+    container_name: scrutiny-db
+    networks:
+      - nas_network
+    ports:
+      - ${SCRUTINYDB_HOST_PORT}:${SCRUTINYDB_CONTAINER_PORT}
+    volumes:
+      - ./scrutiny/influxdb:/var/lib/influxdb2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://${NAS_IP}:${SCRUTINYDB_HOST_PORT}/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+    restart: unless-stopped
+
+  scrutiny-web:
+    image: ghcr.io/analogj/scrutiny:master-web
+    container_name: "scrutiny-web"
+    networks:
+      - nas_network
+    ports:
+      - ${SCRUTINY_HOST_PORT}:${SCRUTINY_CONTAINER_PORT}
+    volumes:
+      - ./scrutiny/config:/opt/scrutiny/config
+    environment:
+      SCRUTINY_WEB_INFLUXDB_HOST: "scrutiny-db"
+    depends_on:
+      scrutiny-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://${NAS_IP}:${SCRUTINY_HOST_PORT}/api/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
+
+  scrutiny-collector:
+    image: ghcr.io/analogj/scrutiny:master-collector
+    container_name: "scrutiny-collector"
+    environment:
+      COLLECTOR_API_ENDPOINT: http://${NAS_IP}:${SCRUTINY_HOST_PORT}
+      COLLECTOR_HOST_ID: "scrutiny-collector"
+      # If true forces the collector to run on startup (cron will be started after the collector completes)
+      # see: https://github.com/AnalogJ/scrutiny/blob/master/docs/TROUBLESHOOTING_DEVICE_COLLECTOR.md#collector-trigger-on-startup
+      COLLECTOR_RUN_STARTUP: false
+    cap_add:
+      - SYS_RAWIO
+    networks:
+      - nas_network
+    volumes:
+      - /run/udev:/run/udev:ro
+    depends_on:
+      scrutiny-web:
+        condition: service_healthy
+    devices:
+      - "/dev/sda"
+      #- "/dev/sdb"
+    restart: unless-stopped
+
+    
