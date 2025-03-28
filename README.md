@@ -24,7 +24,7 @@ Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), 
 - [Prometheus](https://prometheus.io/docs/prometheus/latest/installation/)
 - [cAdvisor](https://prometheus.io/docs/guides/cadvisor/#docker-compose-configuration)
 - [Grafana](https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/)
-- [Dozzle] (https://dozzle.dev/guide/getting-started#standalone-docker)
+- [Dozzle](https://dozzle.dev/guide/getting-started#standalone-docker)
 - [Prowlarr](https://docs.linuxserver.io/images/docker-prowlarr/)
 - [Radarr](https://hub.docker.com/r/linuxserver/radarr)
 - [Readarr](https://docs.linuxserver.io/images/docker-readarr/)
