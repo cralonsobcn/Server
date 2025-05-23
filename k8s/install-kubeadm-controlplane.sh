@@ -89,6 +89,12 @@ sudo chown 1000:1000 ${KUBECONFIG}/config
 
 sudo systemctl daemon-reload && sudo  systemctl restart kubelet
 
+# Installs nerdctl CLI. Run with sudo
+wget https://github.com/containerd/nerdctl/releases/download/v2.1.2/nerdctl-2.1.2-linux-amd64.tar.gz
+sudo mkdir -p /bin
+sudo tar Cxzvvf /bin nerdctl-2.1.2-linux-amd64.tar.gz
+rm nerdctl-2.1.2-linux-amd64.tar.gz 
+
 # Downloads and installs Helm
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
 sudo chmod 700 get_helm.sh
