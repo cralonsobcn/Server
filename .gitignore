@@ -25,6 +25,8 @@ readarr/
 code-server/
 grafana/
 mkdocs/
+homepage/
+prometheus/
 
 # Ignore NAS and security compose files
 nas.yaml
