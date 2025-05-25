@@ -7,23 +7,11 @@ set -o errexit
 
 KUBECONFIG="/home/cristian/.kube"
 
-# sudo dnf install -y git             # rootlesskit requirement
-# sudo dnf install -y make            # rootlesskit requirement
-# sudo dnf install -y shadow-utils    # nerdctl requirement
-# sudo dnf install -y golang          # rootlesskit requirement
-
 # Opens the required ports in the Controlplane
 sudo firewall-cmd --permanent --zone=public --add-port=6783/tcp  # Weave
 sudo firewall-cmd --permanent --zone=public --add-port=6784/tcp  # Weave
 sudo firewall-cmd --permanent --zone=public --add-port=6443/tcp  # Kubernetes API Server
 sudo firewall-cmd --permanent --zone=public --add-port=10250/tcp # Kubelet API (from control plane). Enables communication with the Metrics Server
-sudo firewall-cmd --reload
-
-# Opens the required ports in the Worker Node
-sudo firewall-cmd --permanent --zone=public --add-port=10250/tcp # Kubelet API (for control plane access). Enables communication with the Metrics Server
-sudo firewall-cmd --permanent --zone=public --add-port=10256/tcp # kube-proxy health check
-sudo firewall-cmd --permanent --zone=public --add-port=30000-32767/tcp # NodePort range (TCP)
-sudo firewall-cmd --permanent --zone=public --add-port=30000-32767/udp # NodePort range (UDP)
 sudo firewall-cmd --reload
 
 # Disables swap memory
@@ -101,13 +89,6 @@ sudo chmod 700 get_helm.sh
 bash ./get_helm.sh
 rm ./get_helm.sh
 
-# Creates Helm folder
-mkdir -p ./Helm
-
-# Enables Helm autocomplete in Bash
-echo "source <(helm completion bash)" >> ~/.bashrc
-echo "helm completion bash > /etc/bash_completion.d/helm" >> ~/.bashrc
-
 # Adds bitnami helm chart repo
 helm repo add bitnami https://charts.bitnami.com/bitnami
 
@@ -119,7 +100,8 @@ kubectl apply -f https://reweave.azurewebsites.net/k8s/v1.33/net.yaml
 sleep 30
 kubectl apply -f ./metrics-server.yaml # Adds --kubelet-insecure-tls flag to the original deployment
 
-# TODO Wait 30 seconds for the metrics server to be ready and deploy Traefik-Ingress Controller
 
+
+# TODO Wait 30 seconds for the metrics server to be ready and deploy Traefik-Ingress Controller
 # NOTE: Copy .kube/config into the worker node if you want kubectl access in the worker node
 
