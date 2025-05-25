@@ -15,18 +15,6 @@ uptime_kuma/data/*.db-*
 uptime_kuma/data/docker-tls
 
 # Ignore folders
-jellyseerr/
-sonarr/
-radarr/
-stirlingPDF/
-changedetection/
-database/
-readarr/
-code-server/
-grafana/
-mkdocs/
-homepage/
-prometheus/
 
 # Ignore NAS and security compose files
 nas.yaml
