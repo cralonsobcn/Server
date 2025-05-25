@@ -1,0 +1,57 @@
+apiVersion: kubeadm.k8s.io/v1beta4
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: abcdef.0123456789abcdef
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: ""                                  # K8s controlplane IP
+  bindPort: 6443
+nodeRegistration:
+  criSocket: unix:///var/run/crio/crio.sock             # Uses cri-o sock
+  imagePullPolicy: IfNotPresent
+  imagePullSerial: true
+  name: master
+  taints: null
+timeouts:
+  controlPlaneComponentHealthCheck: 4m0s
+  discovery: 5m0s
+  etcdAPICall: 2m0s
+  kubeletHealthCheck: 4m0s
+  kubernetesAPICall: 1m0s
+  tlsBootstrap: 5m0s
+  upgradeManifests: 5m0s
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+kubernetesVersion: 1.33.0
+controlPlaneEndpoint: ":6443"                           # K8s controlplane IP
+apiServer:
+  extraArgs:
+  - name: "advertise-address"
+    value: ""                                           # K8s controlplane IP
+  - name: "bind-address"
+    value: ""                                           # K8s controlplane IP
+  - name: "enable-admission-plugins"
+    value: "NamespaceAutoProvision"
+caCertificateValidityPeriod: 87600h0m0s
+certificateValidityPeriod: 8760h0m0s
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controllerManager: {}
+dns: {}
+encryptionAlgorithm: RSA-2048
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+imageRepository: registry.k8s.io
+networking:
+  dnsDomain: cluster.local
+  serviceSubnet: 10.96.0.0/12
+  podSubnet: 192.168.0.0/16                                           # Pod CIDR
+proxy: {}
+scheduler: {}
