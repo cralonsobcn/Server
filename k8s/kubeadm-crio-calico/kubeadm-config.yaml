@@ -12,7 +12,7 @@ localAPIEndpoint:
   advertiseAddress: ""                                  # K8s controlplane IP
   bindPort: 6443
 nodeRegistration:
-  criSocket: unix:///var/run/crio/crio.sock             # Uses cri-o sock
+  criSocket: unix:///var/run/crio/crio.sock # Uses cri-o sock
   imagePullPolicy: IfNotPresent
   imagePullSerial: true
   name: master
