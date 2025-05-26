@@ -59,7 +59,7 @@ sudo systemctl enable --now kubelet && sudo systemctl start kubelet
 sudo systemctl enable --now crio.service && sudo systemctl start crio.service
 
 # Copies custom crio configuration. Sets the cgorup driver of crio-o
-cp 10-crio.conf /etc/crio/crio.conf.d/10-crio.conf 
+sudo cp 10-crio.conf /etc/crio/crio.conf.d/10-crio.conf 
 
 # Initiates kubeadm and creates /var/lib/kubelet/config.yaml
 sudo kubeadm init --config ./kubeadm-config.yaml                        # CRI socket is /var/run/crio/crio.sock. Modify controlplane IP
@@ -90,6 +90,9 @@ kubectl apply -f ./metrics-server.yaml # Adds --kubelet-insecure-tls flag to the
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/$CALICO_VERSION/manifests/operator-crds.yaml
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/$CALICO_VERSION/manifests/tigera-operator.yaml
 kubectl apply -f custom-resources.yaml # curl https://raw.githubusercontent.com/projectcalico/calico/$CALICO_VERSION/manifests/custom-resources.yaml -O
+
+
+
 
 
 # TODO: Wait 30 seconds for the metrics server to be ready and deploy Traefik-Ingress Controller
