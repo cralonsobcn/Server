@@ -75,7 +75,5 @@ Example:
 - Migrate env passwords to secrets.
 - Implement 2FA and IAM with Authelia.
 - Implement ZFS.
-- Implement ntfy.
-- Implement Grafana.
-- Implement cronjob to prune unused images and unused volumes.
+- Implement crontab to prune unused images and unused volumes.
 - Review the Networking diagram + validate and refine the firewall policies.
