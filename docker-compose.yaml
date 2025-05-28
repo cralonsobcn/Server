@@ -1,4 +1,4 @@
-# TODO /homepage/config/services.yaml add remote docker https://gethomepage.dev/configs/docker/
+# TODO /homepage/config/services.yaml add remote compose https://gethomepage.dev/configs/compose/
 # TODO server.yaml migrate to named volumes
 
 networks:
@@ -41,34 +41,32 @@ volumes:
 include:
   - path:
       # Apps
-      - docker/apps/it-tools.yaml
-      - docker/apps/change-detection.yaml          
-      - docker/apps/code-server.yaml
-      - docker/apps/documentation.yaml
-      - docker/apps/jsoncrack.yaml
-      - docker/apps/stirling.yaml
-      - docker/apps/web-check.yaml
+      - compose/apps/it-tools.yaml
+      - compose/apps/change-detection.yaml          
+      - compose/apps/code-server.yaml
+      - compose/apps/documentation.yaml
+      # - compose/apps/jsoncrack.yaml                        # This app needs to be build through the Dockerfile. TODO Automate it.
+      - compose/apps/stirling.yaml                           # 844 MB
+      - compose/apps/web-check.yaml                          # 1 GB
   - path:
       # Arr
-      - docker/arr/jellyseerr.yaml
-      - docker/arr/prowlarr.yaml
-      - docker/arr/radarr.yaml
-      - docker/arr/readarr.yaml
-      - docker/arr/sonarr.yaml
+      - compose/arr/jellyseerr.yaml                          # 1.42 GB
+      - compose/arr/prowlarr.yaml
+      - compose/arr/radarr.yaml
+      - compose/arr/readarr.yaml
+      - compose/arr/sonarr.yaml
   - path:
       # Observability
-      - docker/observability/cadvisor.yaml
-      - docker/observability/dozzle.yaml
-      - docker/observability/glances.yaml
-      - docker/observability/grafana.yaml
-      - docker/observability/prometheus.yaml
-      - docker/observability/uptime-kuma.yaml
+      - compose/observability/cadvisor.yaml
+      - compose/observability/dozzle.yaml
+      - compose/observability/glances.yaml
+      - compose/observability/grafana.yaml
+      - compose/observability/prometheus.yaml
+      - compose/observability/uptime-kuma.yaml
   - path:
       # Dashboard
-      - docker/dashboard/homepage.yaml
+      - compose/dashboard/homepage.yaml
   - path:
       # Admin
-      - docker/admin/dockerproxy.yaml
-      - docker/admin/cloudflare.yaml
-
-
+      - compose/admin/composeproxy.yaml
+      - compose/admin/cloudflare.yaml
