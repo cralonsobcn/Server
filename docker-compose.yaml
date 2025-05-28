@@ -68,5 +68,5 @@ include:
       - compose/dashboard/homepage.yaml
   - path:
       # Admin
-      - compose/admin/dockereproxy.yaml
+      - compose/admin/dockerproxy.yaml
       - compose/admin/cloudflare.yaml
