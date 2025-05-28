@@ -1,12 +1,12 @@
 services:
   stirling:
-    image: docker.io/stirlingtools/stirling-pdf:latest
+    image: docker.io/stirlingtools/stirling-pdf:latest  # available tags: latest, latest-fat, latest-ultra-lite
     container_name: stirling
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
-      DOCKER_ENABLE_SECURITY: false
+      DOCKER_ENABLE_SECURITY: false                     # This can significantly lower memory usage, especially during idle periods.
       LANGS: "en_GB"
       INSTALL_BOOK_AND_ADVANCED_HTML_OPS: false
       #SECURITY_LOGINMETHOD: "none"
