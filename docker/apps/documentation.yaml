@@ -1,0 +1,15 @@
+services:
+  documentation:
+    image: docker.io/squidfunk/mkdocs-material:latest
+    container_name: documentation
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${MKDOCS_HOST_PORT}:${MKDOCS_CONTAINER_PORT}
+    volumes:
+      - "${HOME}/Server/mkdocs:/docs" # TODO map to named volume documentation-data
+    restart: ${RESTART_POLICY}

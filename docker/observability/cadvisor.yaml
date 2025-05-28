@@ -1,0 +1,29 @@
+services:
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    environment:
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+    - ${CADVISOR_HOST_PORT}:${CADVISOR_CONTAINER_PORT}
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+    - redis
+    restart: ${RESTART_POLICY}
+
+  redis:
+    image: docker.io/redis:latest
+    container_name: "cadvisor-redis"
+    environment:
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+    - ${REDIS_HOST_PORT}:${REDIS_HOST_PORT}
+    restart: ${RESTART_POLICY}

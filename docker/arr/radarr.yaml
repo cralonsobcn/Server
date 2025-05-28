@@ -1,0 +1,15 @@
+services:
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${RADARR_HOST_PORT}:${RADARR_CONTAINER_PORT}
+    volumes:
+      - ${HOME}/Server/radarr/config:/config # ./radarr/config:/config
+    restart: ${RESTART_POLICY}

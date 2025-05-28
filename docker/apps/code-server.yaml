@@ -1,0 +1,16 @@
+services:
+  codeServer:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      SUDO_PASSWORD: "test"
+    networks:
+      - internal_network
+    ports:
+      - ${CODE_HOST_PORT}:${CODE_CONTAINER_PORT}
+    volumes: # TODO 
+      - ${HOME}/Server/code-server/config:/config
+    restart: ${RESTART_POLICY}

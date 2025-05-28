@@ -1,0 +1,13 @@
+services:
+  it-tools: 
+    image: docker.io/corentinth/it-tools:latest
+    container_name: "it-tools"
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${ITTOOLS_HOST_PORT}:${ITTOOLS_CONTAINER_PORT}
+    restart: ${RESTART_POLICY}

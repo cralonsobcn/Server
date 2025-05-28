@@ -1,0 +1,13 @@
+services:
+  web-check: 
+    image: docker.io/lissy93/web-check:latest
+    container_name: Web-Check
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${WEBCHECK_HOST_PORT}:${WEBCHECK_CONTAINER_PORT}
+    restart: ${RESTART_POLICY}

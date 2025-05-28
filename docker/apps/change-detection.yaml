@@ -1,0 +1,15 @@
+services:
+  changedetection:
+    image: lscr.io/linuxserver/changedetection.io:latest
+    container_name: changedetection
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${CHANGEDETECTION_HOST_PORT}:${CHANGEDETECTION_CONTAINER_PORT}
+    volumes:
+      - ${HOME}/Server/changedetection/config:/config # Persistent config files
+    restart: ${RESTART_POLICY}

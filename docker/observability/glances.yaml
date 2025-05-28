@@ -1,0 +1,14 @@
+services:
+  glances:
+    image: docker.io/nicolargo/glances:latest-full
+    container_name: glances
+    environment:
+      - "GLANCES_OPT=-w"
+      - TZ=${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${GLANCES_HOST_PORT}:${GLANCES_CONTAINER_PORT}
+    volumes:
+      - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock
+    restart: ${RESTART_POLICY}

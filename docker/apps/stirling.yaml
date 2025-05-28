@@ -1,0 +1,21 @@
+services:
+  stirling:
+    image: docker.io/stirlingtools/stirling-pdf:latest
+    container_name: stirling
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      DOCKER_ENABLE_SECURITY: false
+      LANGS: "en_GB"
+      INSTALL_BOOK_AND_ADVANCED_HTML_OPS: false
+      #SECURITY_LOGINMETHOD: "none"
+      #SECURITY_OAUTH2_ENABLED: false
+    networks:
+      - internal_network
+    ports:
+      - ${STIRLING_HOST_PORT}:${STIRLING_CONTAINER_PORT}
+    volumes:
+      - ${HOME}/Server/stirlingPDF/trainingData:/usr/share/tessdata #Required for extra OCR languages
+      - ${HOME}/Server/stirlingPDF/extraConfigs:/configs
+    restart: ${RESTART_POLICY}

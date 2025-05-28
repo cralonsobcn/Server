@@ -1,0 +1,16 @@
+services:
+  jellyseerr:
+    image: docker.io/fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      LOG_LEVEL: debug
+    networks:
+      - internal_network
+    ports:
+      - ${JELLYSEERR_HOST_PORT}:${JELLYSEERR_CONTAINER_PORT}
+    volumes:
+      - ${HOME}/Server/jellyseerr/config:/app/config
+    restart: ${RESTART_POLICY}

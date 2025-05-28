@@ -1,0 +1,14 @@
+services:
+  jsoncrack:
+    image: jsoncrack
+    container_name: jsoncrack
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      NODE_ENV: "production[cristian@mechanicus jsoncrack.com]$"
+    networks:
+      - internal_network
+    ports:
+      - ${JSONCRACK_HOST_PORT}:${JSONCRACK_CONTAINER_PORT}
+    restart: ${RESTART_POLICY}

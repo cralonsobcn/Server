@@ -1,0 +1,13 @@
+services:
+  grafana:
+    image: docker.io/grafana/grafana-enterprise:latest
+    container_name: grafana
+    environment:
+      TZ: ${TZ}
+    networks:
+      - internal_network
+    ports:
+      - ${GRAFANA_HOST_PORT}:${GRAFANA_CONTAINER_PORT}
+    volumes:
+      - grafana-data:/var/lib/grafana # ./grafana/data:/var/lib/grafana
+    restart: ${RESTART_POLICY}

@@ -1,0 +1,74 @@
+# TODO /homepage/config/services.yaml add remote docker https://gethomepage.dev/configs/docker/
+# TODO server.yaml migrate to named volumes
+
+networks:
+  internal_network:
+    driver: bridge
+    name: internal_network
+
+volumes:
+  grafana-data:
+    name: grafana-data # TODO change volume type
+  kuma-data:
+    name: kuma-data  # TODO I'll keep the configuration but not the logging
+  prowlarr-data:
+    name: prowlarr-data
+  arr-data:
+    name: arr-data # TODO change volume type. Avoid /home.
+      #    data
+      #    ├── torrents
+      #    │   ├── books
+      #    │   ├── movies
+      #    │   ├── music
+      #    │   └── tv
+      #    ├── usenet
+      #    │   ├── incomplete
+      #    │   └── complete
+      #    │       ├── books
+      #    │       ├── movies
+      #    │       ├── music
+      #    │       └── tv
+      #    └── media
+      #        ├── books
+      #        ├── movies
+      #        ├── music
+      #        └── tv
+  prometheus-data:
+    name: prometheus-data # TODO change volume type
+  mkadocs-data:
+    name: mkdocs-data # TODO
+
+include:
+  - path:
+      # Apps
+      - docker/apps/it-tools.yaml
+      - docker/apps/change-detection.yaml          
+      - docker/apps/code-server.yaml
+      - docker/apps/documentation.yaml
+      - docker/apps/jsoncrack.yaml
+      - docker/apps/stirling.yaml
+      - docker/apps/web-check.yaml
+  - path:
+      # Arr
+      - docker/arr/jellyseerr.yaml
+      - docker/arr/prowlarr.yaml
+      - docker/arr/radarr.yaml
+      - docker/arr/readarr.yaml
+      - docker/arr/sonarr.yaml
+  - path:
+      # Observability
+      - docker/observability/cadvisor.yaml
+      - docker/observability/dozzle.yaml
+      - docker/observability/glances.yaml
+      - docker/observability/grafana.yaml
+      - docker/observability/prometheus.yaml
+      - docker/observability/uptime-kuma.yaml
+  - path:
+      # Dashboard
+      - docker/dashboard/homepage.yaml
+  - path:
+      # Admin
+      - docker/admin/dockerproxy.yaml
+      - docker/admin/cloudflare.yaml
+
+
