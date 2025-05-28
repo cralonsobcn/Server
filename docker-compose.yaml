@@ -1,4 +1,4 @@
-# TODO /homepage/config/services.yaml add remote compose https://gethomepage.dev/configs/compose/
+# TODO /homepage/config/services.yaml add remote compose https://gethomepage.dev/configs/compose
 # TODO server.yaml migrate to named volumes
 
 networks:
@@ -41,32 +41,32 @@ volumes:
 include:
   - path:
       # Apps
-      - compose/apps/it-tools.yaml
-      - compose/apps/change-detection.yaml          
-      - compose/apps/code-server.yaml
-      - compose/apps/documentation.yaml
-      # - compose/apps/jsoncrack.yaml                        # This app needs to be build through the Dockerfile. TODO Automate it.
-      - compose/apps/stirling.yaml                           # 844 MB
-      - compose/apps/web-check.yaml                          # 1 GB
+      - compose/server/apps/it-tools.yaml
+      - compose/server/apps/change-detection.yaml          
+      - compose/server/apps/code-server.yaml
+      - compose/server/apps/documentation.yaml
+      # - compose/server/apps/jsoncrack.yaml                        # This app needs to be build through the Dockerfile. TODO Automate it.
+      - compose/server/apps/stirling.yaml                           # 844 MB
+      - compose/server/apps/web-check.yaml                          # 1 GB
   - path:
       # Arr
-      - compose/arr/jellyseerr.yaml                          # 1.42 GB
-      - compose/arr/prowlarr.yaml
-      - compose/arr/radarr.yaml
-      - compose/arr/readarr.yaml
-      - compose/arr/sonarr.yaml
+      - compose/server/arr/jellyseerr.yaml                          # 1.42 GB
+      - compose/server/arr/prowlarr.yaml
+      - compose/server/arr/radarr.yaml
+      - compose/server/arr/readarr.yaml
+      - compose/server/arr/sonarr.yaml
   - path:
       # Observability
-      - compose/observability/cadvisor.yaml
-      - compose/observability/dozzle.yaml
-      - compose/observability/glances.yaml
-      - compose/observability/grafana.yaml
-      - compose/observability/prometheus.yaml
-      - compose/observability/uptime-kuma.yaml
+      - compose/server/observability/cadvisor.yaml
+      - compose/server/observability/dozzle.yaml
+      - compose/server/observability/glances.yaml
+      - compose/server/observability/grafana.yaml
+      - compose/server/observability/prometheus.yaml
+      - compose/server/observability/uptime-kuma.yaml
   - path:
       # Dashboard
-      - compose/dashboard/homepage.yaml
+      - compose/server/dashboard/homepage.yaml
   - path:
       # Admin
-      - compose/admin/dockerproxy.yaml
-      - compose/admin/cloudflare.yaml
+      - compose/server/admin/dockerproxy.yaml
+      - compose/server/admin/cloudflare.yaml
