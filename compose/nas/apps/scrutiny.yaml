@@ -1,0 +1,54 @@
+services:
+  scrutiny-db:  # TODO Add server and security endpoints https://github.com/AnalogJ/scrutiny
+    image: influxdb:2.2
+    container_name: scrutiny-db
+    environment:
+      TZ: ${TZ}
+    networks:
+      - nas_network
+    volumes:
+      - ${HOME}/NAS/scrutiny/influxdb:/var/lib/influxdb2
+    restart: ${RESTART_POLICY}
+
+  scrutiny-web:
+    image: ghcr.io/analogj/scrutiny:master-web
+    container_name: "scrutiny-web"
+    networks:
+      - nas_network
+    ports:
+      - ${SCRUTINY_HOST_PORT}:${SCRUTINY_CONTAINER_PORT}
+    volumes:
+      - ${HOME}/NAS/scrutiny/config:/opt/scrutiny/config
+      - ${HOME}/NAS/scrutiny/logs:/tmp
+    environment:
+      TZ: ${TZ}
+      SCRUTINY_WEB_INFLUXDB_HOST: "scrutiny-db"
+      DEBUG: true
+      SCRUTINY_LOG_FILE: /tmp/web.log
+    depends_on:
+      - scrutiny-db
+    restart: ${RESTART_POLICY}
+
+  scrutiny-collector:
+    image: ghcr.io/analogj/scrutiny:master-collector
+    container_name: "scrutiny-collector"
+    environment:
+      TZ: ${TZ}
+      COLLECTOR_API_ENDPOINT: http://${NAS_IP}:${SCRUTINY_HOST_PORT}
+      COLLECTOR_HOST_ID: "scrutiny-collector"
+      COLLECTOR_RUN_STARTUP: true # If true forces the collector to run on startup (cron will be started after the collector completes)
+      DEBUG: true
+      COLLECTOR_LOG_FILE: /tmp/collector.log
+    cap_add:
+      - SYS_RAWIO
+      - SYS_ADMIN
+    networks:
+      - nas_network
+    volumes:
+      - /run/udev:/run/udev:ro
+      - ${HOME}/NAS/scrutiny/logs:/tmp
+    depends_on:
+      - scrutiny-web
+    devices:
+      - /dev/sda:/dev/sda
+    restart: ${RESTART_POLICY}

@@ -1,0 +1,22 @@
+services:
+  gitea:
+    image: docker.io/gitea/gitea:latest
+    container_name: gitea
+    environment:
+      # USER: git
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    networks:
+      - nas_network
+    ports:
+      - ${GITEA_HOST_PORT}:${GITEA_CONTAINER_PORT}
+      - ${GITEA_HOST_SSH_PORT}:${GITEA_CONTAINER_SSH_PORT}
+    volumes: # TODO move to named volume
+      # - gitea-data:/data # app.ini in /var/lib/docker/volumes/server_gitea-data
+      # /data/gitea/gitea.db container path to the sqlite3 database
+      - ${HOME}/NAS/gitea/data:/var/lib/gitea
+      - ${HOME}/NAS/gitea/config:/etc/gitea
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: ${RESTART_POLICY}

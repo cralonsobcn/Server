@@ -1,0 +1,20 @@
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      WEBUI_PORT: ${QBITORRENT_UI_HOST_PORT}
+      TORRENTING_PORT: ${QBITORRENT_TORRENTING_HOST_PORT}
+    networks:
+      - nas_network
+    ports:
+      - ${QBITORRENT_UI_HOST_PORT}:${QBITORRENT_UI_CONTAINER_PORT}
+      - ${QBITORRENT_TORRENTING_HOST_PORT}:${QBITORRENT_TORRENTING_CONTAINER_PORT}/tcp
+      - ${QBITORRENT_TORRENTING_HOST_PORT}:${QBITORRENT_TORRENTING_CONTAINER_PORT}/udp
+    volumes:
+      - ${HOME}/NAS/qbittorrent/appdata:/config # Contains all relevant configuration files.
+      - ${HOME}/NAS/qbittorrent/downloads:/downloads # Location of downloads on disk. This will be mapped to a different folder 
+    restart: ${RESTART_POLICY}

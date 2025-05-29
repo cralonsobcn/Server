@@ -1,0 +1,35 @@
+networks:
+  nas_network:
+    driver: bridge
+    name: nas_network
+
+volumes:
+  gitea-data: # TODO change volume type
+    name: gitea-data
+  jellyfin-media: # TODO change volume type
+    name: jellyfin-media
+  qbitorrent-data: # TODO change volume type
+    name: qbitorrent-data
+  netbootxyz-data: # TODO change volume type
+    name: netbootxyz-data
+  gsdb:
+    name: gaseous-database
+  gs:
+    name: gaseous
+
+include:
+  # compose/nas/admin
+  - path:
+    - compose/nas/admin/cloudflared.yaml
+    - compose/nas/admin/dockerproxy.yaml
+  # compose/nas/apps
+  - path:
+    - compose/nas/apps/cryptpad.yaml
+    - compose/nas/apps/gitea.yaml
+    - compose/nas/apps/netboot.yaml
+    - compose/nas/apps/scrutiny.yaml
+  # compose/nas/media:
+  - path:
+    - compose/nas/media/gaseous.yaml
+    - compose/nas/media/jellyfin.yaml
+    - compose/nas/media/qbittorrent.yaml

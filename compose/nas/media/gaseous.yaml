@@ -1,0 +1,38 @@
+services:
+  gaseous-server: # TODO env credentials
+    image: gaseousgames/gaseousserver:latest
+    container_name: gaseous-server
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      dbhost: gsdb
+      dbuser: root
+      dbpass: gaseous
+      #igdbclientid: <clientid> # Pulls covers and metadata from Twitch
+      #igdbclientsecret: <clientsecret> # Pulls covers and metadata from Twitch
+    networks:
+      - nas_network
+    ports:
+      - 5198:80
+    volumes:
+      - gs:/root/.gaseous-server
+    depends_on:
+      - gsdb
+    restart: ${RESTART_POLICY}
+
+  gsdb: # TODO env credentials
+    image: mariadb
+    container_name: gsdb
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      MARIADB_ROOT_PASSWORD: gaseous
+      MARIADB_USER: gaseous
+      MARIADB_PASSWORD: gaseous
+    networks:
+      - nas_network
+    volumes:
+      - gsdb:/var/lib/mysql
+    restart: ${RESTART_POLICY}
