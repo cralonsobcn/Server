@@ -1,0 +1,17 @@
+services:
+  portainer:
+    image: docker.io/portainer/portainer-ce:latest
+    container_name: portainer
+    command:
+      - --http-enabled
+    environment:
+      TZ: ${TZ}
+    networks:
+      - security_network
+    ports:
+      #- ${PORTAINER_HTTPS_HOST_PORT}:${PORTAINER_HTTPS_CONTAINER_PORT} #HTTPS Login
+      - ${SECURITY_IP}:${PORTAINER_HTTP_HOST_PORT}:${PORTAINER_HTTP_CONTAINER_PORT} #HTTP Login
+    volumes:
+      - portainer-data:/data
+      - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock      
+    restart: ${RESTART_POLICY}

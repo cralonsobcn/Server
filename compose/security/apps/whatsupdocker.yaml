@@ -1,0 +1,30 @@
+services:
+  whatsupdocker:
+    image: docker.io/getwud/wud
+    container_name: whatsupdocker
+    environment:
+      TZ: ${TZ}
+      WUD_TRIGGER_LOG_LEVEL: error
+      WUD_LOG_FORMAT: text
+      # Security. https://github.com/getwud/wud/issues/354
+      WUD_WATCHER_SECURITY_HOST: ${SECURITY_IP}
+      WUD_WATCHER_SECURITY_SOCKET: tcp://${SECURITY_IP}
+      WUD_WATCHER_SECURITY_PORT: 2375
+      WUD_WATCHER_SECURITY_WATCHALL: true
+      # Server
+      WUD_WATCHER_SERVER_HOST: ${SERVER_IP}
+      WUD_WATCHER_SERVER_SOCKET: tcp://${SERVER_IP}
+      WUD_WATCHER_SERVER_PORT: 2380
+      WUD_WATCHER_SERVER_WATCHALL: true
+      # NAS
+      WUD_WATCHER_NAS_HOST: ${NAS_IP}
+      WUD_WATCHER_NAS_SOCKET: tcp://${NAS_IP}
+      WUD_WATCHER_NAS_PORT: 2375
+      WUD_WATCHER_NAS_WATCHALL: true
+    networks:
+      - security_network
+    ports:
+      - ${SECURITY_IP}:${WHATSUPDOCKER_HOST_PORT}:${WHATSUPDOCKER_CONTAINER_PORT}
+    volumes:
+      - ${HOME}/Server/whatsupdocker/store:/store
+    restart: ${RESTART_POLICY}

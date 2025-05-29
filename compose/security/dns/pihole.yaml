@@ -1,0 +1,32 @@
+services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    environment:
+      TZ: ${TZ}
+      FTLCONF_debug_api: true
+      # FTLCONF_dns_dnssec: ${DNSSEC}
+      FTLCONF_dns_listeningMode: all # Major update on Pihole v6.0.1. If using Docker's default bridge network setting, set the environment variable FTLCONF_dns_listeningMode to all.
+      FTLCONF_webserver_api_password: ${WEBPASSWORD} # Major update on Pihole v6.0.1
+      FTLCONF_webserver_interface_theme: "default-darker" # Major update on Pihole v6.0.1
+      PH_VERBOSE: 1 # Switch to 0 in prod
+      TAIL_FTL_LOG: 1
+    cap_add: 
+      - CAP_SYS_NICE # FTL sets itself as an important process to get some more processing time if the latter is running low
+      - CAP_NET_BIND_SERVICE # Allows FTLDNS binding to TCP/UDP sockets below 1024 (specifically DNS service on port 53)
+      - CAP_CHOWN # we need to be able to change ownership of log files and databases in case FTL is started as a different user than pihole
+      - CAP_NET_ADMIN # Modify routing tables and other network-related operations (in particular inserting an entry in the neighbor table to answer DHCP requests using unicast packets)
+      - CAP_SYS_TIME # FTL needs to be able to set the system time to update it using the Network Time Protocol (NTP) in the background
+    networks:
+      - security_network
+      #- pihole_macvlan # macvlan to expose pihole as DNS upstream server
+    ports: # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
+      - ${SECURITY_IP}:53:53/tcp
+      - ${SECURITY_IP}:53:53/udp
+      - ${SECURITY_IP}:${PIHOLE_HOST_HTTP_PORT}:${PIHOLE_CONTAINER_HTTP_PORT}/tcp 
+      #- ${SECURITY_IP}:${PIHOLE_HOST_HTTPS_PORT}:${PIHOLE_CONTAINER_HTTPS_PORT}/tcp
+    volumes: #TODO move to env and named volumes
+      - ${HOME}/Server/pihole/etc-pihole:/etc/pihole
+      - ${HOME}/Server/pihole/etc-dnsmasq.d:/etc/dnsmasq.d
+      # - ${HOME}/Server/pihole/logs/pihole.log:/var/log/pihole/pihole.log # Path to the logs?
+    restart: ${RESTART_POLICY}

@@ -1,0 +1,15 @@
+services:
+  cloudflared: # Cloudflared tunnel
+    image: cloudflare/cloudflared:latest
+    container_name: server-tunnel
+    command: tunnel --no-autoupdate --loglevel error run
+    environment:
+      TZ: ${TZ}
+      TUNNEL_TOKEN: ${SECURITY_CLOUDFARE_TUNNEL_TOKEN}
+    networks:
+      - security_network
+    extra_hosts: # Explictly defines the hostnames. Equivalent to write on /etc/hosts within the container
+      - ${SECURITY_SUBDOMAIN_NAME}:${SECURITY_IP}
+      - ${SERVER_SUBDOMAIN_NAME}:${SERVER_IP}
+      - ${NAS_SUBDOMAIN_NAME}:${NAS_IP}
+    restart: ${RESTART_POLICY}

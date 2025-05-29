@@ -1,0 +1,18 @@
+services:
+  authelia: # TODO. 400 Connection refused. Troubleshoot session configuration and implement redis
+    image: docker.io/authelia/authelia:latest
+    container_name: authelia
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      AUTHELIA_LOG_LEVEL: debug
+    networks:
+      - security_network
+    ports:
+      - ${SECURITY_IP}:${AUTHELIA_HOST_PORT}:${AUTHELIA_CONTAINER_PORT}
+    volumes:
+      - ${HOME}/Server/authelia/config:/config
+      - ${HOME}/Server/authelia/config/db.sqlite3:/config/db.sqlite3
+      - ${HOME}/Server/authelia/logs/authelia.log:/logs/authelia/authelia.log
+    restart: ${RESTART_POLICY}

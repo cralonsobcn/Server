@@ -1,0 +1,36 @@
+networks:
+  security_network:
+    driver: bridge
+    name: security_network
+#  pihole_macvlan:
+#    driver: macvlan
+#    name: pihole_macvlan
+#    driver_opts:
+#      parent: enp0s3
+#    ipam:
+#      config:
+#        - subnet: 192.168.1.0/24
+#          gateway: 192.168.1.1
+#          ip_range: 192.168.1.2/32
+
+volumes:
+  portainer-data:
+    name: portainer-data # TODO change volume type
+  pihole-data:
+    name: pihole-data # TODO change volume type
+  authelia-data:
+    name: authelia-data
+
+include:
+  - path:         # compose/security/admin
+    - compose/security/admin/cloudflared.yaml
+    - compose/security/admin/dockerproxy.yaml
+  - path:         # compose/security/apps
+    - compose/security/apps/portainer.yaml
+    - compose/security/apps/whatsupdocker.yaml
+  - path:         # compose/security/auth
+    - compose/security/auth/authelia.yaml
+  - path:         # compose/security/dns
+    - compose/security/dns/pihole.yaml
+  - path:         # compose/security/proxy
+    - compose/security/proxy/traefik-compose.yaml
