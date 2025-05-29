@@ -11,8 +11,10 @@ CRIO_VERSION="v1.33"
 CALICO_VERSION="v3.30.0"
 
 # Opens the required ports in the Controlplane
-sudo firewall-cmd --permanent --zone=public --add-port=6783/tcp  # Weave
-sudo firewall-cmd --permanent --zone=public --add-port=6784/tcp  # Weave
+sudo firewall-cmd --permanent --zone=public --add-port=4789/udp
+sudo firewall-cmd --permanent --zone=public --add-port=179/tcp  
+sudo firewall-cmd --permanent --zone=public --add-port=6784/tcp
+sudo firewall-cmd --permanent --zone=public --add-port=443/tcp
 sudo firewall-cmd --permanent --zone=public --add-port=6443/tcp  # Kubernetes API Server
 sudo firewall-cmd --permanent --zone=public --add-port=10250/tcp # Kubelet API (from control plane). Enables communication with the Metrics Server
 sudo firewall-cmd --reload
