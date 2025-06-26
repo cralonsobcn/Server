@@ -1,5 +1,6 @@
 # TODO /homepage/config/services.yaml add remote compose https://gethomepage.dev/configs/compose
 # TODO server.yaml migrate to named volumes
+# docker images --format "{{ .Size }} \t {{ .Repository }}" | sort -h
 
 networks:
   internal_network:
@@ -39,34 +40,38 @@ volumes:
     name: mkdocs-data # TODO
 
 include:
+  # Apps
   - path:
-      # Apps
       - compose/server/apps/it-tools.yaml
       - compose/server/apps/change-detection.yaml          
       - compose/server/apps/code-server.yaml
       - compose/server/apps/documentation.yaml
-      # - compose/server/apps/jsoncrack.yaml                        # This app needs to be build through the Dockerfile. TODO Automate it.
-      - compose/server/apps/stirling.yaml                           # 844 MB
-      - compose/server/apps/web-check.yaml                          # 1 GB
+      # - compose/server/apps/jsoncrack.yaml                        # This app needs to be built through the Dockerfile. TODO Automate it.
+      - compose/server/apps/stirling.yaml                           # 1.88GB. Consider using latest-ultra-lite tag
+      - compose/server/apps/web-check.yaml                          # 2.71GB
+
+  # Arr
   - path:
-      # Arr
-      - compose/server/arr/jellyseerr.yaml                          # 1.42 GB
+      - compose/server/arr/jellyseerr.yaml                          # 1.42 GB. 
       - compose/server/arr/prowlarr.yaml
       - compose/server/arr/radarr.yaml
       - compose/server/arr/readarr.yaml
       - compose/server/arr/sonarr.yaml
+
+  # Observability
   - path:
-      # Observability
       - compose/server/observability/cadvisor.yaml
       - compose/server/observability/dozzle.yaml
       - compose/server/observability/glances.yaml
       - compose/server/observability/grafana.yaml
       - compose/server/observability/prometheus.yaml
       - compose/server/observability/uptime-kuma.yaml
+
+  # Dashboard
   - path:
-      # Dashboard
       - compose/server/dashboard/homepage.yaml
+
+  # Admin
   - path:
-      # Admin
       - compose/server/admin/dockerproxy.yaml
       - compose/server/admin/cloudflare.yaml
