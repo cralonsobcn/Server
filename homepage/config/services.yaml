@@ -152,7 +152,7 @@
         icon: dozzle.png
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_DOZZLE}}
         server: docker-server
-        container: dozzle-logger
+        container: dozzle
 
 - Apps:
     - IT Tools:
@@ -214,17 +214,17 @@
     - Whats Up Docker:
         href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.whatsupdocker.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Update docker images
-        icon: whats-up-docker-light.png
+        icon: whats-up-docker.png
         ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_WHATSUPDOCKER}} # TODO endpoint shows healthy but not running
         server: docker-security 
         container: whatsupdocker
-    - Authelia:
-        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.authelia.{{HOMEPAGE_VAR_DOMAIN_NAME}}
-        description: 2FA
-        icon: authelia.png
+    - Keycloak:
+        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.keycloak.{{HOMEPAGE_VAR_DOMAIN_NAME}}
+        description: Auhtnentication and Authorization service
+        icon: keycloak.png
         ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_AUTHELIA}}
         server: docker-security
-        container: authelia
+        container: keycloak
     - Jellyfin:
         href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.jellyfin.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Jellyfin media player
