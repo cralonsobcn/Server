@@ -1,6 +1,7 @@
 # ignore ALL .env files
 *.env
 !env-template.env
+/env
 
 # Ignore homepage logs
 homepage/config/logs/*
