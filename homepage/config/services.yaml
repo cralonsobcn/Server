@@ -253,6 +253,14 @@
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_JSONCRACK}}
         server: docker-server
         container: jsoncrack
+    - Mirotalk:
+        href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.meet.{{HOMEPAGE_VAR_DOMAIN_NAME}}
+        description: Videoconference
+        icon: google-meet
+        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_MIROTALK}}
+        server: docker-server
+        container: mirotalk
+
 
 - Arr:
     - Prowlarr:
