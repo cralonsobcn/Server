@@ -45,10 +45,15 @@ include:
       - compose/server/apps/it-tools.yaml
       - compose/server/apps/change-detection.yaml          
       - compose/server/apps/code-server.yaml
-      - compose/server/apps/documentation.yaml
+      # - compose/server/apps/documentation.yaml                    # Crashes.
       # - compose/server/apps/jsoncrack.yaml                        # This app needs to be built through the Dockerfile. TODO Automate it.
       - compose/server/apps/stirling.yaml                           # 1.88GB. Consider using latest-ultra-lite tag
       - compose/server/apps/web-check.yaml                          # 2.71GB
+  - path: 
+      - compose/server/apps/mirotalk.yaml                           # Requires pulling the Github repo first and install from bash script
+                                                                    # https://github.com/miroslavpejic85/mirotalk
+    env_file:
+      - mirotalk/.mirotalk.env
 
   # Arr
   - path:
