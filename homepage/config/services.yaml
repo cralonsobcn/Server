@@ -154,7 +154,7 @@
         server: docker-server
         container: dozzle
 
-- Apps:
+- Server:
     - IT Tools:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.ittools.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Interesting IT Aplications (quality of life improvement)
@@ -197,55 +197,6 @@
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_MKDOCS}}
         server: docker-server
         container: documentation
-    - Portainer:
-        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.portainer.{{HOMEPAGE_VAR_DOMAIN_NAME}}
-        description: Portainer
-        icon: portainer.png
-        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PORTAINER}}
-        server: docker-security
-        container: portainer
-    - Pihole:
-        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.pihole.{{HOMEPAGE_VAR_DOMAIN_NAME}}/admin/login  
-        description: Pihole DNS
-        icon: pi-hole.png
-        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PIHOLE}} # TODO endpoint shows healthy but not running
-        server: docker-security
-        container: pihole
-    - Whats Up Docker:
-        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.whatsupdocker.{{HOMEPAGE_VAR_DOMAIN_NAME}}
-        description: Update docker images
-        icon: whats-up-docker.png
-        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_WHATSUPDOCKER}} # TODO endpoint shows healthy but not running
-        server: docker-security 
-        container: whatsupdocker
-    - Keycloak:
-        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.keycloak.{{HOMEPAGE_VAR_DOMAIN_NAME}}
-        description: Auhtnentication and Authorization service
-        icon: keycloak.png
-        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_AUTHELIA}}
-        server: docker-security
-        container: keycloak
-    - Jellyfin:
-        href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.jellyfin.{{HOMEPAGE_VAR_DOMAIN_NAME}}
-        description: Jellyfin media player
-        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/svg/jellyfin.svg
-        ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_JELLYFIN}}
-        server: docker-nas
-        container: jellyfin
-    - Gitea:
-        href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.gitea.{{HOMEPAGE_VAR_DOMAIN_NAME}}
-        description: Gitea. Private GIT repo in the cloud 
-        icon: gitea.png
-        ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_GITEA}}
-        server: docker-nas
-        container: gitea
-    - NetbootXYZ:
-        href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.netbootxyz.{{HOMEPAGE_VAR_DOMAIN_NAME}}
-        description: NetbootXYZ 
-        icon: netboot.png
-        ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_NETBOOT}}
-        server: docker-nas
-        container: netbootxyz
     - Jsoncrack:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.jsoncrack.{{HOMEPAGE_VAR_DOMAIN_NAME}}/editor
         description: jsoncrack
@@ -260,9 +211,6 @@
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_MIROTALK}}
         server: docker-server
         container: mirotalk
-
-
-- Arr:
     - Prowlarr:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.prowlarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: prowlarr indexer
@@ -298,6 +246,59 @@
         ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_JELLYSEERR}}
         server: docker-server
         container: jellyseerr
+
+- Security:
+    - Portainer:
+        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.portainer.{{HOMEPAGE_VAR_DOMAIN_NAME}}
+        description: Portainer
+        icon: portainer.png
+        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PORTAINER}}
+        server: docker-security
+        container: portainer
+    - Pihole:
+        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.pihole.{{HOMEPAGE_VAR_DOMAIN_NAME}}/admin/login  
+        description: Pihole DNS
+        icon: pi-hole.png
+        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PIHOLE}} # TODO endpoint shows healthy but not running
+        server: docker-security
+        container: pihole
+    - Whats Up Docker:
+        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.whatsupdocker.{{HOMEPAGE_VAR_DOMAIN_NAME}}
+        description: Update docker images
+        icon: whats-up-docker.png
+        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_WHATSUPDOCKER}} # TODO endpoint shows healthy but not running
+        server: docker-security 
+        container: whatsupdocker
+    - Keycloak:
+        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.keycloak.{{HOMEPAGE_VAR_DOMAIN_NAME}}
+        description: Auhtnentication and Authorization service
+        icon: keycloak.png
+        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_KEYCLOAK}}
+        server: docker-security
+        container: keycloak
+
+- NAS:
+    - Jellyfin:
+        href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.jellyfin.{{HOMEPAGE_VAR_DOMAIN_NAME}}
+        description: Jellyfin media player
+        icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/svg/jellyfin.svg
+        ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_JELLYFIN}}
+        server: docker-nas
+        container: jellyfin
+    - Gitea:
+        href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.gitea.{{HOMEPAGE_VAR_DOMAIN_NAME}}
+        description: Gitea. Private GIT repo in the cloud 
+        icon: gitea.png
+        ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_GITEA}}
+        server: docker-nas
+        container: gitea
+    - NetbootXYZ:
+        href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.netbootxyz.{{HOMEPAGE_VAR_DOMAIN_NAME}}
+        description: NetbootXYZ 
+        icon: netboot.png
+        ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_NETBOOT}}
+        server: docker-nas
+        container: netbootxyz
     - QBitorrent:
         href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.qbitorrent.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: qbittorrent

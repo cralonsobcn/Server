@@ -35,8 +35,18 @@ layout:
     style: row
     columns: 4
     icon: prometheus.png
-  Apps:
-    tab: Apps
+  Server:
+    tab: "Server Apps"
+    style: row
+    columns: 5
+    icon: /images/Tardis.ico
+  Security:
+    tab: "Security Apps"
+    style: row
+    columns: 5
+    icon: /images/Tardis.ico
+  NAS:
+    tab: "NAS Apps"
     style: row
     columns: 5
     icon: /images/Tardis.ico
@@ -44,11 +54,6 @@ layout:
     tab: Observability
     style: row
     columns: 4
-    icon: /images/Tardis.ico
-  Arr:
-    tab: Arr Stack
-    style: row
-    columns: 5
     icon: /images/Tardis.ico
   Steam:
     style: row
