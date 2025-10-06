@@ -1,7 +1,7 @@
 services:
   web-check: 
     image: docker.io/lissy93/web-check:latest
-    container_name: Web-Check
+    container_name: web-check
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
