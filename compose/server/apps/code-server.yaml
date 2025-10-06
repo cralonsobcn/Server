@@ -8,7 +8,7 @@ services:
       TZ: ${TZ}
       SUDO_PASSWORD: "test"
     networks:
-      - internal_network
+      - server_network
     volumes: # TODO 
       - ${HOME}/Server/code-server/config:/config
     restart: ${RESTART_POLICY}

@@ -12,7 +12,7 @@ services:
       #SECURITY_LOGINMETHOD: "none"
       #SECURITY_OAUTH2_ENABLED: false
     networks:
-      - internal_network
+      - server_network
     volumes:
       - ${HOME}/Server/stirlingPDF/trainingData:/usr/share/tessdata #Required for extra OCR languages
       - ${HOME}/Server/stirlingPDF/extraConfigs:/configs

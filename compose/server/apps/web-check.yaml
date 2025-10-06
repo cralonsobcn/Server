@@ -7,5 +7,5 @@ services:
       PGID: ${PGID}
       TZ: ${TZ}
     networks:
-      - internal_network
+      - server_network
     restart: ${RESTART_POLICY}

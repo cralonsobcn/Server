@@ -19,7 +19,7 @@ services:
       HOMEPAGE_VAR_DOMAIN_NAME: ${DOMAIN_NAME}
       HOMEPAGE_ALLOWED_HOSTS: ${SERVER_SUBDOMAIN_NAME}.${DOMAIN_NAME}                   # As of v1.0 there is one required environment variable to access homepage via a URL
     networks:
-      - internal_network
+      - server_network
       - server_tunnel_network                                                           # Required to access other services via their docker service name (services.yaml+doker.yaml)
     volumes:
       - ${HOME}/Server/homepage/config:/app/config                                      # Path to the config folder

@@ -7,7 +7,7 @@ services:
       PGID: ${PGID}
       PUID: ${PUID}
     networks:
-      - internal_network
+      - server_network
     ports:
       - ${GRAFANA_HOST_PORT}:${GRAFANA_CONTAINER_PORT}
     volumes:

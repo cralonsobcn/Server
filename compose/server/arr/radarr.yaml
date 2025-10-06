@@ -7,7 +7,7 @@ services:
       PGID: ${PGID}
       TZ: ${TZ}
     networks:
-      - internal_network
+      - server_network
     volumes:
       - ${HOME}/Server/radarr/config:/config # ./radarr/config:/config
     restart: ${RESTART_POLICY}

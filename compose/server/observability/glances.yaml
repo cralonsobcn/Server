@@ -8,7 +8,7 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
     networks:
-      - internal_network
+      - server_network
     volumes:
       - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock
     restart: ${RESTART_POLICY}

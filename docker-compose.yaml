@@ -3,9 +3,9 @@
 # docker images --format "{{ .Size }} \t {{ .Repository }}" | sort -h
 
 networks:
-  internal_network:
+  server_network:
     driver: bridge
-    name: internal_network
+    name: server_network
     internal: true
   server_tunnel_network:
     driver: bridge

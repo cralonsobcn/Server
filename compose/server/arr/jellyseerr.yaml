@@ -8,7 +8,7 @@ services:
       TZ: ${TZ}
       LOG_LEVEL: debug
     networks:
-      - internal_network
+      - server_network
     volumes:
       - ${HOME}/Server/jellyseerr/config:/app/config
     restart: ${RESTART_POLICY}

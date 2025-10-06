@@ -9,7 +9,7 @@ services:
                                                                               # Enable access to the CONTAINER API in the docker proxy
       DOZZLE_NO_ANALYTICS: true
     networks:
-      - internal_network
+      - server_network
     volumes:
       - ${DOCKER_SOCK}:${DOCKER_SOCK}
     restart: ${RESTART_POLICY}
