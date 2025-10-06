@@ -115,42 +115,42 @@
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.uptimekuma.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: "L7 and L4 health checks"
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/uptime-kuma.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_UPTIMEKUMA}}
+        ping: http://uptime-kuma:3306
         server: docker-server
         container: uptime-kuma
     - Prometheus:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.prometheus.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Prometheus
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/prometheus.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROMETHEUS}}
+        ping: http://prometheus:9090
         server: docker-server
         container: prometheus
     - Grafana:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.grafana.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Grafana
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/grafana.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GRAFANA}}
+        ping: http://grafana:3000
         server: docker-server
         container: grafana
     - Glances:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.glances.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Glances
         icon: glances.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_GLANCES}}
+        ping: http://glances:61208
         server: docker-server
         container: glances
     - cAdvisor:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.cadvisor.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Detailed Container metrics
         icon: cadvisor.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CADVISOR}}
+        ping: http://cadvisor:8080
         server: docker-server
         container: cadvisor
     - Dozzle:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.dozzle.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Container logging
         icon: dozzle.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_DOZZLE}}
+        ping: http://dozzle:8080
         server: docker-server
         container: dozzle
 
@@ -159,91 +159,91 @@
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.ittools.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Interesting IT Aplications (quality of life improvement)
         icon: kubernetes.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_ITTOOLS}}
+        ping: http://it-tools:3000
         server: docker-server
-        container: it_tools
+        container: it-tools
     - Web Check:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.webcheck.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Website analysis
         icon: chrome.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_WEBCHECK}}
+        ping: http://web-check:3000
         server: docker-server
-        container: Web-Check
+        container: web-check
     - Code Server:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.codeserver.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: VS Code
         icon: vscode.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CODE}}
+        ping: http://code-server:8443
         server: docker-server
         container: code-server
     - Stirling:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.stirling.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Stirling PDF
         icon: stirling-pdf.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_STIRLING}}
+        ping: http://stirling:8080
         server: docker-server
         container: stirling
     - Change Detection:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.changedetection.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Change Detection
         icon: changedetection.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_CHANGEDETECTION}}
+        ping: http://changedetection:5000
         server: docker-server
         container: changedetection
     - MKDocs:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.mkdocs.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: MKDocs TODO
         icon: mkdocs.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_MKDOCS}}
+        ping: http://documentation:8000
         server: docker-server
         container: documentation
     - Jsoncrack:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.jsoncrack.{{HOMEPAGE_VAR_DOMAIN_NAME}}/editor
         description: jsoncrack
         icon: mdi-code-braces
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_JSONCRACK}}
+        ping: http://jsoncrack:8080
         server: docker-server
         container: jsoncrack
     - Mirotalk:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.meet.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Videoconference
         icon: google-meet
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_MIROTALK}}
+        ping: http://mirotalk:3000
         server: docker-server
         container: mirotalk
     - Prowlarr:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.prowlarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: prowlarr indexer
         icon: prowlarr.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_PROWLARR}}
+        ping: http://prowlarr:9696
         server: docker-server
         container: prowlarr
     - Sonarr:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.sonarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Sonarr for Movies
         icon: sonarr.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_SONARR}}
+        ping: http://sonarr:8989
         server: docker-server
         container: sonarr
     - Radarr:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.radarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Radarr for TV Shows
         icon: radarr.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_RADARR}}
+        ping: http://radarr:7878
         server: docker-server
         container: radarr
     - Readarr:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.readarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Readarr for Books
         icon: readarr.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_READARR}}
+        ping: http://readarr:8787
         server: docker-server
         container: readarr
     - Jellyseerr:
         href: https://{{HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME}}.jellyseerr.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Jellyseer
         icon: jellyseerr.png
-        ping: http://{{HOMEPAGE_VAR_SERVER_IP}}:{{HOMEPAGE_VAR_JELLYSEERR}}
+        ping: http://jellyseerr:5055
         server: docker-server
         container: jellyseerr
 
@@ -252,58 +252,50 @@
         href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.portainer.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Portainer
         icon: portainer.png
-        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PORTAINER}}
         server: docker-security
         container: portainer
     - Pihole:
         href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.pihole.{{HOMEPAGE_VAR_DOMAIN_NAME}}/admin/login  
         description: Pihole DNS
         icon: pi-hole.png
-        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_PIHOLE}} # TODO endpoint shows healthy but not running
         server: docker-security
         container: pihole
     - Whats Up Docker:
         href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.whatsupdocker.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Update docker images
         icon: whats-up-docker.png
-        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_WHATSUPDOCKER}} # TODO endpoint shows healthy but not running
         server: docker-security 
         container: whatsupdocker
-    - Keycloak:
-        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.keycloak.{{HOMEPAGE_VAR_DOMAIN_NAME}}
+    - Authentik:
+        href: https://{{HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME}}.authentik.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Auhtnentication and Authorization service
-        icon: keycloak.png
-        ping: http://{{HOMEPAGE_VAR_SECURITY_IP}}:{{HOMEPAGE_VAR_KEYCLOAK}}
+        icon: authentik.png
         server: docker-security
-        container: keycloak
+        container: authentik
 
 - NAS:
     - Jellyfin:
         href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.jellyfin.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Jellyfin media player
         icon: http://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/svg/jellyfin.svg
-        ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_JELLYFIN}}
         server: docker-nas
         container: jellyfin
     - Gitea:
         href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.gitea.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Gitea. Private GIT repo in the cloud 
         icon: gitea.png
-        ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_GITEA}}
         server: docker-nas
         container: gitea
     - NetbootXYZ:
         href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.netbootxyz.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: NetbootXYZ 
         icon: netboot.png
-        ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_NETBOOT}}
         server: docker-nas
         container: netbootxyz
     - QBitorrent:
         href: https://{{HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME}}.qbitorrent.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: qbittorrent
         icon: qbittorrent.png
-        ping: http://{{HOMEPAGE_VAR_NAS_IP}}:{{HOMEPAGE_VAR_QBITORRENT}}
         server: docker-nas
         container: qbittorrent
 

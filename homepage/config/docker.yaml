@@ -3,7 +3,9 @@
 # https://gethomepage.dev/latest/configs/docker/
 
 docker-server:
-  socket: {{HOMEPAGE_VAR_DOCKER}}
+  host: {{HOMEPAGE_VAR_SERVER_IP}}  # if you use IP it will use the host ICMP protoocol to ping
+                                    # if you use the docker service name it will use the docker internal network to access the socket
+  port: 2380
 
 docker-security:
   host: {{HOMEPAGE_VAR_SECURITY_IP}}
