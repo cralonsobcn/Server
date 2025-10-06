@@ -14,8 +14,7 @@ services:
       - IMAGES=1 # Necessary to run whatsupdocker
       - LOG_LEVEL=err # Set log level to error to reduce log verbosity
     networks:
-      - server_network
-      - server_tunnel_network
+      - cluster_network
     ports:
       - ${SERVER_IP}:2380:2375 # 2375 Already in use??
     volumes:

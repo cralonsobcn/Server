@@ -7,7 +7,7 @@ services:
       PGID: ${PGID}
       TZ: ${TZ}
     networks:
-      - server_network
+      - cluster_network
     volumes:
       - ${HOME}/Server/readarr/config:/config # Database and Readarr configs
       - ${HOME}/Server/readarr/books:/books # Location of Book library on disk (See note in Application setup) optional

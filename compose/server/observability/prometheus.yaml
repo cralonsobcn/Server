@@ -7,7 +7,7 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
     networks:
-      - server_network
+      - cluster_network
     volumes: # TODO Add volume and persist the data
       - ${HOME}/Server/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml # path to /etc/prometheus.yml
     depends_on:

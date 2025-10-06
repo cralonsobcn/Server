@@ -7,7 +7,7 @@ services:
       PGID: ${PGID}
       TZ: ${TZ}
     networks:
-      - server_network
+      - cluster_network
     volumes:
       - ${HOME}/Server/changedetection/config:/config # Persistent config files
     restart: ${RESTART_POLICY}

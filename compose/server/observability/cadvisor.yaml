@@ -7,7 +7,7 @@ services:
       PGID: ${PGID}
       PUID: ${PUID}
     networks:
-      - server_network
+      - cluster_network
     volumes:
     - /:/rootfs:ro
     - /var/run:/var/run:rw
@@ -23,7 +23,7 @@ services:
     environment:
       TZ: ${TZ}
     networks:
-      - server_network
+      - cluster_network
     ports:
     - ${REDIS_HOST_PORT}:${REDIS_HOST_PORT}
     restart: ${RESTART_POLICY}

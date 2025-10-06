@@ -3,14 +3,8 @@
 # docker images --format "{{ .Size }} \t {{ .Repository }}" | sort -h
 
 networks:
-  server_network:
-    driver: bridge
-    name: server_network
-    internal: true
-  server_tunnel_network:
-    driver: bridge
-    name: server_tunnel_network
-    internal: false
+  cluster_network:          # Docker Swarm overlay network
+    external: true
 
 volumes:
   grafana-data:
@@ -77,11 +71,6 @@ include:
       - compose/server/observability/prometheus.yaml
       - compose/server/observability/uptime-kuma.yaml
 
-  # Dashboard
+  # Tunnel
   - path:
-      - compose/server/dashboard/homepage.yaml
-
-  # Admin
-  - path:
-      - compose/server/admin/dockerproxy.yaml
       - compose/server/admin/cloudflare.yaml

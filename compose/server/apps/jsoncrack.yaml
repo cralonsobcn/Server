@@ -8,5 +8,5 @@ services:
       TZ: ${TZ}
       NODE_ENV: "production[cristian@mechanicus jsoncrack.com]$"
     networks:
-      - server_network
+      - cluster_network
     restart: ${RESTART_POLICY}

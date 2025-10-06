@@ -7,7 +7,7 @@ services:
       PGID: ${PGID}
       TZ: ${TZ}
     networks:
-      - server_network
+      - cluster_network
     volumes: # TODO
       - prowlarr-data:/config # Database and Prowlarr configs
     restart: ${RESTART_POLICY}

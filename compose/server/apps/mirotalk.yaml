@@ -9,7 +9,7 @@ services:
       TZ: ${TZ}
     restart: ${RESTART_POLICY}
     networks:
-      - server_network
+      - cluster_network
     volumes:
       - ${HOME}/Server/mirotalk/.mirotalk.env:/src/.env:ro
         # Rebranding:

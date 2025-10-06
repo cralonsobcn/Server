@@ -7,7 +7,7 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
     networks:
-      - server_network
+      - cluster_network
     volumes:
       - kuma-data:/app/data # ./uptime_kuma/data:/app/data
       - ${DOCKER_SOCK}:${DOCKER_SOCK}:ro # path to docker.sock
