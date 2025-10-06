@@ -6,6 +6,11 @@ networks:
   internal_network:
     driver: bridge
     name: internal_network
+    internal: true
+  server_tunnel_network:
+    driver: bridge
+    name: server_tunnel_network
+    internal: false
 
 volumes:
   grafana-data:
