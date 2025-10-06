@@ -4,57 +4,24 @@ services:
     container_name: homepage
     environment: 
       TZ: ${TZ}
-      LOG_LEVEL: debug
+      PUID: ${PUID}
+      PGID: ${PGID}
+      LOG_LEVEL: error
       HOMEPAGE_VAR_SERVER_IP: ${SERVER_IP}
       HOMEPAGE_VAR_SECURITY_IP: ${SECURITY_IP}
       HOMEPAGE_VAR_NAS_IP: ${NAS_IP}
       HOMEPAGE_VAR_CALENDAR: ${CALENDAR_URL}
       HOMEPAGE_VAR_STEAM: ${STEAM_URL}
       HOMEPAGE_VAR_DISCORD_ID: ${DISCORD_WIDGET_ID}
-      HOMEPAGE_VAR_DOCKER: ${DOCKER_SOCK}
       HOMEPAGE_VAR_SERVER_SUBDOMAIN_NAME: ${SERVER_SUBDOMAIN_NAME}
       HOMEPAGE_VAR_SECURITY_SUBDOMAIN_NAME: ${SECURITY_SUBDOMAIN_NAME}
       HOMEPAGE_VAR_NAS_SUBDOMAIN_NAME: ${NAS_SUBDOMAIN_NAME}
       HOMEPAGE_VAR_DOMAIN_NAME: ${DOMAIN_NAME}
       HOMEPAGE_ALLOWED_HOSTS: ${SERVER_SUBDOMAIN_NAME}.${DOMAIN_NAME}                   # As of v1.0 there is one required environment variable to access homepage via a URL
-      # SERVER PORTS
-      HOMEPAGE_VAR_CADVISOR: ${CADVISOR_HOST_PORT}
-      HOMEPAGE_VAR_CHANGEDETECTION: ${CHANGEDETECTION_HOST_PORT}
-      HOMEPAGE_VAR_CODE: ${CODE_HOST_PORT}
-      HOMEPAGE_VAR_DOZZLE: ${DOZZLE_HOST_PORT}
-      HOMEPAGE_VAR_GLANCES: ${GLANCES_HOST_PORT}
-      HOMEPAGE_VAR_GRAFANA: ${GRAFANA_HOST_PORT}
-      HOMEPAGE_VAR_HOMEPAGE: ${HOMEPAGE_HOST_PORT}
-      HOMEPAGE_VAR_ITTOOLS: ${ITTOOLS_HOST_PORT}
-      HOMEPAGE_VAR_JELLYSEERR: ${JELLYSEERR_HOST_PORT}
-      HOMEPAGE_VAR_JSONCRACK: ${JSONCRACK_HOST_PORT}
-      HOMEPAGE_VAR_MIROTALK: ${MIROTALK_HOST_PORT}
-      HOMEPAGE_VAR_MKDOCS: ${MKDOCS_HOST_PORT}
-      HOMEPAGE_VAR_PROMETHEUS: ${PROMETHEUS_HOST_PORT}
-      HOMEPAGE_VAR_PROWLARR: ${PROWLARR_HOST_PORT}
-      HOMEPAGE_VAR_RADARR: ${RADARR_HOST_PORT}
-      HOMEPAGE_VAR_READARR: ${READARR_HOST_PORT}
-      HOMEPAGE_VAR_SONARR: ${SONARR_HOST_PORT}
-      HOMEPAGE_VAR_STIRLING: ${STIRLING_HOST_PORT}
-      HOMEPAGE_VAR_WEBCHECK: ${WEBCHECK_HOST_PORT}
-      # NAS PORTS
-      HOMEPAGE_VAR_JELLYFIN: ${JELLYFIN_HOST_PORT}
-      HOMEPAGE_VAR_GITEA: ${GITEA_HOST_PORT}
-      HOMEPAGE_VAR_QBITORRENT: ${QBITORRENT_UI_HOST_PORT}
-      HOMEPAGE_VAR_NETBOOT: ${NETBOOT_HOST_TCP_PORT}
-      # SECURITY PORTS
-      HOMEPAGE_VAR_TRAEFIK: ${TRAEFIK_DASHBOARD_HOST_PORT}
-      HOMEPAGE_VAR_UPTIMEKUMA: ${UPTIMEKUMA_HOST_PORT}
-      HOMEPAGE_VAR_PORTAINER: ${PORTAINER_HTTP_HOST_PORT}
-      HOMEPAGE_VAR_PIHOLE: ${PIHOLE_HOST_HTTP_PORT}
-      HOMEPAGE_VAR_AUTHELIA: ${AUTHELIA_HOST_PORT}
-      HOMEPAGE_VAR_WHATSUPDOCKER: ${WHATSUPDOCKER_HOST_PORT}
     networks:
       - internal_network
-    ports:
-      - ${HOMEPAGE_HOST_PORT}:${HOMEPAGE_CONTAINER_PORT}
+      - server_tunnel_network                                                           # Required to access other services via their docker service name (services.yaml+doker.yaml)
     volumes:
-      - ${HOME}/Server/homepage/config:/app/config # Path to the config folder
-      - ${HOME}/Server/homepage/config/images:/app/public/images # Adding images
-      - ${DOCKER_SOCK}:${DOCKER_SOCK}  # path to docker.sock. Requires running the container as root
+      - ${HOME}/Server/homepage/config:/app/config                                      # Path to the config folder
+      - ${HOME}/Server/homepage/config/images:/app/public/images                        # Adding images
     restart: ${RESTART_POLICY}
