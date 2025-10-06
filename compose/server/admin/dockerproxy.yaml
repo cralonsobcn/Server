@@ -12,10 +12,9 @@ services:
       - ALLOW_START=1 # Necessary to run whatsupdocker 
       - ALLOW_STOP=1 # Necessary to run whatsupdocker 
       - IMAGES=1 # Necessary to run whatsupdocker
-      - NETWORKS=1 # Necessary to allow homepage pull network info
       - LOG_LEVEL=err # Set log level to error to reduce log verbosity
     networks:
-      - internal_network
+      - server_network
       - server_tunnel_network
     ports:
       - ${SERVER_IP}:2380:2375 # 2375 Already in use??
