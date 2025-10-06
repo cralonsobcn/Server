@@ -1,0 +1,11 @@
+services:
+  networking-toolbox:
+    image: lissy93/networking-toolbox:1.0.1
+    container_name: networking-toolbox
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    restart: ${RESTART_POLICY}
+    networks:
+      - cluster_network
