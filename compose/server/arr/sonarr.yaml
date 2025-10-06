@@ -8,8 +8,6 @@ services:
       TZ: ${TZ}
     networks:
       - internal_network
-    ports:
-      - ${SONARR_HOST_PORT}:${SONARR_CONTAINER_PORT}
     volumes:
       - ${HOME}/Server/sonarr/config:/config
     restart: ${RESTART_POLICY}

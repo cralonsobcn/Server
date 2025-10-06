@@ -4,15 +4,16 @@ services:
     container_name: prometheus
     environment:
       TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
     networks:
       - internal_network
-    ports:
-      - ${PROMETHEUS_HOST_PORT}:${PROMETHEUS_CONTAINER_PORT}
     volumes: # TODO Add volume and persist the data
       - ${HOME}/Server/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml # path to /etc/prometheus.yml
     depends_on:
       - cadvisor
     restart: ${RESTART_POLICY}
+
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: "prometheus-node_exporter"
@@ -23,3 +24,5 @@ services:
     volumes:
       - '/:/host:ro,rslave'
     restart: ${RESTART_POLICY}
+
+# TODO migrate node_exporter to standalone deployment

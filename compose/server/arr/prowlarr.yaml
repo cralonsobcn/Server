@@ -8,8 +8,6 @@ services:
       TZ: ${TZ}
     networks:
       - internal_network
-    ports:
-      - ${PROWLARR_HOST_PORT}:${PROWLARR_CONTAINER_PORT}
     volumes: # TODO
       - prowlarr-data:/config # Database and Prowlarr configs
     restart: ${RESTART_POLICY}

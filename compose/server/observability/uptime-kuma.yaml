@@ -4,11 +4,11 @@ services:
     container_name: uptime-kuma
     environment:
       TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
     networks:
       - internal_network
-    ports:
-      - ${UPTIMEKUMA_HOST_PORT}:${UPTIMEKUMA_CONTAINER_PORT}
     volumes:
       - kuma-data:/app/data # ./uptime_kuma/data:/app/data
-      - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock
+      - ${DOCKER_SOCK}:${DOCKER_SOCK}:ro # path to docker.sock
     restart: ${RESTART_POLICY}

@@ -8,8 +8,6 @@ services:
       TZ: ${TZ}
     networks:
       - internal_network
-    ports:
-      - ${READARR_HOST_PORT}:${READARR_CONTAINER_PORT}
     volumes:
       - ${HOME}/Server/readarr/config:/config # Database and Readarr configs
       - ${HOME}/Server/readarr/books:/books # Location of Book library on disk (See note in Application setup) optional

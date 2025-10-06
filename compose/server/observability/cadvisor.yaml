@@ -4,10 +4,10 @@ services:
     container_name: cadvisor
     environment:
       TZ: ${TZ}
+      PGID: ${PGID}
+      PUID: ${PUID}
     networks:
       - internal_network
-    ports:
-    - ${CADVISOR_HOST_PORT}:${CADVISOR_CONTAINER_PORT}
     volumes:
     - /:/rootfs:ro
     - /var/run:/var/run:rw
@@ -27,3 +27,5 @@ services:
     ports:
     - ${REDIS_HOST_PORT}:${REDIS_HOST_PORT}
     restart: ${RESTART_POLICY}
+
+ # TODO isolate cadvisor and redis in their own network

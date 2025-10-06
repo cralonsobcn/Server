@@ -10,8 +10,6 @@ services:
       DOZZLE_NO_ANALYTICS: true
     networks:
       - internal_network
-    ports:
-      - ${DOZZLE_HOST_PORT}:${DOZZLE_CONTAINER_PORT}
     volumes:
       - ${DOCKER_SOCK}:${DOCKER_SOCK}
     restart: ${RESTART_POLICY}

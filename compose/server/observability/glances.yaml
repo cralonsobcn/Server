@@ -5,10 +5,10 @@ services:
     environment:
       - "GLANCES_OPT=-w"
       - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
     networks:
       - internal_network
-    ports:
-      - ${GLANCES_HOST_PORT}:${GLANCES_CONTAINER_PORT}
     volumes:
       - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock
     restart: ${RESTART_POLICY}

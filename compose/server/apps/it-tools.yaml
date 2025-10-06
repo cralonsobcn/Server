@@ -8,6 +8,4 @@ services:
       TZ: ${TZ}
     networks:
       - internal_network
-    ports:
-      - ${ITTOOLS_HOST_PORT}:${ITTOOLS_CONTAINER_PORT}
     restart: ${RESTART_POLICY}

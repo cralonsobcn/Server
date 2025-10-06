@@ -8,6 +8,4 @@ services:
       TZ: ${TZ}
     networks:
       - internal_network
-    ports:
-      - ${WEBCHECK_HOST_PORT}:${WEBCHECK_CONTAINER_PORT}
     restart: ${RESTART_POLICY}

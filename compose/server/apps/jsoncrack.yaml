@@ -9,6 +9,4 @@ services:
       NODE_ENV: "production[cristian@mechanicus jsoncrack.com]$"
     networks:
       - internal_network
-    ports:
-      - ${JSONCRACK_HOST_PORT}:${JSONCRACK_CONTAINER_PORT}
     restart: ${RESTART_POLICY}

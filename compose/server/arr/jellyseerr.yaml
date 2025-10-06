@@ -9,8 +9,6 @@ services:
       LOG_LEVEL: debug
     networks:
       - internal_network
-    ports:
-      - ${JELLYSEERR_HOST_PORT}:${JELLYSEERR_CONTAINER_PORT}
     volumes:
       - ${HOME}/Server/jellyseerr/config:/app/config
     restart: ${RESTART_POLICY}
