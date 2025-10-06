@@ -7,6 +7,7 @@ services:
       TUNNEL_TOKEN: ${SERVER_CLOUDFARE_TUNNEL_TOKEN}
     networks:
       - internal_network
+      - server_tunnel_network
     extra_hosts: # Explictly defines the hostnames. Equivalent to write on /etc/hosts within the container
       - ${SECURITY_SUBDOMAIN_NAME}:${SECURITY_IP}
       - ${SERVER_SUBDOMAIN_NAME}:${SERVER_IP}
