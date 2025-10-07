@@ -1,0 +1,11 @@
+services:
+  raid-calculator:
+    build: https://github.com/Lissy93/raid-calculator.git
+    container_name: raid-calculator
+    restart: ${RESTART_POLICY}
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    networks:
+      - cluster_network

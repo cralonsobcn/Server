@@ -46,9 +46,10 @@ include:
       - compose/server/apps/code-server.yaml
       - compose/server/apps/omni-tools.yaml   
       - compose/server/apps/networking-toolbox.yaml  
-      - compose/server/apps/convertx.yaml                                                                                    
+      - compose/server/apps/convertx.yaml    
+      - compose/server/apps/raid-calculator.yaml                                                                                                    
       # - compose/server/apps/documentation.yaml                    # Crashes.
-      # - compose/server/apps/jsoncrack.yaml                        # This app needs to be built through the Dockerfile. TODO Automate it.
+      - compose/server/apps/jsoncrack.yaml                          
       - compose/server/apps/stirling.yaml                           # 1.88GB. Consider using latest-ultra-lite tag
       - compose/server/apps/web-check.yaml                          # 2.71GB
   - path: 
