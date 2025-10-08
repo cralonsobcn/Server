@@ -8,6 +8,7 @@ services:
       PUID: ${PUID}
     networks:
       - cluster_network
+      - cadvisor_network
     volumes:
     - /:/rootfs:ro
     - /var/run:/var/run:rw
@@ -23,9 +24,12 @@ services:
     environment:
       TZ: ${TZ}
     networks:
-      - cluster_network
+      - cadvisor_network
     ports:
     - ${REDIS_HOST_PORT}:${REDIS_HOST_PORT}
     restart: ${RESTART_POLICY}
 
- # TODO isolate cadvisor and redis in their own network
+networks:
+  cadvisor_network:
+    driver: bridge
+    name: cadvisor_network
