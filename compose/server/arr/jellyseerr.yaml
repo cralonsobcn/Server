@@ -6,7 +6,7 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
-      LOG_LEVEL: debug
+      LOG_LEVEL: error
     networks:
       - cluster_network
     volumes:
