@@ -1,6 +1,7 @@
 services:
   jsoncrack:
-    build: https://github.com/AykutSarac/jsoncrack.com.git
+    build: 
+      context: https://github.com/AykutSarac/jsoncrack.com.git
     container_name: jsoncrack
     environment:
       PUID: ${PUID}

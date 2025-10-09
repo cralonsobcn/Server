@@ -1,6 +1,7 @@
 services:
   raid-calculator:
-    build: https://github.com/Lissy93/raid-calculator.git
+    build: 
+      context: https://github.com/Lissy93/raid-calculator.git
     container_name: raid-calculator
     restart: ${RESTART_POLICY}
     environment:
