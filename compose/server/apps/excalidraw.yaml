@@ -1,0 +1,8 @@
+services:
+  excalidraw:
+    build:
+      context: https://github.com/excalidraw/excalidraw.git 
+    image: excalidraw:0.18.0                                          # https://github.com/excalidraw/excalidraw/tags
+    container_name: excalidraw
+    networks:
+      - cluster_network
