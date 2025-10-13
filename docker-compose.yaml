@@ -7,14 +7,12 @@ networks:
     external: true
 
 volumes:
-  grafana-data:
-    name: grafana-data # TODO change volume type
-  kuma-data:
-    name: kuma-data  # TODO I'll keep the configuration but not the logging
   prowlarr-data:
     name: prowlarr-data
+    driver: local
   arr-data:
     name: arr-data # TODO change volume type. Avoid /home.
+    driver: local
       #    data
       #    ├── torrents
       #    │   ├── books
@@ -33,9 +31,7 @@ volumes:
       #        ├── movies
       #        ├── music
       #        └── tv
-  prometheus-data:
-    name: prometheus-data # TODO change volume type
-  mkadocs-data:
+  mkdocs-data:
     name: mkdocs-data # TODO
 
 include:
@@ -66,15 +62,10 @@ include:
       - compose/server/arr/readarr.yaml
       - compose/server/arr/sonarr.yaml
 
-  # Observability
-  - path:
-      - compose/server/observability/cadvisor.yaml
-      - compose/server/observability/dozzle.yaml
-      - compose/server/observability/glances.yaml
-      - compose/server/observability/grafana.yaml
-      - compose/server/observability/prometheus.yaml
-      - compose/server/observability/uptime-kuma.yaml
-
   # Tunnel
   - path:
-      - compose/server/admin/cloudflare.yaml
+      - compose/server/management/cloudflare.yaml
+  
+  # Proxy
+  - path:
+      - compose/server/management/dockerproxy.yaml
