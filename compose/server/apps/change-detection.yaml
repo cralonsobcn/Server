@@ -1,6 +1,6 @@
 services:
   changedetection:
-    image: lscr.io/linuxserver/changedetection.io:latest
+    image: lscr.io/linuxserver/changedetection.io:0.50.18
     container_name: changedetection
     environment:
       PUID: ${PUID}
@@ -9,5 +9,5 @@ services:
     networks:
       - cluster_network
     volumes:
-      - ${HOME}/Server/changedetection/config:/config # Persistent config files
+      - ${HOME}/Server/changedetection/config:/config
     restart: ${RESTART_POLICY}
