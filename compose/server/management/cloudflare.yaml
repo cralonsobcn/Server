@@ -1,0 +1,10 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:2025.9.1
+    container_name: server-tunnel
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${SERVER_CLOUDFARE_TUNNEL_TOKEN}
+    networks:
+      - cluster_network
+    restart: ${RESTART_POLICY}

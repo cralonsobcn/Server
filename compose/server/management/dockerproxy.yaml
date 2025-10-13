@@ -1,0 +1,20 @@
+services:
+  server-dockerproxy:
+    image: ghcr.io/tecnativa/docker-socket-proxy:v0.4.1
+    container_name: server-dockerproxy
+    environment:
+      - CONTAINERS=1                                          # Allow access to viewing containers
+      - SERVICES=1                                            # Allow access to viewing services (necessary when using Docker Swarm)
+      - TASKS=1                                               # Allow access to viewing tasks (necessary when using Docker Swarm)
+      - POST=0                                                # Disallow any POST operations (effectively read-only)
+      - INFO=1                                                # Necessary to query logs from Dazzle/Server
+      - CONTAINERS=1                                          # Necessary to query logs from Dazzle/Server
+      - ALLOW_START=1                                         # Necessary to run whatsupdocker 
+      - ALLOW_STOP=1                                          # Necessary to run whatsupdocker 
+      - IMAGES=1                                              # Necessary to run whatsupdocker
+      - LOG_LEVEL=err                                         # Set log level to error to reduce log verbosity
+    networks:
+      - cluster_network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: ${RESTART_POLICY}
