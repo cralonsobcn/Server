@@ -51,18 +51,28 @@ else
 fi
 
 # If this script is executed in the NAS, install the VPN as well
-
+if [ $HOSTNAME eq $server_name ]
+    serverActions()
+elif [ $HOSTNAME eq $security_name ]
+    securityActions()
+elif [ $HOSTNAME eq $nas_name ]
+    nasActions()
+else
+    echo "Hostname not recognized"
+    exit 1
 
 # Actions to be done as per appliance purpose basis
 securityActions(){
 
+    # TODO switch to git pull script
+
     # Application folders within the security appliance
-    folders=("pihole/" "/authelia/" "traefik/" "traefik/config" "traefik/config/certs" "traefik/config/logs")
+    folders=("pihole/" "authentik/" "traefik/" "traefik/config" "traefik/config/certs" "traefik/config/logs")
     # If any of the security folders do not exist, create under the Home directory and change the owner and group to the USER's
     for folder in ${folders[@]}; do
         if [[ ! -d "${HOME}/${folder}" ]]; then
             echo "Creating directory ${HOME}/${folder}"
-            mkdir "${HOME}/${folder}"
+            mkdir -p "${HOME}/${folder}"
             echo "Updating the ownership of the directory to ${USER}"
             chown -R ${USER}:${USER} "${HOME}/${folder}"
         else
@@ -70,12 +80,14 @@ securityActions(){
         fi
     done
 
-    modify_hosts()
+    addHosts()
     disableIpv6()
     setPiholeDNS()
 }
 
 nasActions(){
+
+    # TODO switch to git pull script
     
     # Add the VPN client repo and install it 
     if [[ ! $(dnf list --installed "mullvad-vpn") ]]; then
@@ -86,13 +98,15 @@ nasActions(){
     fi
 
     # TODO Application folders within the nas appliance
-    modify_hosts()
+    addHosts()
     disableIpv6()
     setPiholeDNS()
 }
 
 serverActions(){
 
+    # TODO switch to git pull script
+    
     # Application folders within the server appliance
     folders=("changedetection/" "code-server/" "grafana/" "homepage/" "homepage/config" "homepaeg/config/images" "jellyseerr" "jellyseerr/config" "prometheus/" "prometheus/config" "radarr/" "readarr/" "sonarr/" "stirlingPDF/" "uptime_kuma/")
     # If any of the security folders do not exist, create under the Home directory and change the owner and group to the USER's
@@ -107,14 +121,12 @@ serverActions(){
         fi
     done
 
-    modify_hosts()
+    addHosts()
     disableIpv6()
     setPiholeDNS()
 }
 
-modifyHosts(){ # TODO get static IP from each appliance
-
-    # Refactor this. 100% sure that there's a way to make this acceptable
+addHosts(){ 
     echo "${server_ip}  ${server_name}" >> /etc/hosts
     echo "${security_ip}  ${security_name}" >> /etc/hosts
     echo "${nas_ip}  ${nas_name}" >> /etc/hosts
