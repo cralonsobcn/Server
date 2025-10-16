@@ -12,7 +12,7 @@ services:
       #igdbclientid: <clientid> # Pulls covers and metadata from Twitch
       #igdbclientsecret: <clientsecret> # Pulls covers and metadata from Twitch
     networks:
-      - nas_network
+      - cluster_network
     ports:
       - 5198:80
     volumes:
@@ -32,7 +32,7 @@ services:
       MARIADB_USER: gaseous
       MARIADB_PASSWORD: gaseous
     networks:
-      - nas_network
+      - cluster_network
     volumes:
       - gsdb:/var/lib/mysql
     restart: ${RESTART_POLICY}

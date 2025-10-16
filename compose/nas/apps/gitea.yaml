@@ -1,22 +1,59 @@
 services:
-  gitea:
-    image: docker.io/gitea/gitea:latest
+  gitea:                                                          # Web ports 3000. SSH port 2222
+    image: docker.io/gitea/gitea:1.24.6-rootless
+    user: ${PUID}
     container_name: gitea
     environment:
-      # USER: git
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
+      GITEA__database__DB_TYPE: postgres
+      GITEA__database__HOST: gitea-postgress:5432
+      GITEA__database__NAME: gitea
+      GITEA__database__USER: gitea
+      GITEA__database__PASSWD: gitea
     networks:
-      - nas_network
-    ports:
-      - ${GITEA_HOST_PORT}:${GITEA_CONTAINER_PORT}
-      - ${GITEA_HOST_SSH_PORT}:${GITEA_CONTAINER_SSH_PORT}
-    volumes: # TODO move to named volume
-      # - gitea-data:/data # app.ini in /var/lib/docker/volumes/server_gitea-data
-      # /data/gitea/gitea.db container path to the sqlite3 database
-      - ${HOME}/NAS/gitea/data:/var/lib/gitea
-      - ${HOME}/NAS/gitea/config:/etc/gitea
+      - cluster_network
+      - gitea_network
+    volumes: 
+      - gitea-data:/var/lib/gitea
+      - gitea-config:/etc/gitea
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - gitea-postgress 
     restart: ${RESTART_POLICY}
+
+  gitea-postgress:
+    image: docker.io/library/postgres:14
+    restart: ${RESTART_POLICY}
+    networks:
+      - gitea_network
+    container_name: gitea-postgress
+    environment:
+      POSTGRES_USER: gitea
+      POSTGRES_PASSWORD: gitea
+      POSTGRES_DB: gitea
+    volumes:
+      - gitea-postgres:/var/lib/postgresql/data
+
+volumes:
+  gitea-db:
+    name: gitea-db
+    driver: local
+  gitea-config:
+    name: gitea-config
+    driver: local
+  gitea-data:
+    name: gitea-data
+    driver: local
+  gitea-postgres:
+    name: gitea-postgres
+    driver: local
+
+networks:
+  gitea_network:
+    name: gitea_network
+    driver: bridge
+
+    

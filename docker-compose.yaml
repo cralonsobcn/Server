@@ -1,35 +1,49 @@
 networks:
-  nas_network:
-    driver: bridge
-    name: nas_network
+  cluster_network:
+    external: true
+  scrutiny_collector_network:
+    external: true
 
 volumes:
-  gitea-data: # TODO change volume type
-    name: gitea-data
-  jellyfin-media: # TODO change volume type
+  jellyfin-media: 
     name: jellyfin-media
-  qbitorrent-data: # TODO change volume type
+    driver: local
+  qbitorrent-data: 
     name: qbitorrent-data
-  netbootxyz-data: # TODO change volume type
+    driver: local
+  netbootxyz-data: 
     name: netbootxyz-data
+    driver: local
   gsdb:
     name: gaseous-database
+    driver: local
   gs:
     name: gaseous
+    driver: local
 
 include:
-  # compose/nas/admin
+
+  # Administration and Proxying
   - path:
-    - compose/nas/admin/cloudflared.yaml
-    - compose/nas/admin/dockerproxy.yaml
-  # compose/nas/apps
+    - compose/nas/management/cloudflared.yaml
+    - compose/nas/management/dockerproxy.yaml
+
+  # Scrutiny Collector to scrap HDD and SDD smart metrics
   - path:
-    - compose/nas/apps/cryptpad.yaml
+    - compose/nas/management/scrutiny-collector.yaml                     # TODO. Fix POST against the API. Connection Refused.
+    
+  # Utility and Development
+  - path:
+    - compose/nas/apps/cryptpad.yaml                                # PENDING CONFIGURATION
     - compose/nas/apps/gitea.yaml
     - compose/nas/apps/netboot.yaml
-    - compose/nas/apps/scrutiny.yaml
-  # compose/nas/media:
+
+  # Media applications
   - path:
-    - compose/nas/media/gaseous.yaml
+    # - compose/nas/media/gaseous.yaml                              # Temporarily disabled. TODO review port
     - compose/nas/media/jellyfin.yaml
     - compose/nas/media/qbittorrent.yaml
+
+  # File systems
+  - path:
+    - compose/nas/apps/rustfs.yaml                                  # Finish configuration

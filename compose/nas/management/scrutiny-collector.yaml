@@ -1,0 +1,24 @@
+services:
+  nas-scrutiny-collector:                                             # https://github.com/AnalogJ/scrutiny?tab=readme-ov-file
+    image: ghcr.io/analogj/scrutiny:master-collector
+    container_name: "nas-scrutiny-collector"
+    environment:
+      TZ: ${TZ}
+      COLLECTOR_API_ENDPOINT: "http://scrutiny-web:8080"                    # Despite this being an API endpoint, do not add /api path here
+      # SCRUTINY_WEB_LISTEN_BASEPATH: "/api/collector"
+      COLLECTOR_HOST_ID: "nas-scrutiny-collector"
+      COLLECTOR_RUN_STARTUP: true
+      COLLECTOR_LOG_FILE: /tmp/collector.log
+    # command: /opt/scrutiny/bin/scrutiny-collector-metrics run
+    cap_add:
+      - SYS_RAWIO
+    networks:
+      - scrutiny_collector_network
+    volumes:
+      - /run/udev:/run/udev:ro
+      - ${HOME}/NAS/scrutiny/config:/opt/scrutiny/config
+      - ${HOME}/NAS/scrutiny/logs:/tmp
+      - /dev/sda:/dev/sda
+    devices:
+      - /dev/sda:/dev/sda
+    restart: ${RESTART_POLICY}

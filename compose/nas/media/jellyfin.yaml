@@ -1,6 +1,6 @@
 services:
   jellyfin:
-    image: lscr.io/linuxserver/jellyfin:latest
+    image: lscr.io/linuxserver/jellyfin:10.10.6
     container_name: jellyfin
     environment:
       PUID: ${PUID}
@@ -8,11 +8,8 @@ services:
       TZ: ${TZ}
       DOCKER_MODS: linuxserver/mods:jellyfin-opencl-intel #Enable iGPU to use QSV
     networks:
-      - nas_network
+      - cluster_network
     ports:
-      - ${JELLYFIN_HOST_PORT}:${JELLYFIN_CONTAINER_PORT}
-      - ${JELLYFIN_HOST_PORT_HTTPS}:${JELLYFIN_CONTAINER_PORT_HTTPS}
-      - 8920:8920 #optional. Https webUI
       - 7359:7359/udp #optional. Allows clients to discover Jellyfin on the local network.
       - 1900:1900/udp #optional. Service discovery used by DNLA and clients.
     volumes: # TODO switch to named volume

@@ -1,0 +1,18 @@
+# https://docs.rustfs.com/installation/docker/
+services:
+  rustfs:
+    image: rustfs/rustfs:latest
+    container_name: rustfs
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      RUSTFS_ACCESS_KEY: "rustfsadmin"
+      RUSTFS_SECRET_KEY: "rustfsadmin"
+      RUSTFS_CONSOLE_ENABLE: true
+      RUSTFS_SERVER_DOMAINS: "${NAS_SUBDOMAIN_NAME}.rustfs.${DOMAIN_NAME}"
+    volumes:
+      - ${HOME}/NAS/rustfs/data:/data
+    networks:
+      - cluster_network
+    restart: unless-stopped

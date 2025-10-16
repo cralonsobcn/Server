@@ -20,7 +20,7 @@ services:
       - ${HOME}/NAS/cryptpad/onlyoffice-dist:/cryptpad/www/common/onlyoffice/dist
       - ${HOME}/NAS/cryptpad/onlyoffice-conf:/cryptpad/onlyoffice-conf
     networks:
-      - nas_network
+      - cluster_network
     ports:
       - "3000:3000"
       - "3003:3003"
