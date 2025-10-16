@@ -2,9 +2,10 @@
 *.env
 !env-template.env
 
-# Ignore homepage logs
+# Ignore logs
 .log
 .logs
+/logs
 
 # Ignore databases
 .db
