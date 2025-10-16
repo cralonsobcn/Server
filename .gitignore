@@ -9,6 +9,6 @@
 # Ignore databases
 .db
 
-
 # Ignore certificates
 .crt
+acme.json
