@@ -1,0 +1,270 @@
+http:
+  routers:
+
+    ittools: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.ittools.{{env "DOMAIN_NAME"}}`)
+      service: ittools
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    webcheck: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.webcheck.{{env "DOMAIN_NAME"}}`)
+      service: webcheck
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    codeserver: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.codeserver.{{env "DOMAIN_NAME"}}`)
+      service: codeserver
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    stirling: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.stirling.{{env "DOMAIN_NAME"}}`)
+      service: stirling
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    changedetection: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.changedetection.{{env "DOMAIN_NAME"}}`)
+      service: changedetection
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    radarr: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.radarr.{{env "DOMAIN_NAME"}}`)
+      service: radarr
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    sonarr: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.sonarr.{{env "DOMAIN_NAME"}}`)
+      service: sonarr
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    prowlarr: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.prowlarr.{{env "DOMAIN_NAME"}}`)
+      service: prowlarr
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    readarr: 
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.readarr.{{env "DOMAIN_NAME"}}`)
+      service: readarr 
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    jellyseerr: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.jellyseerr.{{env "DOMAIN_NAME"}}`)
+      service: jellyseerr
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    jsoncrack: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.jsoncrack.{{env "DOMAIN_NAME"}}`)
+      service: jsoncrack
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    mirotalk:
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.meet.{{env "DOMAIN_NAME"}}`)
+      service: mirotalk
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    rocketchat:
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.chat.{{env "DOMAIN_NAME"}}`)
+      service: rocketchat
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+    
+    omni-tools:
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.omni-tools.{{env "DOMAIN_NAME"}}`)
+      service: omni-tools
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    networking-toolbox:
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.networking-toolbox.{{env "DOMAIN_NAME"}}`)
+      service: networking-toolbox
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+    
+    convertx:
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.convertx.{{env "DOMAIN_NAME"}}`)
+      service: convertx
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    excalidraw:
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.draw.{{env "DOMAIN_NAME"}}`)
+      service: excalidraw
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+    
+    raid-calculator:
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SERVER_SUBDOMAIN_NAME"}}.raid-calculator.{{env "DOMAIN_NAME"}}`)
+      service: raid-calculator
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik

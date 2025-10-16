@@ -1,0 +1,197 @@
+http:
+  routers:
+
+    homepage:
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.{{env "DOMAIN_NAME"}}`)
+      service: homepage # References the service
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    portainer:
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.portainer.{{env "DOMAIN_NAME"}}`)
+      service: portainer # References the service
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    traefik:
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.traefik.{{env "DOMAIN_NAME"}}`)
+      service: traefik
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+ 
+    pihole:
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.pihole.{{env "DOMAIN_NAME"}}`)
+      service: pihole
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    whatsupdocker: 
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.whatsupdocker.{{env "DOMAIN_NAME"}}`)
+      service: whatsupdocker
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+    
+    scrutiny-web: 
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.scrutiny.{{env "DOMAIN_NAME"}}`)
+      service: scrutiny-web
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    dozzle: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.dozzle.{{env "DOMAIN_NAME"}}`)
+      service: dozzle
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    glances: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.glances.{{env "DOMAIN_NAME"}}`)
+      service: glances
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: 
+      # middlewares:
+      #   - authentik
+
+    uptimekuma: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.uptimekuma.{{env "DOMAIN_NAME"}}`)
+      service: uptimekuma
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    prometheus: 
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.prometheus.{{env "DOMAIN_NAME"}}`)
+      service: prometheus
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    cadvisor: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.cadvisor.{{env "DOMAIN_NAME"}}`)
+      service: cadvisor
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    grafana: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: 'Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.grafana.{{env "DOMAIN_NAME"}}`)'
+      service: grafana
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    authentik: 
+      entryPoints:
+        - web
+        - websecure
+      rule: Host(`{{env "SECURITY_SUBDOMAIN_NAME"}}.authentik.{{env "DOMAIN_NAME"}}`)
+      service: authentik
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik

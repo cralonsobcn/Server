@@ -1,0 +1,128 @@
+http:  
+  services:
+
+    ittools:
+      loadBalancer:
+        servers:
+          - url: http://it-tools:80
+            preservePath: true
+        passHostHeader: true 
+
+    webcheck:
+      loadBalancer:
+        servers:
+          - url: http://web-check:3000
+            preservePath: true
+        passHostHeader: true
+
+    codeserver:
+      loadBalancer:
+        servers:
+          - url: http://code-server:8443
+            preservePath: true
+        passHostHeader: true
+
+    stirling:
+      loadBalancer:
+        servers:
+          - url: http://stirling:8080
+            preservePath: true
+        passHostHeader: true
+
+    changedetection:
+      loadBalancer:
+        servers:
+          - url: http://changedetection:5000
+            preservePath: true
+        passHostHeader: true
+
+    excalidraw:
+      loadBalancer:
+        servers:
+          - url: http://excalidraw:80
+            preservePath: true
+        passHostHeader: true      
+
+    radarr:
+      loadBalancer:
+        servers:
+          - url: http://radarr:7878
+            preservePath: true
+        passHostHeader: true
+
+    sonarr:
+      loadBalancer:
+        servers:
+          - url: http://sonarr:8989
+            preservePath: true
+        passHostHeader: true
+
+    prowlarr:
+      loadBalancer:
+        servers:
+          - url: http://prowlarr:9696
+            preservePath: true
+        passHostHeader: true
+
+    readarr:
+      loadBalancer:
+        servers:
+          - url: http://readarr:8787
+            preservePath: true
+        passHostHeader: true
+
+    jellyseerr:
+      loadBalancer:
+        servers:
+          - url: http://jellyseerr:5055
+            preservePath: true
+        passHostHeader: true
+
+    jsoncrack:
+      loadBalancer:
+        servers:
+          - url: http://jsoncrack:8080
+            preservePath: true
+        passHostHeader: true
+
+    mirotalk:
+      loadBalancer:
+        servers:
+          - url: http://mirotalk:3000
+            preservePath: true
+        passHostHeader: true
+
+    rocketchat:
+      loadBalancer:
+        servers:
+          - url: http://rocketchat:3000
+            preservePath: true
+        passHostHeader: true
+  
+    omni-tools:
+      loadBalancer:
+        servers:
+          - url: http://omni-tools:80
+            preservePath: true
+        passHostHeader: true
+
+    networking-toolbox:
+      loadBalancer:
+        servers:
+          - url: http://networking-toolbox:3000
+            preservePath: true
+        passHostHeader: true
+
+    convertx:
+      loadBalancer:
+        servers:
+          - url: http://convertx:3000
+            preservePath: true
+        passHostHeader: true
+
+    raid-calculator:
+      loadBalancer:
+        servers:
+          - url: http://raid-calculator:80
+            preservePath: true
+        passHostHeader: true

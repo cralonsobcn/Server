@@ -1,0 +1,11 @@
+# http:
+#   routers:
+#   # Cluster-wide default router to forward auth requests to authentik
+#     default-router-auth:
+#         rule: HostRegexp(`{{env "SECURITY_SUBDOMAIN_NAME"}}.authentik.{{env "DOMAIN_NAME"}}`) && PathPrefix(`/{{env "SECURITY_SUBDOMAIN_NAME"}}.goauthentik.io/`)
+#         priority: 15
+#         service: authentik
+#         entryPoints:
+#           - websecure
+#         tls:
+#           certResolver: cloudflareResolver

@@ -1,0 +1,11 @@
+time="2025-10-09T13:30:55+02:00" level=info msg="Verifying required tools" type=metrics
+time="2025-10-09T13:30:55+02:00" level=info msg="Executing command: smartctl --info --scan --xall --json" type=metrics
+time="2025-10-09T13:30:55+02:00" level=info msg="Executing command: smartctl --info --json -T permissive --device auto /dev/sda" type=metrics
+time="2025-10-09T13:30:55+02:00" level=info msg="Using WWN Fallback" type=metrics
+time="2025-10-09T13:30:55+02:00" level=info msg="Sending detected devices to API, for filtering & validation" type=metrics
+time="2025-10-09T13:30:55+02:00" level=info msg="Collecting smartctl results for sda\n" type=metrics
+time="2025-10-09T13:30:55+02:00" level=info msg="Executing command: smartctl --xall --json -T permissive --device sat /dev/sda" type=metrics
+time="2025-10-09T13:30:55+02:00" level=error msg="smartctl returned an error code (4) while processing sda\n" type=metrics
+time="2025-10-09T13:30:55+02:00" level=error msg="smartctl detected a checksum error" type=metrics
+time="2025-10-09T13:30:55+02:00" level=info msg="Publishing smartctl results for vb5aa34aa8-6364b2a2\n" type=metrics
+time="2025-10-09T13:30:56+02:00" level=info msg="Main: Completed" type=metrics

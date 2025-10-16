@@ -1,0 +1,77 @@
+http:
+  routers:
+  
+    jellyfin: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "NAS_SUBDOMAIN_NAME"}}.jellyfin.{{env "DOMAIN_NAME"}}`)
+      service: jellyfin
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    gitea: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "NAS_SUBDOMAIN_NAME"}}.gitea.{{env "DOMAIN_NAME"}}`)
+      service: gitea
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    qbittorrent: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "NAS_SUBDOMAIN_NAME"}}.qbittorrent.{{env "DOMAIN_NAME"}}`)
+      service: qbittorrent
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+
+    netbootxyz: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "NAS_SUBDOMAIN_NAME"}}.netbootxyz.{{env "DOMAIN_NAME"}}`)
+      service: netbootxyz
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik
+    
+    rustfs: 
+      entryPoints: 
+        - web
+        - websecure
+      rule: Host(`{{env "NAS_SUBDOMAIN_NAME"}}.rustfs.{{env "DOMAIN_NAME"}}`)
+      service: rustfs
+      tls:
+        certResolver: cloudflareResolver
+      observability:
+        accessLogs: true
+        tracing: true
+        metrics: true
+      # middlewares:
+      #   - authentik

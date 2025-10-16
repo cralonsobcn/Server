@@ -1,0 +1,79 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/bookmarks
+
+- Github:
+  - Cristian's Home Server Repo:
+    - abbr: HL
+      href: https://github.com/cralonsobcn/Server
+      icon: github-light.png
+      description: Home Server Repo
+
+- Reddit:
+  - ARR feed:
+    - abbr: ARR
+      href: https://www.reddit.com/user/melodic-ladder-6161/m/arr/
+      icon: https://www.redditstatic.com/custom_feeds/custom_feed_default_6.png
+      description:
+  - Gaming feed:
+    - abbr: GM
+      href: https://www.reddit.com/user/melodic-ladder-6161/m/gaming/
+      icon: https://www.redditstatic.com/custom_feeds/custom_feed_default_8.png
+      description:
+  - Home Server feed:
+    - abbr: HM
+      href: https://www.reddit.com/user/melodic-ladder-6161/m/home_server/
+      icon: https://www.redditstatic.com/custom_feeds/custom_feed_default_0.png
+      description:
+  - Certs feed:
+    - abbr: RE
+      href: https://www.reddit.com/user/melodic-ladder-6161/m/learning_certs/
+      icon: https://www.redditstatic.com/custom_feeds/custom_feed_default_5.png
+      description:
+
+- Youtube:
+  - Techno Tim:
+    - abbr: TT
+      href: https://www.youtube.com/@TechnoTim
+      icon: https://yt3.googleusercontent.com/ytc/AIdro_nGJyJb61DqT1C0fQ1CkRoalHuH3Nu8CIQbfqaflvaoUyU=s176-c-k-c0x00ffffff-no-rj
+      description:
+  - Christian Lempa:
+    - abbr: CL
+      href: https://www.youtube.com/@christianlempa
+      icon: https://yt3.googleusercontent.com/bCGRJiR-Xv6V-9iPGlOqV0wPJ836A2S5r-eQpdPVcGOAW_iRk9Dl3lfV1Hab_OlSfQubB30UIA=s160-c-k-c0x00ffffff-no-rj
+      description:
+  - Jim's Garage:
+    - abbr: JG
+      href: https://www.youtube.com/@Jims-Garage
+      icon: https://yt3.googleusercontent.com/Jn8DfcI4aNq_U1_LR-PpUV73Dwoen2t8hEonzZVfsrTAfEK09SWq-pRh7wg-Ae4fsATPs38_7w=s160-c-k-c0x00ffffff-no-rj
+      description:
+  - Lawrence Systems:
+    - abbr: LS
+      href: https://www.youtube.com/@LAWRENCESYSTEMS
+      icon: https://yt3.googleusercontent.com/ytc/AIdro_ljGsJzu39Ds6K0RgGuk_2c5aoYOIbdtUSD1hPhfCDKaRU=s176-c-k-c0x00ffffff-no-rj
+      description:
+  - Learn Linux TV:
+    - abbr: LLTV
+      href: https://www.youtube.com/@LearnLinuxTV
+      icon: https://yt3.googleusercontent.com/mfgw9-hHFToOujVfKxwqvvg1hhqbzEPTj2otSrWfF9kB7baYbqyu8GqCykaUaviVj151ZThW=s160-c-k-c0x00ffffff-no-rj
+      description:
+  - Chris Greer:
+    - abbr: CG
+      href: https://www.youtube.com/@ChrisGreer
+      icon: https://yt3.googleusercontent.com/KJ49_5HVpTUg5mDaZX8VxtbSg6cJZET_Q-VEkji8-Dxsbtf4ucR6kr0SF-Ca2cLuFDnUv6DQ=s176-c-k-c0x00ffffff-no-rj
+      description:
+  - Anastasi In Tech:
+    - abbr: AiT
+      href: https://www.youtube.com/@AnastasiInTech
+      icon: https://yt3.googleusercontent.com/w-s22RHLgUFxxxJQ0USf-_hsuIDZQyRNnPRv17J8QfV9jcqJDIEf2lsEabhxMEF_uPpcH7rGDoA=s160-c-k-c0x00ffffff-no-rj
+      description:
+  - Anton Putra:
+    - abbr: AP
+      href: https://www.youtube.com/@AntonPutra
+      icon: https://yt3.googleusercontent.com/Uke6wNNttpMYbAaK9oCPGTtQuY8dWW3T_6DAiwXpA7LGSvEeunmNSBF0urBoXMaz1uWIPbN4=s160-c-k-c0x00ffffff-no-rj
+      description:
+  - Electronics Wizardry:
+    - abbr: EW
+      href: https://www.youtube.com/@ElectronicsWizardry
+      icon: https://yt3.googleusercontent.com/ytc/AIdro_lucrxWGlb8DNNzgaHwvmsaaO9HvS01eqtotxCa0zVMoQ=s160-c-k-c0x00ffffff-no-rj
+      description:

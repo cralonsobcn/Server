@@ -1,0 +1,93 @@
+
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: false
+
+providers:
+  file:
+    directory: /etc/traefik  # This must be mounted in the volumes section of the docker compose file.
+    debugLogGeneratedTemplate: true
+    watch: true # Set the watch option to true to allow Traefik to automatically watch for file changes
+
+api:
+  dashboard: true # Enables Traefik dashboard
+  insecure: true # Enable the API in insecure mode.
+  disabledashboardad: true
+  debug: true # Enable additional endpoints for debugging and profiling, served under /debug/
+
+log:
+  level: ERROR # Switch to ERROR in production env
+  filePath: /etc/traefik/logs/traefik.log # Mount this path in the volumes section of the docker compose
+  format: common  # format [common, json, logfmt]
+  maxBackups: 3 # maximum number of old log files to retain.
+  maxAge: 7 # maximum number of days to retain old log files based on the timestamp encoded in their filename
+  
+accesslog:
+  format: common  # format [common, json, logfmt]
+  addInternals: true # Enables access logs for internal resources 
+  filePath: /etc/traefik/logs/access.log
+
+tracing:
+  addInternals: true
+  serviceName: traefik
+
+metrics:
+  addInternals: true
+  prometheus:
+    addEntryPointsLabels: true # Enable metrics on entry points.
+    addRoutersLabels: true # Enable metrics on routers.
+    addServicesLabels: true # Enable metrics on services.
+    entryPoint: metrics
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0
+
+entryPoints:
+  web:
+    address: ":80"
+    proxyProtocol:
+      insecure: true
+    forwardedHeaders:
+      insecure: true
+    observability:
+      tracing: true 
+    http: # Redirect to https
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+    proxyProtocol:
+      insecure: true
+    forwardedHeaders:
+      insecure: true
+    observability:
+      tracing: true 
+  metrics:
+    address: :8082
+
+certificatesResolvers:
+  cloudflareResolver:
+    acme:
+      email: "" 
+      storage: /etc/traefik/certs/acme.json
+      # https://acme-v02.api.letsencrypt.org/directory
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      dnsChallenge:
+        propagation: 
+          disableChecks: false
+          delayBeforeChecks: 30
+        provider: cloudflare
+        resolvers: # Explicitly add Cloudflare resolvers
+          - "1.1.1.2:53"
+          - "1.0.0.2:53"
+
+# Crowdsec Bouncer Plugin
+# experimental:
+#   plugins:
+#     bouncer:
+#     moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin 
+#     version: v1.7.0 # To update

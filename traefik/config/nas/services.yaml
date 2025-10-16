@@ -1,0 +1,37 @@
+http:  
+  services:
+
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: http://jellyfin:8096
+            preservePath: true
+        passHostHeader: true
+
+    gitea:
+      loadBalancer:
+        servers:
+          - url: http://gitea:3000
+            preservePath: true
+        passHostHeader: true
+
+    qbittorrent:
+      loadBalancer:
+        servers:
+          - url: http://qbittorrent:8080
+            preservePath: true
+        passHostHeader: true
+
+    netbootxyz:
+      loadBalancer:
+        servers:
+          - url: http://netbootxyz:3000
+            preservePath: true
+        passHostHeader: true
+    
+    rustfs:
+      loadBalancer:
+        servers:
+          - url: http://rustfs:9000
+            preservePath: true
+        passHostHeader: true

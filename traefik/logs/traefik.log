@@ -1,0 +1,77 @@
+2025-10-13T10:16:36+02:00 ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T10:16:36+02:00 ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T10:16:36+02:00 ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T10:16:36+02:00 ERR error="close tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T10:16:36+02:00 ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T10:16:36+02:00 ERR error="close tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T10:26:46+02:00 WRN A new release of Traefik has been found: 3.5.3. Please consider updating.
+2025-10-13T10:28:15+02:00 ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T10:28:15+02:00 ERR error="accept tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T10:28:15+02:00 ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T10:28:15+02:00 ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T10:28:15+02:00 ERR Error while starting server error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T10:28:15+02:00 ERR Error while starting server error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T10:28:15+02:00 ERR Error while starting server error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T10:28:15+02:00 ERR error="close tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T11:56:13+02:00 WRN A new release of Traefik has been found: 3.5.3. Please consider updating.
+2025-10-13T12:18:59+02:00 ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T12:18:59+02:00 ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T12:18:59+02:00 ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T12:18:59+02:00 ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T12:18:59+02:00 ERR error="accept tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T12:18:59+02:00 ERR error="close tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T12:18:59+02:00 ERR error="close tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T12:19:00+02:00 ERR error="close tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T12:24:54+02:00 ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T12:24:54+02:00 ERR error="close tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T12:24:54+02:00 ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T12:24:54+02:00 ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T12:24:54+02:00 ERR error="accept tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T12:24:54+02:00 ERR error="close tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T12:24:54+02:00 ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T12:24:54+02:00 ERR error="close tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T14:07:29+02:00 ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T14:07:29+02:00 ERR error="close tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T14:07:29+02:00 ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T14:07:29+02:00 ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T14:07:29+02:00 ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T14:07:29+02:00 ERR error="accept tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T14:07:29+02:00 ERR error="close tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T14:50:17+02:00 ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T14:50:17+02:00 ERR error="close tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T14:50:17+02:00 ERR error="accept tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T14:50:17+02:00 ERR error="close tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T14:50:17+02:00 ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T14:50:17+02:00 ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T14:50:17+02:00 ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T20:49:07+02:00 ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T20:49:07+02:00 ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T20:49:07+02:00 ERR error="accept tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T20:49:07+02:00 ERR error="close tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T20:49:07+02:00 ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T20:49:07+02:00 ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T20:49:07+02:00 ERR error="close tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T20:49:08+02:00 ERR error="close tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T21:29:24+02:00 ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T21:29:24+02:00 ERR Error while starting server error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-13T21:29:24+02:00 ERR error="accept tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T21:29:24+02:00 ERR Error while starting server error="accept tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-13T21:29:24+02:00 ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-13T21:29:24+02:00 ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-13T21:29:24+02:00 ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-14T09:55:47+02:00 ERR error="accept tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-14T09:55:47+02:00 ERR error="close tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-14T09:55:47+02:00 ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-14T09:55:47+02:00 ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-14T09:55:47+02:00 ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-14T09:55:47+02:00 ERR error="close tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-14T09:55:47+02:00 ERR error="close tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-14T09:55:47+02:00 ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-14T16:23:24+02:00 ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-14T16:23:24+02:00 ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
+2025-10-14T16:23:24+02:00 ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-14T16:23:24+02:00 ERR error="close tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-10-14T16:23:24+02:00 ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-10-14T16:23:24+02:00 ERR error="accept tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-14T16:23:24+02:00 ERR error="close tcp [::]:8082: use of closed network connection" entryPointName=metrics
+2025-10-14T16:23:24+02:00 ERR error="close tcp [::]:443: use of closed network connection" entryPointName=websecure

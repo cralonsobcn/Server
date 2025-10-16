@@ -1,36 +1,66 @@
 networks:
-  security_network:
-    driver: bridge
-    name: security_network
-#  pihole_macvlan:
-#    driver: macvlan
-#    name: pihole_macvlan
-#    driver_opts:
-#      parent: enp0s3
-#    ipam:
-#      config:
-#        - subnet: 192.168.1.0/24
-#          gateway: 192.168.1.1
-#          ip_range: 192.168.1.2/32
+  cluster_network:
+    driver: overlay
+    name: cluster_network
+    attachable: true
+  scrutiny_collector_network:
+    driver: overlay
+    name: scrutiny_collector_network
+    attachable: true
 
 volumes:
   portainer-data:
-    name: portainer-data # TODO change volume type
+    name: portainer-data 
+    driver: local         # TODO change volume type
   pihole-data:
-    name: pihole-data # TODO change volume type
-  authelia-data:
-    name: authelia-data
+    name: pihole-data 
+    driver: local         # TODO change volume type 
+  authentik_database:
+    driver: local
+  authentik_redis:
+    driver: local
 
 include:
-  - path:         # compose/security/admin
-    - compose/security/admin/cloudflared.yaml
-    - compose/security/admin/dockerproxy.yaml
-  - path:         # compose/security/apps
+
+  # Management 
+  - path:         
+    - compose/security/management/cloudflared.yaml                      # Cloudflare Tunnel
+    - compose/security/management/scrutiny.yaml                         # TODO Fix collector. Manifest.json output is an html
+    # - compose/security/management/dockerproxy.yaml                    # Docker Proxy
+
+  # Docker Management
+  - path:
     - compose/security/apps/portainer.yaml
-    - compose/security/apps/whatsupdocker.yaml
-  - path:         # compose/security/auth
-    - compose/security/auth/authelia.yaml
-  - path:         # compose/security/dns
+    # - compose/security/apps/whatsupdocker.yaml                      # Temporarily Disabled
+
+  # Authentication and Authorization
+  - path:
+    - compose/security/auth/authentik.yaml  
+    env_file:
+    - env/.authentik.env
+
+  # DNS and Ad Blocking
+  - path:
     - compose/security/dns/pihole.yaml
-  - path:         # compose/security/proxy
+
+  # Reverse Proxy
+  - path:
     - compose/security/proxy/traefik-compose.yaml
+
+  # Security
+  # - path:
+    # - compose/security/apps/crowdsec.yaml
+
+  # Dashboard
+  - path:
+    - compose/security/dashboard/homepage.yaml
+  
+  # Observability
+  - path:
+    - compose/security/observability/cadvisor.yaml
+    - compose/security/observability/dozzle.yaml
+    - compose/security/observability/glances.yaml
+    - compose/security/observability/grafana.yaml
+    - compose/security/observability/prometheus.yaml
+    - compose/security/observability/uptime-kuma.yaml
+    
