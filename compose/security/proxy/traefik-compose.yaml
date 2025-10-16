@@ -1,70 +1,32 @@
 services:
   traefik:
-    image: traefik:latest 
+    image: traefik:v3.4 
     container_name: traefik
     environment:
       TZ: ${TZ}
       SECURITY_IP: ${SECURITY_IP}
       SERVER_IP: ${SERVER_IP}
       NAS_IP: ${NAS_IP}
-      DOCKER_SOCK: ${DOCKER_SOCK}
+      DOCKER_SOCK: "/var/run/docker.sock"
+
       # Traefik specific
-      TRAEFIK_CERTIFICATESRESOLVERS_CLOUDFLARERESOLVER_ACME_EMAIL: ${EMAIL}
       SERVER_SUBDOMAIN_NAME: ${SERVER_SUBDOMAIN_NAME}
       SECURITY_SUBDOMAIN_NAME: ${SECURITY_SUBDOMAIN_NAME}
       NAS_SUBDOMAIN_NAME: ${NAS_SUBDOMAIN_NAME}
       DOMAIN_NAME: ${DOMAIN_NAME}
+
       # Cloudflare Specific
-      CLOUDFLARE_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
-      # Security ports
-      PORTAINER_HTTP_HOST_PORT: ${PORTAINER_HTTP_HOST_PORT} 
-      PORTAINER_HTTPS_HOST_PORT: ${PORTAINER_HTTPS_HOST_PORT} 
-      PIHOLE_HOST_PORT: ${PIHOLE_HOST_HTTP_PORT}
-      TRAEFIK_DASHBOARD_HOST_PORT: ${TRAEFIK_DASHBOARD_HOST_PORT}
-      AUTHELIA_HOST_PORT: ${AUTHELIA_HOST_PORT}
-      WHATSUPDOCKER_HOST_PORT: ${WHATSUPDOCKER_HOST_PORT}
-      # Server ports
-      CADVISOR_HOST_PORT: ${CADVISOR_HOST_PORT}
-      CHANGEDETECTION_HOST_PORT: ${CHANGEDETECTION_HOST_PORT}
-      CODE_HOST_PORT: ${CODE_HOST_PORT}
-      DOZZLE_HOST_PORT: ${DOZZLE_HOST_PORT}
-      GLANCES_HOST_PORT: ${GLANCES_HOST_PORT}
-      GRAFANA_HOST_PORT: ${GRAFANA_HOST_PORT}
-      HOMEPAGE_HOST_PORT: ${HOMEPAGE_HOST_PORT}
-      ITTOOLS_HOST_PORT: ${ITTOOLS_HOST_PORT}
-      JELLYSEERR_HOST_PORT: ${JELLYSEERR_HOST_PORT}
-      JSONCRACK_HOST_PORT: ${JSONCRACK_HOST_PORT}
-      PROMETHEUS_HOST_PORT: ${PROMETHEUS_HOST_PORT}
-      PROWLARR_HOST_PORT: ${PROWLARR_HOST_PORT}
-      RADARR_HOST_PORT: ${RADARR_HOST_PORT}
-      READARR_HOST_PORT: ${READARR_HOST_PORT}
-      SONARR_HOST_PORT: ${SONARR_HOST_PORT}
-      STIRLING_HOST_PORT: ${STIRLING_HOST_PORT}
-      UPTIMEKUMA_HOST_HTTPS: ${UPTIMEKUMA_HOST_HTTPS}
-      UPTIMEKUMA_HOST_PORT: ${UPTIMEKUMA_HOST_PORT}
-      WEBCHECK_HOST_PORT: ${WEBCHECK_HOST_PORT}
-      # NAS Ports
-      GITEA_HOST_PORT: ${GITEA_HOST_PORT}
-      JELLYFIN_HOST_PORT: ${JELLYFIN_HOST_PORT}
-      QBITORRENT_UI_HOST_PORT: ${QBITORRENT_UI_HOST_PORT}
-      NETBOOT_HOST_TCP_PORT: ${NETBOOT_HOST_TCP_PORT}
+      CF_DNS_API_TOKEN: ${CLOUDFLARE_DNS_API_TOKEN}
+      CLOUDFLARE_EMAIL: ${EMAIL}
+    command:
+      - --configFile=/etc/traefik/config/global/static.yaml
     networks: 
-      - security_network
-    extra_hosts: # Explictly defines the hostnames. Equivalent to write on /etc/hosts within the container
-      - ${SECURITY_SUBDOMAIN_NAME}:${SECURITY_IP}
-      - ${SERVER_SUBDOMAIN_NAME}:${SERVER_IP}
-      - ${NAS_SUBDOMAIN_NAME}:${NAS_IP}
-    ports: 
-      - ${TRAEFIK_HTTP_PORT}:${TRAEFIK_HTTP_PORT}
-      - ${TRAEFIK_HTTPS_PORT}:${TRAEFIK_HTTPS_PORT}
-      - ${TRAEFIK_DASHBOARD_HOST_PORT}:${TRAEFIK_DASHBOARD_CONTAINER_PORT} # (Optional) Enable Dashboard, don't do in production as the API does not require authentication
+      - cluster_network
+    ports:
+      - 443:443
     volumes:
-      - ${DOCKER_SOCK}:${DOCKER_SOCK}
-      - "${HOME}/Server/traefik/traefik.yaml:/etc/traefik/traefik.yaml" # Static and Dynamic configuration path
-      - "${HOME}/Server/traefik/certs/acme.json:/etc/traefik/acme.json" # Certs folder where letsencrypt will store the certificates
-      - "${HOME}/Server/traefik/logs:/etc/traefik/logs" # Logs folder
-    depends_on:
-      - authelia
-      - security-dockerproxy
-      - cloudflared
+      - /var/run/docker.sock:/var/run/docker.sock:ro                        # So that Traefik can listen to the Docker events
+      - "${HOME}/Security/traefik:/etc/traefik"                             # Mounts the traefik folder
+                                                                            # permissions 644 for /etc/traefik/acme.json are too open, please use 600
     restart: ${RESTART_POLICY}
+    

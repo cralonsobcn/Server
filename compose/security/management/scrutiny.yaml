@@ -1,0 +1,66 @@
+services:
+
+  scrutiny-db:
+    image: influxdb:2.2
+    container_name: scrutiny-db
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    networks:
+      - scrutiny_db_network
+    volumes:
+      - ${HOME}/Security/scrutiny/influxdb:/var/lib/influxdb2
+    labels:
+      - wud.watch=false
+    restart: ${RESTART_POLICY}
+
+  scrutiny-web:
+    image: ghcr.io/analogj/scrutiny:master-web
+    container_name: "scrutiny-web"
+    networks:
+      - cluster_network
+      - scrutiny_db_network
+      - scrutiny_collector_network
+    volumes:
+      - ${HOME}/Security/scrutiny/config:/opt/scrutiny/config
+      - ${HOME}/Security/scrutiny/logs:/tmp
+    environment:
+      TZ: ${TZ}
+      SCRUTINY_WEB_INFLUXDB_HOST: "scrutiny-db"
+      SCRUTINY_LOG_FILE: /tmp/web.log
+    depends_on:
+      - scrutiny-db
+    restart: ${RESTART_POLICY}
+ 
+  security-scrutiny-collector:                                             # https://github.com/AnalogJ/scrutiny?tab=readme-ov-file
+    image: ghcr.io/analogj/scrutiny:master-collector
+    container_name: "security-scrutiny-collector"
+    environment:
+      TZ: ${TZ}
+      COLLECTOR_API_ENDPOINT: "http://scrutiny-web:8080"                    # Despite this being an API endpoint, do not add /api path here
+      # SCRUTINY_WEB_LISTEN_BASEPATH: "/api/collector"
+      COLLECTOR_HOST_ID: "security-scrutiny-collector"
+      COLLECTOR_RUN_STARTUP: false
+      COLLECTOR_LOG_FILE: /tmp/collector.log
+    # command: /opt/scrutiny/bin/scrutiny-collector-metrics run
+    cap_add:
+      - SYS_RAWIO
+    networks:
+      - scrutiny_collector_network
+    volumes:
+      - /run/udev:/run/udev:ro
+      - ${HOME}/Security/scrutiny/config:/opt/scrutiny/config
+      - ${HOME}/Security/scrutiny/logs:/tmp
+      - /dev/sda:/dev/sda
+    depends_on:
+      - scrutiny-web
+    devices:
+      - /dev/sda:/dev/sda
+    restart: ${RESTART_POLICY}
+
+networks:
+  scrutiny_db_network:
+    driver: bridge
+    name: scrutiny_db_network
+    attachable: false

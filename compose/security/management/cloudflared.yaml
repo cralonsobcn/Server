@@ -1,0 +1,11 @@
+services:
+  security-tunnel:
+    image: cloudflare/cloudflared:2025.9.1
+    container_name: security-tunnel
+    command: tunnel --loglevel debug --no-autoupdate run  
+    environment:
+      TZ: ${TZ}
+      TUNNEL_TOKEN: ${SECURITY_CLOUDFARE_TUNNEL_TOKEN}
+    networks:
+      - cluster_network
+    restart: ${RESTART_POLICY}

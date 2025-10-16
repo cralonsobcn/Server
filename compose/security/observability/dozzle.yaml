@@ -1,0 +1,16 @@
+services:
+  dozzle:
+    image: docker.io/amir20/dozzle:v8.14.4
+    container_name: dozzle
+    environment:
+      TZ: ${TZ}
+      DOZZLE_HOSTNAME: ${SECURITY_SUBDOMAIN_NAME}
+      DOZZLE_REMOTE_HOST: tcp://${SERVER_IP}:2375|${SERVER_SUBDOMAIN_NAME},tcp://${NAS_IP}:2375|${NAS_SUBDOMAIN_NAME}  
+                                                                                # https://dozzle.dev/guide/agent#how-to-connect-to-an-agent
+                                                                                # Enable access to the CONTAINER API in the docker proxy
+      DOZZLE_NO_ANALYTICS: true
+    networks:
+      - cluster_network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: ${RESTART_POLICY}

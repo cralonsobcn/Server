@@ -1,30 +1,42 @@
 services:
   whatsupdocker:
-    image: docker.io/getwud/wud
+    image: docker.io/getwud/wud:8.1.1
     container_name: whatsupdocker
     environment:
-      TZ: ${TZ}
-      WUD_TRIGGER_LOG_LEVEL: error
-      WUD_LOG_FORMAT: text
-      # Security. https://github.com/getwud/wud/issues/354
-      WUD_WATCHER_SECURITY_HOST: ${SECURITY_IP}
-      WUD_WATCHER_SECURITY_SOCKET: tcp://${SECURITY_IP}
-      WUD_WATCHER_SECURITY_PORT: 2375
-      WUD_WATCHER_SECURITY_WATCHALL: true
-      # Server
-      WUD_WATCHER_SERVER_HOST: ${SERVER_IP}
-      WUD_WATCHER_SERVER_SOCKET: tcp://${SERVER_IP}
-      WUD_WATCHER_SERVER_PORT: 2380
-      WUD_WATCHER_SERVER_WATCHALL: true
-      # NAS
-      WUD_WATCHER_NAS_HOST: ${NAS_IP}
-      WUD_WATCHER_NAS_SOCKET: tcp://${NAS_IP}
+      # Security
+      WUD_WATCHER_SECURITY_SOCKET: /var/run/docker.sock
+      WUD_WATCHER_SECURITY_WATCHBYDEFAULT: true
+      WUD_WATCHER_SECURITY_CRON: "0 0 */7 * *"                                        # At 00:00 on day-of-month 7 in every month.
+
+      # # Server
+      WUD_WATCHER_SERVER_HOST: http://server-dockerproxy
+      WUD_WATCHER_SERVER_PORT: 2375
+      WUD_WATCHER_SERVER_WATCHBYDEFAULT: true
+      WUD_WATCHER_SERVER_CRON: "0 0 */7 * *"                                          # At 00:00 on day-of-month 7 in every month.
+
+      # # NAS
+      WUD_WATCHER_NAS_HOST: http://nas-dockerproxy
       WUD_WATCHER_NAS_PORT: 2375
-      WUD_WATCHER_NAS_WATCHALL: true
+      WUD_WATCHER_NAS_WATCHBYDEFAULT: true
+      WUD_WATCHER_NAS_CRON: "0 0 */7 * *"                                             # At 00:00 on day-of-month 7 in every month.
+
+      # General Options
+      WUD_SERVER_ENABLED: true                                                        # API Server endpoint
+      TZ: ${TZ}
+      WUD_LOG_FORMAT: text
+      WUD_LOG_LEVEL: warning
+
+      # Triggers
+      WUD_TRIGGER_DISCORD_DALEK_URL: ${DALEK_DISCORD}
+      WUD_TRIGGER_DISCORD_DALEK_BOTUSERNAME: "Whatsup Dalek"
+      WUD_TRIGGER_DISCORD_DALEK_CARDLABEL: "UPDATE HUMAN!"
+      WUD_TRIGGER_DISCORD_DALEK_AUTO: true
+      WUD_TRIGGER_DISCORD_DALEK_MODE: batch
+      WUD_TRIGGER_DISCORD_DALEK_ONCE: false
     networks:
-      - security_network
-    ports:
-      - ${SECURITY_IP}:${WHATSUPDOCKER_HOST_PORT}:${WHATSUPDOCKER_CONTAINER_PORT}
+      - cluster_network
     volumes:
-      - ${HOME}/Server/whatsupdocker/store:/store
+      # - ${HOME}/Server/whatsupdocker/store/wud.json:/store/wud.json                                      # If you want the state to persist after the container removal, you need to mount /store as a volume.
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: ${RESTART_POLICY}

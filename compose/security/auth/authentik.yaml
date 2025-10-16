@@ -1,0 +1,112 @@
+services:
+  postgresql:
+    environment:
+      POSTGRES_DB: ${PG_DB:-authentik}
+      POSTGRES_PASSWORD: ${PG_PASS:?database password required}
+      POSTGRES_USER: ${PG_USER:-authentik}
+    healthcheck:
+      interval: 30s
+      retries: 5
+      start_period: 20s
+      test:
+      - CMD-SHELL
+      - pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
+      timeout: 5s
+    image: docker.io/library/postgres:16-alpine
+    restart: unless-stopped
+    volumes:
+    - authentik_database:/var/lib/postgresql/data
+    networks:
+    - cluster_network
+
+  redis:
+    command: --save 60 1 --loglevel warning
+    healthcheck:
+      interval: 30s
+      retries: 5
+      start_period: 20s
+      test:
+      - CMD-SHELL
+      - redis-cli ping | grep PONG
+      timeout: 3s
+    image: docker.io/library/redis:alpine
+    restart: unless-stopped
+    volumes:
+    - authentik_redis:/data
+    networks:
+    - cluster_network
+
+  server:
+    command: server
+    container_name: authentik
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
+      AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
+      AUTHENTIK_LOG_LEVEL: error
+      AUTHENTIK_REDIS__HOST: redis
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
+    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2025.8.4}
+    ports:
+    - ${COMPOSE_PORT_HTTP:-9000}:9000
+    - ${COMPOSE_PORT_HTTPS:-9443}:9443
+    restart: unless-stopped
+    volumes:
+    - authentik:/media
+    - authentik:/templates
+    networks:
+    - cluster_network
+
+  worker:
+    command: worker
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
+      AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
+      AUTHENTIK_REDIS__HOST: redis
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
+    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2025.8.4}
+    restart: unless-stopped
+    user: root
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - authentik:/media
+    - authentik-worker:/certs
+    - authentik-worker:/templates
+    networks:
+    - cluster_network    
+
+  authentik_proxy:
+    image: ghcr.io/goauthentik/proxy
+    networks:
+      - cluster_network
+    restart: unless-stopped
+    # ports:
+    #   - 9000:9000
+    #   - 9443:9443
+    environment:
+        AUTHENTIK_HOST: https://${SECURITY_SUBDOMAIN_NAME}.authentik.${DOMAIN_NAME}
+        AUTHENTIK_INSECURE: "false"
+        AUTHENTIK_TOKEN: "token-generated-by-authentik"
+        # Optional setting to be used when `authentik_host` for internal communication doesn't match the public URL.
+        # AUTHENTIK_HOST_BROWSER: https://external-domain.tld
+
+volumes:
+  authentik-worker:
+    name: authentik-worker
+    driver: local
+  authentik:
+    name: authentik
+    driver: local

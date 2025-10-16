@@ -1,0 +1,32 @@
+# https://doc.crowdsec.net/u/getting_started/installation/docker/
+# https://doc.crowdsec.net/u/getting_started/next_steps
+# https://doc.crowdsec.net/docs/next/appsec/quickstart/traefik/
+# https://plugins.traefik.io/plugins/6335346ca4caa9ddeffda116/crowdsec-bouncer-traefik-plugin 
+
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:v1.7.0
+    container_name: crowdsec
+    restart: ${RESTART_POLICY}
+    # ports:
+    #   - 127.0.0.1:8080:8080
+    environment:
+      COLLECTIONS: "crowdsecurity/traefik crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules"
+      GID: "${GID-1000}"
+      CUSTOM_HOSTNAME: "crowdsec"
+    depends_on:
+      - traefik
+    volumes:
+      - ${HOME}/Security/crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
+      - logs:/var/log/nginx
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - crowdsec-config:/etc/crowdsec/
+      - ${HOME}/Security/crowdsec/acquis.d/appsec.yaml:/etc/crowdsec/acquis.d/appsec.yaml
+
+volumes:
+  logs:
+    name: crowdsec-logs
+  crowdsec-db:
+    name: crowdsec-db
+  crowdsec-config:
+    name: crowdsec-config 

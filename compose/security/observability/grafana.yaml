@@ -1,0 +1,17 @@
+services:
+  grafana:
+    image: docker.io/grafana/grafana-enterprise:12.2.0
+    container_name: grafana
+    environment:
+      TZ: ${TZ}
+      PGID: ${PGID}
+      PUID: ${PUID}
+    networks:
+      - cluster_network
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: ${RESTART_POLICY}
+
+volumes:
+  grafana-data:
+    name: grafana-data

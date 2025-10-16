@@ -6,12 +6,11 @@ services:
       - --http-enabled
     environment:
       TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
     networks:
-      - security_network
-    ports:
-      #- ${PORTAINER_HTTPS_HOST_PORT}:${PORTAINER_HTTPS_CONTAINER_PORT} #HTTPS Login
-      - ${SECURITY_IP}:${PORTAINER_HTTP_HOST_PORT}:${PORTAINER_HTTP_CONTAINER_PORT} #HTTP Login
+      - cluster_network
     volumes:
       - portainer-data:/data
-      - ${DOCKER_SOCK}:${DOCKER_SOCK} # path to docker.sock      
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: ${RESTART_POLICY}
