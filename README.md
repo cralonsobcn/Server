@@ -18,7 +18,6 @@ Installation Steps are covered in the [Rocky Linux documentation](https://docs.r
 Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), [linuxserver.io](https://www.linuxserver.io/) and [github.com](https://github.com/).
 
 ## Server
-- [Homepage](https://gethomepage.dev/latest/installation/docker/)
 - [Uptime Kuma](https://github.com/louislam/uptime-kuma)
 - [Glances](https://github.com/nicolargo/glances)
 - [Prometheus](https://prometheus.io/docs/prometheus/latest/installation/)
@@ -45,16 +44,17 @@ Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), 
 
 ## Security
 - [Traefik](https://github.com/traefik/traefik)
+- [Homepage](https://gethomepage.dev/latest/installation/docker/)
 - [Portainer](https://docs.portainer.io/start/install-ce/server/docker/linux)
 - [Whatsupdocker](https://getwud.github.io/wud/#/quickstart/)
 - [Pihole](https://hub.docker.com/r/pihole/pihole)
-- [Authelia](https://www.authelia.com/integration/deployment/docker/)
 - [Mullvad VPN](https://mullvad.net/es/help/install-mullvad-app-linux#fedora)
+- [Tailscale]()
 
 ## Deployment
 As easy as typing in the command:
 
-```docker compose -f compose-file.yml up -d```
+```docker compose -f $PATH/compose-file.yml up -d```
 
 ## Transcoding
 Some media applications such as Jellyfin require hardware acceleration. This will improve CPU usage as the main load will be carried over by the iGPU.
@@ -64,16 +64,8 @@ Since the N95 is compatible with QSV, Docker needs to be aware of the render dev
 The command ```ls -l /dev/dri``` will list the render devices and eventually, the render device needs to be added in the docker compose file as a `device` argument.
 
 Example:
+
 ```
     devices:
       - /dev/dri:/dev/dri #let the application access the render and iGPU devices
 ```
-
-### TODO
-- Implement VPN.
-- Perform iperf3 tests on all the devices.
-- Migrate env passwords to secrets.
-- Implement 2FA and IAM with Authelia.
-- Implement ZFS.
-- Implement crontab to prune unused images and unused volumes.
-- Review the Networking diagram + validate and refine the firewall policies.
