@@ -1,7 +1,3 @@
-# TODO /homepage/config/services.yaml add remote compose https://gethomepage.dev/configs/compose
-# TODO server.yaml migrate to named volumes
-# docker images --format "{{ .Size }} \t {{ .Repository }}" | sort -h
-
 networks:
   cluster_network:          # Docker Swarm overlay network
     external: true
@@ -65,7 +61,6 @@ include:
       - compose/server/arr/jellyseerr.yaml                          # 1.42 GB. 
       - compose/server/arr/prowlarr.yaml
       - compose/server/arr/radarr.yaml
-      # - compose/server/arr/readarr.yaml                           # This image is deprecated. We will not offer support for this image and it will not be updated.
       - compose/server/arr/sonarr.yaml
 
   # Tunnel
