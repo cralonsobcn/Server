@@ -1,6 +1,6 @@
 services:
   codeServer:
-    image: lscr.io/linuxserver/code-server:latest
+    image: lscr.io/linuxserver/code-server:4.106.3-ls308
     container_name: code-server
     environment:
       PUID: ${PUID}
@@ -8,7 +8,7 @@ services:
       TZ: ${TZ}
       SUDO_PASSWORD: "test"
     networks:
-      - cluster_network
+      - cluster-network
     volumes: # TODO 
       - ${HOME}/Server/code-server/config:/config
     restart: ${RESTART_POLICY}
