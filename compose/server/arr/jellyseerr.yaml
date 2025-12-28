@@ -1,14 +1,19 @@
 services:
   jellyseerr:
-    image: docker.io/fallenbagel/jellyseerr:latest
+    image: docker.io/fallenbagel/jellyseerr:2.7.3
+    init: true
     container_name: jellyseerr
     environment:
-      PUID: ${PUID}
-      PGID: ${PGID}
       TZ: ${TZ}
       LOG_LEVEL: error
     networks:
-      - cluster_network
+      - cluster-network
     volumes:
       - ${HOME}/Server/jellyseerr/config:/app/config
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://jellyseer:5055/api/v1/status || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
     restart: ${RESTART_POLICY}
