@@ -14,7 +14,7 @@ services:
       - IMAGES=1                                              # Necessary to run whatsupdocker
       - LOG_LEVEL=err                                         # Set log level to error to reduce log verbosity
     networks:
-      - cluster_network
+      - cluster-network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: ${RESTART_POLICY}
