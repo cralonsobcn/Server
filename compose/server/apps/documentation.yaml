@@ -7,7 +7,7 @@ services:
       PGID: ${PGID}
       TZ: ${TZ}
     networks:
-      - cluster_network
+      - cluster-network
     volumes:
       - "${HOME}/Server/mkdocs:/docs" # TODO map to named volume documentation-data
     restart: ${RESTART_POLICY}
