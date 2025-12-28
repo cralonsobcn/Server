@@ -4,7 +4,8 @@ services:
     container_name: server-tunnel
     command: tunnel --no-autoupdate run
     environment:
+      TZ: ${TZ}
       TUNNEL_TOKEN: ${SERVER_CLOUDFARE_TUNNEL_TOKEN}
     networks:
-      - cluster_network
+      - cluster-network
     restart: ${RESTART_POLICY}
