@@ -11,6 +11,6 @@ services:
       AUTO_DELETE_EVERY_N_HOURS: 24                           # Auto delete files older than n hours, set to 0 to disable
       HTTP_ALLOWED: true                                      # Allow HTTP connections, set to false to only allow HTTPS
     networks:
-      - cluster_network
+      - cluster-network
     volumes:
       - ${HOME}/Server/convertx/data:/app/data                # sudo chown -R $USER:$USER path
