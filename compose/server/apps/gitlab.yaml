@@ -1,0 +1,38 @@
+  services:
+    gitlab:
+      container_name: gitlab
+      image: gitlab/gitlab-ce:18.7.0-ce.0
+      hostname: "gitlab.${SERVER_SUBDOMAIN_NAME}.${DOMAIN_NAME}"  
+      volumes:
+      - ${HOME}/gitlab/config:/etc/gitlab
+      - ${HOME}/gitlab/logs:/var/log/gitlab
+      - ${HOME}/gitlab/data:/var/opt/gitlab
+      shm_size: '256m'
+      deploy:
+        resources:
+          limits:
+            cpus: "4"
+            memory: 4G
+      networks:
+      - gitlab-network
+      - cluster-network
+      restart: unless-stopped
+        
+    gitlab-runner:
+      container_name: gitlab-runner
+      image: gitlab/gitlab-runner:latest
+      volumes:
+      - ${HOME}/gitlab/runner:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
+      deploy:
+        resources:
+          limits:
+            cpus: "4"
+            memory: 4G
+      networks:
+      - gitlab-network
+
+  networks:
+    gitlab-network:
+      driver: bridge
+      name: gitlab-network
