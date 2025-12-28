@@ -7,7 +7,7 @@ services:
       PGID: ${PGID}
       TZ: ${TZ}
     networks:
-      - cluster_network
+      - cluster-network
     volumes:
       - ${HOME}/Server/sonarr/config:/config
     restart: ${RESTART_POLICY}
