@@ -1,6 +1,7 @@
 services:
   stirling:    
-    image: docker.io/stirlingtools/stirling-pdf:latest  # available tags: latest, latest-fat, latest-ultra-lite
+    image: docker.io/stirlingtools/stirling-pdf:2.1.4   # available tags: latest, latest-fat, latest-ultra-lite
+                                                        # Github Releases show specific version tags
     container_name: stirling
     environment:
       PUID: ${PUID}
@@ -12,7 +13,7 @@ services:
       #SECURITY_LOGINMETHOD: "none"
       #SECURITY_OAUTH2_ENABLED: false
     networks:
-      - cluster_network
+      - cluster-network
     volumes:
       - ${HOME}/Server/stirlingPDF/trainingData:/usr/share/tessdata #Required for extra OCR languages
       - ${HOME}/Server/stirlingPDF/extraConfigs:/configs
