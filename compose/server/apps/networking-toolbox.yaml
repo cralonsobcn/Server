@@ -8,4 +8,4 @@ services:
       TZ: ${TZ}
     restart: ${RESTART_POLICY}
     networks:
-      - cluster_network
+      - cluster-network
