@@ -1,11 +1,11 @@
 services:
   web-check: 
-    image: docker.io/lissy93/web-check:latest
+    image: docker.io/lissy93/web-check:1.0.0
     container_name: web-check
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
     networks:
-      - cluster_network
+      - cluster-network
     restart: ${RESTART_POLICY}
