@@ -7,5 +7,5 @@ services:
       PGID: ${PGID}
       TZ: ${TZ}
     networks:
-      - cluster_network
+      - cluster-network
     restart: ${RESTART_POLICY}
