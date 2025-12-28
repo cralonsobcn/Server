@@ -4,5 +4,6 @@ services:
     container_name: excalidraw
     build:
       context: https://github.com/excalidraw/excalidraw.git
+      dockerfile: Dockerfile
     networks:
-      - cluster_network
+      - cluster-network
