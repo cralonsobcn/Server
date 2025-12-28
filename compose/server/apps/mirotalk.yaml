@@ -1,6 +1,9 @@
 services:
   mirotalk:
     image: mirotalk/p2p:latest
+    build:
+      context: https://github.com/miroslavpejic85/mirotalk.git
+      dockerfile: ./Dockerfile
     container_name: mirotalk
     hostname: mirotalk
     environment:
@@ -9,11 +12,12 @@ services:
       TZ: ${TZ}
     restart: ${RESTART_POLICY}
     networks:
-      - cluster_network
+      - cluster-network
     volumes:
       - ${HOME}/Server/mirotalk/.mirotalk.env:/src/.env:ro
         # Rebranding:
-      - ${HOME}/Server/mirotalk/app/src/config.js:/src/app/src/config.js:ro
+      - ${HOME}/Server/mirotalk/app/src/config.js:/src/app/src/config.js:ro   # https://docs.mirotalk.com/mirotalk-web/self-hosting/#configjs
+                                                                              # https://github.com/miroslavpejic85/mirotalk/blob/master/app/src/config.template.js
         # Optional volumes for real-time updates:
         # - ./app/:/src/app/:ro
         # - ./public/:/src/public/:ro
