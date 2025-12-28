@@ -1,5 +1,5 @@
 services:
-
+# https://github.com/RocketChat/Rocket.Chat/blob/develop/docker-compose-local.yml
   rocketchat:
     image: ${IMAGE:-registry.rocket.chat/rocketchat/rocket.chat}:${RELEASE:-latest}
     restart: ${RESTART_POLICY}
@@ -25,7 +25,7 @@ services:
       - "${BIND_IP:-0.0.0.0}:${HOST_PORT:-3000}:${PORT:-3000}"
       - "${BIND_IP:-0.0.0.0}:${METRICS_PORT:-9458}:${METRICS_PORT:-9458}"
     networks:
-      - cluster_network
+      - cluster-network
       - rocketchat_internal_network
     # healthcheck:
     #   test: ["CMD", "nc", "-zv", "-w", "10", "rocketchat", "${PORT:-3000}"]
