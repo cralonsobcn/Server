@@ -1,5 +1,6 @@
 services:
   raid-calculator:
+    image: ghcr.io/lissy93/raid-calculator:1.0.0
     build: 
       context: https://github.com/Lissy93/raid-calculator.git
     container_name: raid-calculator
@@ -9,4 +10,4 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
     networks:
-      - cluster_network
+      - cluster-network
