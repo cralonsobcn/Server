@@ -108,7 +108,7 @@ serverActions(){
     # TODO switch to git pull script
     
     # Application folders within the server appliance
-    folders=("changedetection/" "code-server/" "grafana/" "homepage/" "homepage/config" "homepaeg/config/images" "jellyseerr" "jellyseerr/config" "prometheus/" "prometheus/config" "radarr/" "readarr/" "sonarr/" "stirlingPDF/" "uptime_kuma/")
+    folders=("changedetection/" "code-server/" "grafana/" "homepage/" "homepage/config" "homepaeg/config/images" "jellyseerr" "jellyseerr/config" "prometheus/" "prometheus/config" "radarr/" "sonarr/" "stirlingPDF/" "uptime_kuma/")
     # If any of the security folders do not exist, create under the Home directory and change the owner and group to the USER's
     for folder in ${folders[@]}; do
         if [[ ! -d "${HOME}/${folder}" ]]; then
