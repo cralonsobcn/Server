@@ -18,7 +18,7 @@ Installation Steps are covered in the [Rocky Linux documentation](https://docs.r
 Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), [linuxserver.io](https://www.linuxserver.io/) and [github.com](https://github.com/).
 
 ## Server
-- [Uptime Kuma](https://github.com/louislam/uptime-kuma)
+<!-- - [Uptime Kuma](https://github.com/louislam/uptime-kuma)
 - [Glances](https://github.com/nicolargo/glances)
 - [Prometheus](https://prometheus.io/docs/prometheus/latest/installation/)
 - [cAdvisor](https://prometheus.io/docs/guides/cadvisor/#docker-compose-configuration)
@@ -26,7 +26,6 @@ Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), 
 - [Dozzle](https://dozzle.dev/guide/getting-started#standalone-docker)
 - [Prowlarr](https://docs.linuxserver.io/images/docker-prowlarr/)
 - [Radarr](https://hub.docker.com/r/linuxserver/radarr)
-- [Readarr](https://docs.linuxserver.io/images/docker-readarr/)
 - [Sonarr](https://hub.docker.com/r/linuxserver/sonarr)
 - [Jellyseer](https://hub.docker.com/r/linuxserver/jellyfin)
 - [IT tools](https://github.com/CorentinTh/it-tools)
@@ -35,21 +34,21 @@ Almost all the images can be pulled from [Docker Hub](https://hub.docker.com/), 
 - [Stirling PDF](https://docs.stirlingpdf.com/Installation/Docker%20Install/)
 - [Code Server](https://hub.docker.com/r/linuxserver/code-server)
 - [Jsoncrack](https://github.com/AykutSarac/jsoncrack.com)
-- [MK Docs Material](https://github.com/squidfunk/mkdocs-material)
+- [MK Docs Material](https://github.com/squidfunk/mkdocs-material) -->
 
 ## NAS
-- [Jellyfin](https://hub.docker.com/r/linuxserver/jellyfin)
+<!-- - [Jellyfin](https://hub.docker.com/r/linuxserver/jellyfin)
 - [Qbitorrent](https://hub.docker.com/r/linuxserver/qbittorrent)
-- [Gitea](https://github.com/go-gitea/gitea)
+- [Gitea](https://github.com/go-gitea/gitea) -->
 
 ## Security
-- [Traefik](https://github.com/traefik/traefik)
+<!-- - [Traefik](https://github.com/traefik/traefik)
 - [Homepage](https://gethomepage.dev/latest/installation/docker/)
 - [Portainer](https://docs.portainer.io/start/install-ce/server/docker/linux)
 - [Whatsupdocker](https://getwud.github.io/wud/#/quickstart/)
 - [Pihole](https://hub.docker.com/r/pihole/pihole)
 - [Mullvad VPN](https://mullvad.net/es/help/install-mullvad-app-linux#fedora)
-- [Tailscale]()
+- [Tailscale]() -->
 
 ## Deployment
 As easy as typing in the command:
