@@ -13,6 +13,7 @@ volumes:
 include:
   # Apps
   - path:
+      - compose/server/apps/archive.yaml
       - compose/server/apps/it-tools.yaml
       - compose/server/apps/change-detection.yaml          
       - compose/server/apps/code-server.yaml
@@ -30,7 +31,7 @@ include:
       - compose/server/apps/jsoncrack.yaml                          
       - compose/server/apps/stirling.yaml                           # 1.88GB. Consider using latest-ultra-lite tag
       - compose/server/apps/bentopdf.yaml
-      - compose/server/apps/web-check.yaml                          # 2.71GB
+      - compose/server/apps/web-check.yaml                          # 2.71GB. wtf
   - path: 
       - compose/server/apps/mirotalk.yaml                           # Requires pulling the Github repo first and install from bash script
                                                                     # https://github.com/miroslavpejic85/mirotalk
