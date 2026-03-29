@@ -7,7 +7,7 @@
       - ${HOME}/gitlab/config:/etc/gitlab
       - ${HOME}/gitlab/logs:/var/log/gitlab
       - ${HOME}/gitlab/data:/var/opt/gitlab
-      shm_size: '256m'
+      shm_size: '512m'
       deploy:
         resources:
           limits:
