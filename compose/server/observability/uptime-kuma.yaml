@@ -1,0 +1,19 @@
+---
+services:
+  uptime-kuma:
+    image: docker.io/louislam/uptime-kuma:1.23.16
+    container_name: uptime-kuma
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    networks:
+    - cluster-network
+    volumes:
+    - kuma-data:/app/data
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: ${RESTART_POLICY}
+
+volumes:
+  kuma-data:
+    name: kuma-data  # TODO I'll keep the configuration but not the logging
