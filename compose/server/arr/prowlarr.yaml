@@ -11,3 +11,8 @@ services:
     volumes: # TODO
       - prowlarr-data:/config # Database and Prowlarr configs
     restart: ${RESTART_POLICY}
+
+volumes:
+  prowlarr-data:
+    name: prowlarr-data
+    driver: local
