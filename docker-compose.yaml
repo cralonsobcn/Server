@@ -1,58 +1,42 @@
+---
 networks:
   cluster-network:          # Docker Swarm overlay network
     external: true
 
-volumes:
-  prowlarr-data:
-    name: prowlarr-data
-    driver: local
-  arr-data:
-    name: arr-data # TODO change volume type. Avoid /home.
-    driver: local
-
 include:
   # Apps
   - path:
-      - compose/server/apps/archive.yaml
-      - compose/server/apps/it-tools.yaml
-      - compose/server/apps/change-detection.yaml          
-      - compose/server/apps/code-server.yaml
-      - compose/server/apps/omni-tools.yaml   
-      - compose/server/apps/networking-toolbox.yaml  
-      - compose/server/apps/convertx.yaml    
-      - compose/server/apps/raid-calculator.yaml    
-      - compose/server/apps/excalidraw.yaml
-      - compose/server/apps/gitlab.yaml
-  # - path:
-  #     - compose/server/apps/rocketchat.yaml                       # Mongodb container Crashes. requires AVX CPU instruction set
-  #   env_file:
-  #     - env/.rocketchat.env
-  - path: 
-      - compose/server/apps/jsoncrack.yaml                          
-      - compose/server/apps/stirling.yaml                           # 1.88GB. Consider using latest-ultra-lite tag
-      - compose/server/apps/bentopdf.yaml
-      - compose/server/apps/web-check.yaml                          # 2.71GB. wtf
-  - path: 
-      - compose/server/apps/mirotalk.yaml                           # Requires pulling the Github repo first and install from bash script
-                                                                    # https://github.com/miroslavpejic85/mirotalk
-    env_file:
-      - mirotalk/.mirotalk.env
-  
-  # Documentation
+    - compose/server/apps/archive.yaml
+    - compose/server/apps/it-tools.yaml
+    - compose/server/apps/change-detection.yaml
+    - compose/server/apps/code-server.yaml
+    - compose/server/apps/omni-tools.yaml
+    - compose/server/apps/scanopy.yaml
+    - compose/server/apps/networking-toolbox.yaml
+    - compose/server/apps/convertx.yaml
+    - compose/server/apps/raid-calculator.yaml
+    - compose/server/apps/excalidraw.yaml
+    - compose/server/apps/gitlab.yaml
+    - compose/server/apps/jsoncrack.yaml
+    - compose/server/apps/stirling.yaml
+    - compose/server/apps/bentopdf.yaml
+    - compose/server/apps/web-check.yaml
+  # Observability
   - path:
-    # - compose/server/apps/documentation.yaml                    # Crashes.
-
+    - compose/server/observability/cadvisor.yaml
+    - compose/server/observability/grafana.yaml
+    - compose/server/observability/prometheus.yaml
+    - compose/server/observability/uptime-kuma.yaml
   # Arr
   - path:
-      - compose/server/arr/jellyseerr.yaml                          # 1.42 GB. Unhealthy?
-      - compose/server/arr/prowlarr.yaml
-      - compose/server/arr/radarr.yaml
-      - compose/server/arr/sonarr.yaml
-
+    - compose/server/arr/jellyseerr.yaml
+    - compose/server/arr/prowlarr.yaml
+    - compose/server/arr/radarr.yaml
+    - compose/server/arr/sonarr.yaml
   # Tunnel
   - path:
-      - compose/server/management/cloudflare.yaml
-  
+    - compose/server/management/cloudflare.yaml
   # Proxy
   - path:
-      - compose/server/management/dockerproxy.yaml
+    - compose/server/management/dockerproxy.yaml
+...
