@@ -10,5 +10,5 @@ services:
     networks:
     - cluster-network
     volumes:                          # TODO Add volume and persist the data
-    - ${HOME}/Security/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml        # path to /etc/prometheus.yml
+    - ${HOME}/Server/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml        # path to /etc/prometheus.yml
     restart: ${RESTART_POLICY}
