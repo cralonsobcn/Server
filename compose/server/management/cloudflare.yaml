@@ -1,8 +1,8 @@
 services:
   cloudflared:
-    image: cloudflare/cloudflared:2025.9.1
+    image: cloudflare/cloudflared:2026.3.0
     container_name: server-tunnel
-    command: tunnel --no-autoupdate run
+    command: tunnel --loglevel error --no-autoupdate run
     environment:
       TZ: ${TZ}
       TUNNEL_TOKEN: ${SERVER_CLOUDFARE_TUNNEL_TOKEN}
