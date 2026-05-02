@@ -1,0 +1,96 @@
+services:
+
+  booklore:
+    image: docker.io/grimmory/grimmory:v3.0.2
+    container_name: booklore
+    environment:
+      REMOTE_AUTH_ENABLED: true
+      USER_ID: ${PUID}
+      GROUP_ID: ${PGID}
+      TZ: ${TZ}
+      DATABASE_URL: jdbc:mariadb://mariadb:3306/booklore
+      DATABASE_USERNAME: ${BOOKLORE_MYSQL_USER}
+      DATABASE_PASSWORD: ${BOOKLORE_MYSQL_PASSWORD}
+      DISK_TYPE: local
+    depends_on:
+      - mariadb
+      - rclone
+    networks:
+      - cluster-network
+      - books-network
+    volumes:
+      - ~/Server/booklore/data:/app/data
+      - ~/Server/rclone/books:/books:rshared,ro
+    restart: ${RESTART_POLICY}
+
+  mariadb:
+    image: lscr.io/linuxserver/mariadb:11.4.5
+    container_name: mariadb
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: ${TZ}
+      MYSQL_ROOT_PASSWORD: ${BOOKLORE_MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: booklore
+      MYSQL_USER: ${BOOKLORE_MYSQL_USER}
+      MYSQL_PASSWORD: ${BOOKLORE_MYSQL_PASSWORD}
+    volumes:
+      - booklore-mariadb:/config
+    networks:
+      - books-network
+    restart: ${RESTART_POLICY}
+
+  rclone:
+    image: docker.io/rclone/rclone:v1.72-stable
+    container_name: rclone
+    security_opt:
+      - 'apparmor:unconfined'
+    cap_add:
+      - SYS_ADMIN   # Required to mount filesystems
+    user: ${PUID}:${PGID}
+    command: >
+      mount r2_books:books /data
+      --s3-no-check-bucket
+      --allow-other
+      --no-modtime
+      --cache-dir /cache
+      --allow-non-empty
+      --dir-cache-time 1000h
+      --poll-interval 0
+      --no-checksum 
+      --read-only
+      --vfs-cache-mode full
+      --vfs-cache-max-age 24h
+      -vv
+    volumes:
+      # sudo chown cristian:cristian -R /var/lib/docker/volumes/rclone-cache
+      # sudo chmod 755 -R /var/lib/docker/volumes/rclone-cache
+      # sudo chown cristian:cristian -R /var/lib/docker/volumes/books
+      # sudo chmod 755 -R /var/lib/docker/volumes/books
+      # sudo mount --bind /home/cristian/Server/rclone /home/cristian/Server/rclone
+      # sudo mount --make-rshared /
+      # sudo mount --make-rshared /home/cristian/rclone-mount
+      # sudo umount -l ~/Server/rclone/books
+      - ~/Server/rclone/config:/config/rclone:ro
+      - ~/Server/rclone/books:/data:rshared
+      - rclone-cache:/cache
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    devices:
+      - /dev/fuse
+    networks:
+      - books-network
+    restart: no
+
+volumes:
+  rclone-cache:
+    name: rclone-cache
+  booklore-mariadb:
+    name: booklore-mariadb
+  books:
+    name: books
+
+networks:
+  books-network:
+    name: books-network
+    driver: bridge
