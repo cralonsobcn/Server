@@ -7,18 +7,17 @@ include:
   # Apps
   - path:
     - compose/server/apps/archive.yaml
-    - compose/server/apps/bentopdf.yaml
     - compose/server/apps/change-detection.yaml
     - compose/server/apps/code-server.yaml
-    - compose/server/apps/convertx.yaml
     - compose/server/apps/excalidraw.yaml
+    - compose/server/apps/fossflow.yaml
     - compose/server/apps/gitlab.yaml
     - compose/server/apps/it-tools.yaml
     - compose/server/apps/jsoncrack.yaml
     - compose/server/apps/networking-toolbox.yaml
     - compose/server/apps/omni-tools.yaml
     - compose/server/apps/raid-calculator.yaml
-    - compose/server/apps/scanopy.yaml
+    - compose/server/apps/reader.yaml
     - compose/server/apps/stirling.yaml
     - compose/server/apps/web-check.yaml
   # Observability
@@ -37,6 +36,6 @@ include:
   - path:
     - compose/server/management/cloudflare.yaml
   # Proxy
-  - path:
-    - compose/server/management/dockerproxy.yaml
+  # - path:
+  #   - compose/server/management/dockerproxy.yaml
 ...
