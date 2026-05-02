@@ -1,0 +1,14 @@
+services:
+  fossflow:
+    image: docker.io/stnsmith/fossflow:latest
+    environment:
+      ENABLE_SERVER_STORAGE: true
+    volumes:
+      - fossflow-diagrams:/data/diagrams
+    networks:
+      - cluster-network
+    restart: ${RESTART_POLICY}
+
+volumes:
+  fossflow-diagrams:
+    name: fossflow-diagrams
