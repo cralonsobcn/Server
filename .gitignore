@@ -20,11 +20,10 @@ sonarr/
 radarr/
 stirlingPDF/
 changedetection/
-database/
 code-server/
 grafana/
-mkdocs/
-convertx/
 archive/
 mirotalk/
 prometheus/
+rclone/books
+rclone/config/rclone.conf
