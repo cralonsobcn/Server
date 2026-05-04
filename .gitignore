@@ -26,4 +26,4 @@ archive/
 mirotalk/
 prometheus/
 rclone/books
-rclone/config/rclone.conf
+rclone/config/
