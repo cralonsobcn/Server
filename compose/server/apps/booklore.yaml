@@ -27,8 +27,8 @@ services:
     image: lscr.io/linuxserver/mariadb:11.4.5
     container_name: mariadb
     environment:
-      PUID: 1000
-      PGID: 1000
+      PUID: ${PUID}
+      PGID: ${PGID}
       TZ: ${TZ}
       MYSQL_ROOT_PASSWORD: ${BOOKLORE_MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: booklore
