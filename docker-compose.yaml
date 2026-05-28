@@ -7,6 +7,7 @@ include:
   # Apps
   - path:
     - compose/server/apps/archive.yaml
+    - compose/server/apps/booklore.yaml
     - compose/server/apps/change-detection.yaml
     - compose/server/apps/code-server.yaml
     - compose/server/apps/excalidraw.yaml
@@ -17,7 +18,6 @@ include:
     - compose/server/apps/networking-toolbox.yaml
     - compose/server/apps/omni-tools.yaml
     - compose/server/apps/raid-calculator.yaml
-    - compose/server/apps/reader.yaml
     - compose/server/apps/stirling.yaml
     - compose/server/apps/web-check.yaml
   # Observability
